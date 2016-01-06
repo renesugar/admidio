@@ -1,0 +1,21 @@
+/******************************************************************************
+ * Mixins for Cascading-Style-Sheets file for Admidio 
+ *
+ * Copyright    : (c) 2004 - 2016 The Admidio Team
+ * Homepage     : http://www.admidio.org
+ * License      : GNU Public License 2 https://www.gnu.org/licenses/gpl-2.0.html
+ *
+ * Here you can edit the look and feel of Admidio
+ *
+ *****************************************************************************/
+
+
+@mixin linear-gradient-to-bottom($color1, $color2, $fallback:"") {
+    @if $fallback == ""{
+        $fallback: $color1;
+    } 
+    background-color: $fallback;
+    background: -webkit-linear-gradient(top, $color1 0%, $color2 95%);
+    background: linear-gradient(to bottom, $color1 0%, $color2 95%);
+}
+

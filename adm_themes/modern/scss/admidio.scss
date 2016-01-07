@@ -20,7 +20,6 @@
 /* Basic Admidio layout classes */
 /**************************************************/
 body {
-    color: $gray-dark;
     margin: auto;
     text-align: center;
 }
@@ -28,7 +27,7 @@ body {
 #page {
     text-align: center;
     margin: 0 auto;
-    max-width: 1200px;
+    max-width: $screen-lg;
 }
 
 #page-h1-membership {
@@ -96,7 +95,7 @@ body > .admContent {
     }
 }
 
-@media (min-width: 992px) {
+@media (min-width: $screen-md) {
     #page-h1-membership {
         font-size: 18pt;
         margin-left: 350px;
@@ -119,7 +118,7 @@ body > .admContent {
 }
 
 /* Layout adjustments for small devices */
-@media (max-width: $screen-sm-min - 1px) {
+@media (width: $screen-xs-max) {
     #header-block {
         margin: 0 -15px 0 -15px;
         background-color: $adm-brand-primary-lightest;
@@ -132,7 +131,7 @@ body > .admContent {
     }
 }
 
-@media (max-width: 991px) {
+@media (max-width: $screen-sm-max) {
     #adm_menu_item_login,
     #adm_menu_item_registration,
     #adm_menu_item_my_profile,
@@ -174,7 +173,7 @@ h3 {
     }
 }
 
-@media (min-width: 992px) {
+@media (min-width: $screen-md) {
     h1 {
         font-size: 170%;
         letter-spacing: 0.2em;
@@ -182,7 +181,7 @@ h3 {
     }
 }
 
-@media (max-width: $screen-sm-min - 1px) {
+@media (width: $screen-xs-max) {
     h1,
     h3 {
         padding: 15px 5px;
@@ -728,7 +727,7 @@ input[type="time"] {
 }
 
 
-@media (max-width: $screen-sm-min - 1px) {
+@media (width: $screen-xs-max) {
     #div_profile_photo {
         text-align: left;
     }
@@ -773,7 +772,7 @@ body > .admidio-content {
     height: 200px;
 }
 
-@media (min-width: 992px) and (max-width: 1100px) {
+@media (min-width: $screen-md) and (max-width: 1100px) {
     .admidio-album-card-description {
         padding-left: 30px;
     }

@@ -1,0 +1,22 @@
+/*!*****************************************************************************
+ * Cascading-Style-Sheets file for Admidio
+ *
+ * Copyright    : (c) 2004 - 2016 The Admidio Team
+ * Homepage     : http://www.admidio.org
+ * License      : GNU Public License 2 https://www.gnu.org/licenses/gpl-2.0.html
+ *
+ * Here you can edit the look and feel of Admidio
+ *
+ *****************************************************************************/
+
+$adm-gray-lightest:             #ffffff;
+
+$adm-brand-primary-darker:      darken($brand-primary, 20%);
+$adm-brand-primary-dark:        darken($brand-primary, 10%);
+$adm-brand-primary-light:       lighten($brand-primary, 20%);
+$adm-brand-primary-lighter:     lighten($brand-primary, 30%);
+$adm-brand-primary-lightest:    lighten($brand-primary, 50%);
+
+$adm-brand-secondary:           #ff9C00;
+
+$adm-form-highlight:            #fff8a0;

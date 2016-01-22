@@ -293,6 +293,7 @@
     <string name="INS_WEBMASTER_LOGIN_FAILED">Zu den eingegebenen Logindaten wurde kein Benutzer gefunden, der Mitglied einer Webmasterrolle ist.</string>
     <string name="INS_WELCOME_TO_INSTALLATION">Willkommen zur Installation von Admidio</string>
     <string name="INS_WELCOME_TEXT">Auf den nächsten Seiten müssen einige notwendige Informationen für die Einrichtung von Admidio eingeben werden. Du benötigst dazu unter anderem die Zugangsdaten zu der Datenbank, auf der Admidio zukünftig laufen soll.</string>
+    <string name="INS_WINDOWS_LIVE">Windows Live</string>
     <string name="INS_WRONG_MYSQL_VERSION">Admidio #VAR1# setzt mindestens die MySQL-Version #VAR2# voraus. Du solltest versuchen die MySQL-Datenbank zu aktualisieren oder eine #VAR3#ältere Admidio-Version#VAR4# nutzen, welche kompatibel zu deiner Datenbank ist.</string>
     <string name="INS_WRONG_PHP_VERSION">Admidio #VAR1# setzt mindestens die PHP-Version #VAR2# voraus. Du solltest versuchen PHP zu aktualisieren oder eine #VAR3#ältere Admidio-Version#VAR4# nutzen, welche kompatibel zu dieser PHP-Version ist.</string>
     <string name="INS_XING">Xing</string>
@@ -376,6 +377,7 @@
     <string name="LST_NEW_DEFAULT_CONFIGURATION">Konfiguration wird zur neuen Standardkonfiguration</string>
     <string name="LST_NO_MORE_COLUMN">Aus technischen Gründen können keine weiteren Spalten hinzugefügt werden.</string>
     <string name="LST_NO_USER_FOUND">Es wurde kein Benutzer gefunden, der den gewählten Kriterien entspricht.</string>
+    <string name="LST_NO_ROLE_GIVEN">Es wurde keine Rolle angegeben.</string>
     <string name="LST_NO_ROLES_REMOVED">Es sind noch keine Rollen aus dem System entfernt worden.\n\nErst wenn du in der Rollenverwaltung Rollen löschst, erscheinen diese automatisch bei den "Entfernten Rollen".</string>
     <string name="LST_NO_RIGHTS_VIEW_LIST">Du besitzt keine Rechte Listen der hinterlegten Rollen anzuschauen.</string>
     <string name="LST_NOT_VALID_DATE_FORMAT">Bitte in der Bedingung des Feldes #VAR1_BOLD# ein gültiges Datum verwenden.</string>
@@ -449,7 +451,6 @@
     <string name="MAI_MAX_RECEIVER_DESC">Dieser Wert gibt an, wieviele Empfänger man für ein E-Mail auswählen kann. Eine Rolle wird als ein einzelner Empfänger verstanden</string>
     <string name="MAI_MESSAGE_WENT_TO">Diese Nachricht ging an</string>
     <string name="MAI_PHP_MAIL">PHP mail()</string>
-    <string name="MAI_ROLE_NO_EMAILS">Die von dir ausgewählte Rolle enthält keine Mitglieder mit gültigen E-Mail-Adressen, an die eine E-Mail versendet werden kann!</string>
     <string name="MAI_SEND_COPY">Kopie der E-Mail an mich senden</string>
     <string name="MAI_SEND_EMAIL">E-Mail senden</string>
     <string name="MAI_SEND_MAIL_TO_ROLE">Deine E-Mail wird an alle Mitglieder der ausgewählten Rolle geschickt, sofern diese ihre E-Mail-Adresse im System hinterlegt haben oder an die ausgewählten Empfänger.\n\nWenn du eingeloggt bist stehen dir weitere Rollen und Empfänger zur Verfügung, an die du E-Mails schreiben kannst.</string>
@@ -546,6 +547,7 @@
     <string name="MSG_DELETE_DESC">Soll Nachricht #VAR1_BOLD# nun entfernt werden.</string>
     <string name="MSG_DELETE_PM">Da es sich um eine Private Nachricht handeln, wird die Nachricht nur zum löschen markiert und wartet auf eine Aktion des Gesprächspartners</string>
     <string name="MSG_FORMER_MEMBERS">Ehemalige Mitglieder</string>
+    <string name="MSG_NO_VALID_RECIPIENTS">Die ausgewählten Rollen und Benutzer besitzen keine gültigen E-Mail-Adressen. Aus diesem Grund kann die E-Mail nicht versendet werden.</string>
     <string name="MSG_OPPOSITE">Gesprächspartner</string>
     <string name="MSG_PM_SEND">Die Private Nachricht wurde an #VAR1_BOLD# versendet.</string>
     <string name="MSG_PM_NOT_SEND">Die Private Nachricht konnte nicht an #VAR1_BOLD# gesendet werden.\n\nFolgender Fehler ist aufgetreten:\n#VAR2#</string>
@@ -1119,11 +1121,13 @@
     <string name="SYS_LOCK">Sperren</string>
     <string name="SYS_LOCKED">Gesperrt</string>
     <string name="SYS_LOGIN">Anmelden</string>
-    <string name="SYS_LOGIN_FAILED">Du hast mehrmals innerhalb kurzer Zeit versucht, dich mit einem falschen Passwort einzuloggen.\nAus Sicherheitsgründen ist dein Zugang für 15 Minuten gesperrt.</string>
+    <string name="SYS_LOGIN_MAX_INVALID_LOGIN">Du hast mehrmals innerhalb kurzer Zeit versucht, dich mit einem falschen Passwort einzuloggen.\nAus Sicherheitsgründen ist dein Zugang für 15 Minuten gesperrt.</string>
     <string name="SYS_LOGIN_NOT_ACTIVATED">Deine Anmeldung wurde noch nicht freigeschaltet.\n\nDu wirst benachrichtigt, sobald deine Anmeldung freigeschaltet wurde und ein Login möglich ist.</string>
+    <string name="SYS_LOGIN_USER_NO_MEMBER_IN_ORGANISATION">Die Anmeldedaten wurden richtig eingegeben, allerdings bist du kein aktives Mitglied dieser Organisation.</string>
+    <string name="SYS_LOGIN_USER_NO_WEBMASTER">Die Anmeldedaten wurden richtig eingegeben, jedoch ist der Update-Prozess nur für Webmaster freigeschaltet.</string>
+    <string name="SYS_LOGIN_USERNAME_PASSWORD_INCORRECT">Der eingegebene Benutzername und/oder das Passwort ist falsch.</string>
     <string name="SYS_LOGIN_PROBLEMS">Anmeldeprobleme</string>
     <string name="SYS_LOGIN_SUCCESSFUL">Du hast dich erfolgreich angemeldet.</string>
-    <string name="SYS_LOGIN_UNKNOWN">Der angegebene Benutzername existiert nicht.</string>
     <string name="SYS_LOGOUT">Abmelden</string>
     <string name="SYS_LOGOUT_SUCCESSFUL">Du wurdest erfolgreich abgemeldet.</string>
     <string name="SYS_LOSTPW_AREADY_LOGGED_ID">Du bist am System angemeldet, folglich kennst du ja dein Passwort!</string>

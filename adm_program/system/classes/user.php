@@ -8,7 +8,6 @@
  * @license https://www.gnu.org/licenses/gpl-2.0.html GNU General Public License v2.0 only
  ***********************************************************************************************
  */
-require_once(SERVER_PATH.'/adm_program/system/classes/passwordhashing.php');
 
 /******************************************************************************
  * Diese Klasse dient dazu ein Userobjekt zu erstellen.
@@ -110,9 +109,9 @@ class User extends TableUsers
      * Also an array with all roles where the user has the right to write an email will be stored.
      * The method considered the role leader rights of each role if this is set and the current
      * user is a leader in a role.
-     * @param  string $right The database column name of the right that should be checked. If this param
-     *                       is not set then only the arrays are filled.
-     * @return bool   Return true if a special right should be checked and the user has this right.
+     * @param string $right The database column name of the right that should be checked. If this param
+     *                      is not set then only the arrays are filled.
+     * @return bool Return true if a special right should be checked and the user has this right.
      */
     public function checkRolesRight($right = '')
     {
@@ -270,59 +269,104 @@ class User extends TableUsers
     /**
      * Check if a valid password is set for the user and return true if the correct password
      * was set. Optional the current session could be updated to a valid login session.
-     * @param  string       $password             The password for the current user. This should not be encoded.
-     * @param  bool         $setAutoLogin         If set to true then this login will be stored in AutoLogin table
-     *                                            and the user doesn't need to login another time with this browser.
-     *                                            To use this functionality @b $updateSessionCookies must be set to true.
-     * @param  bool         $updateSessionCookies The current session will be updated to a valid login.
-     *                                            If set to false then the login is only valid for the current script.
-     * @throws AdmException SYS_LOGIN_FAILED
-     *                                           SYS_LOGIN_FAILED
-     *                                           SYS_PASSWORD_UNKNOWN
-     * @return true         Return true if the correct password for this user was given to this method.
+     * @param string $password             The password for the current user. This should not be encoded.
+     * @param bool   $setAutoLogin         If set to true then this login will be stored in AutoLogin table
+     *                                     and the user doesn't need to login another time with this browser.
+     *                                     To use this functionality @b $updateSessionCookies must be set to true.
+     * @param bool   $updateSessionCookies The current session will be updated to a valid login.
+     *                                     If set to false then the login is only valid for the current script.
+     * @param bool   $updateHash           If set to true the code will check if the current password hash uses
+     *                                     the best hashing algorithm. If not the password will be rehashed with
+     *                                     the new algorithm. If set to false the password will not be rehashed.
+     * @param bool   $isWebmaster          If set to true the code will check if the current password hash uses
+     * @return true|string Return true if login was successful and a string with the reason why the login failed.
+     *                     Possible reasons: SYS_LOGIN_MAX_INVALID_LOGIN
+     *                                       SYS_LOGIN_NOT_ACTIVATED
+     *                                       SYS_LOGIN_USER_NO_MEMBER_IN_ORGANISATION
+     *                                       SYS_LOGIN_USER_NO_WEBMASTER
+     *                                       SYS_LOGIN_USERNAME_PASSWORD_INCORRECT
      */
-    public function checkLogin($password, $setAutoLogin = false, $updateSessionCookies = true)
+    public function checkLogin($password, $setAutoLogin = false, $updateSessionCookies = true, $updateHash = true, $isWebmaster = false)
     {
-        global $gPreferences, $gCookiePraefix, $gCurrentSession, $gSessionId;
+        global $gPreferences, $gCookiePraefix, $gCurrentSession, $gSessionId, $installedDbVersion;
 
-        if($this->getValue('usr_number_invalid') >= 3)
+        $invalidLoginCount = $this->getValue('usr_number_invalid');
+
+        // if within 15 minutes 3 wrong login took place -> block user account for 15 minutes
+        if ($invalidLoginCount >= 3 && time() - strtotime($this->getValue('usr_date_invalid', 'Y-m-d H:i:s')) < 60 * 15)
         {
-            // if within 15 minutes 3 wrong login took place -> block user account for 15 minutes
-            if(time() - strtotime($this->getValue('usr_date_invalid', 'Y-m-d H:i:s')) < 900)
-            {
-                $this->clear();
-                throw new AdmException('SYS_LOGIN_FAILED');
-            }
+            $this->clear();
+            return 'SYS_LOGIN_MAX_INVALID_LOGIN';
         }
 
         $currHash = $this->getValue('usr_password');
 
-        if(PasswordHashing::verify($password, $currHash))
+        if (PasswordHashing::verify($password, $currHash))
         {
-            if(PasswordHashing::needsRehash($currHash))
+            // Password correct
+
+            // if user is not activated/valid return error message
+            if (!$this->getValue('usr_valid'))
+            {
+                return 'SYS_LOGIN_NOT_ACTIVATED';
+            }
+
+            $sqlWebmaster = '';
+            // only check for webmaster role if version > 2.3 because before we don't have that flag
+            if($isWebmaster && version_compare($installedDbVersion, '2.4.0') === 1)
+            {
+                $sqlWebmaster = ', rol_webmaster';
+            }
+
+            // Check if user is currently member of a role of an organisation
+            $sql = 'SELECT DISTINCT mem_usr_id'.$sqlWebmaster.'
+                      FROM '.TBL_MEMBERS.'
+                INNER JOIN '.TBL_ROLES.'
+                        ON rol_id = mem_rol_id
+                INNER JOIN '.TBL_CATEGORIES.'
+                        ON cat_id = rol_cat_id
+                     WHERE mem_usr_id = '.$this->getValue('usr_id').'
+                       AND rol_valid  = 1
+                       AND mem_begin <= \''.DATE_NOW.'\'
+                       AND mem_end    > \''.DATE_NOW.'\'
+                       AND cat_org_id = '.$this->organizationId;
+            $userStatement = $this->db->query($sql);
+
+            if ($userStatement->rowCount() === 0)
+            {
+                return 'SYS_LOGIN_USER_NO_MEMBER_IN_ORGANISATION';
+            }
+
+            $userRow = $userStatement->fetch();
+            if ($isWebmaster && version_compare($installedDbVersion, '2.4.0') === 1 && $userRow['rol_webmaster'] == 0)
+            {
+                return 'SYS_LOGIN_USER_NO_WEBMASTER';
+            }
+
+            // Rehash password if the hash is outdated and rehashing is enabled
+            if ($updateHash && PasswordHashing::needsRehash($currHash))
             {
                 $this->setPassword($password);
                 $this->save();
             }
 
-            if($updateSessionCookies)
+            if ($updateSessionCookies)
             {
                 $gCurrentSession->setValue('ses_usr_id', $this->getValue('usr_id'));
                 $gCurrentSession->save();
             }
 
-            // soll der Besucher automatisch eingeloggt bleiben, dann verfaellt das Cookie erst nach einem Jahr
-            if($setAutoLogin && $gPreferences['enable_auto_login'] == 1)
+            // should the user stayed logged in automatically, than the cookie would expire in one year
+            if ($setAutoLogin && $gPreferences['enable_auto_login'] == 1)
             {
                 $gCurrentSession->setAutoLogin();
             }
             else
             {
-                $timestamp_expired = 0;
                 $this->setValue('usr_last_session_id', null);
             }
 
-            if($updateSessionCookies)
+            if ($updateSessionCookies)
             {
                 // set cookie for session id and remove ports from domain
                 $domain = substr($_SERVER['HTTP_HOST'], 0, strpos($_SERVER['HTTP_HOST'], ':'));
@@ -337,8 +381,10 @@ class User extends TableUsers
         }
         else
         {
+            // Password wrong
+
             // log invalid logins
-            if($this->getValue('usr_number_invalid') >= 3)
+            if ($invalidLoginCount >= 3)
             {
                 $this->setValue('usr_number_invalid', 1);
             }
@@ -348,16 +394,17 @@ class User extends TableUsers
             }
 
             $this->setValue('usr_date_invalid', DATETIME_NOW);
-            $this->save(false);   // don't update timestamp
+            $this->saveChangesWithoutRights();
+            $this->save(false); // don't update timestamp
             $this->clear();
 
-            if($this->getValue('usr_number_invalid') >= 3)
+            if ($this->getValue('usr_number_invalid') >= 3)
             {
-                throw new AdmException('SYS_LOGIN_FAILED');
+                return 'SYS_LOGIN_MAX_INVALID_LOGIN';
             }
             else
             {
-                throw new AdmException('SYS_PASSWORD_UNKNOWN');
+                return 'SYS_LOGIN_USERNAME_PASSWORD_INCORRECT';
             }
         }
     }
@@ -420,12 +467,12 @@ class User extends TableUsers
      * Edit an existing role membership of the current user. If the new date range contains
      * a future or past membership of the same role then the two memberships will be merged.
      * In opposite to setRoleMembership this method is useful to end a membership earlier.
-     * @param  int         $memberId  Id of the current membership that should be edited.
-     * @param  string      $startDate New start date of the membership. Default will be @b DATE_NOW.
-     * @param  string      $endDate   New end date of the membership. Default will be @b 9999-12-31
-     * @param  bool|string $leader    If set to @b 1 then the member will be leader of the role and
-     *                                might get more rights for this role.
-     * @return bool        Return @b true if the membership was successfully edited.
+     * @param int         $memberId  Id of the current membership that should be edited.
+     * @param string      $startDate New start date of the membership. Default will be @b DATE_NOW.
+     * @param string      $endDate   New end date of the membership. Default will be @b 9999-12-31
+     * @param bool|string $leader    If set to @b 1 then the member will be leader of the role and
+     *                               might get more rights for this role.
+     * @return bool Return @b true if the membership was successfully edited.
      */
     public function editRoleMembership($memberId, $startDate = DATE_NOW, $endDate = '9999-12-31', $leader = '')
     {
@@ -448,7 +495,7 @@ class User extends TableUsers
                    AND mem_usr_id = '.$this->getValue('usr_id').'
                    AND mem_begin <= \''.$endDate.'\'
                    AND mem_end   >= \''.$startDate.'\'
-                 ORDER BY mem_begin ASC';
+              ORDER BY mem_begin ASC';
         $membershipStatement = $this->db->query($sql);
 
         if($membershipStatement->rowCount() === 1)
@@ -578,7 +625,7 @@ class User extends TableUsers
 
     /**
      * Returns an array with all role ids where the user is a member.
-     * @return Returns an array with all role ids where the user is a member.
+     * @return int[] Returns an array with all role ids where the user is a member.
      */
     public function getRoleMemberships()
     {
@@ -589,7 +636,7 @@ class User extends TableUsers
     /**
      * Returns an array with all role ids where the user is a member
      * and not a leader of the role.
-     * @return Returns an array with all role ids where the user is a member
+     * @return int[] Returns an array with all role ids where the user is a member
      *         and not a leader of the role.
      */
     public function getRoleMembershipsNoLeader()
@@ -602,11 +649,11 @@ class User extends TableUsers
      * Get the value of a column of the database table if the column has the praefix @b usr_
      * otherwise the value of the profile field of the table adm_user_data will be returned.
      * If the value was manipulated before with @b setValue than the manipulated value is returned.
-     * @param  string $columnName The name of the database column whose value should be read or the internal unique profile field name
-     * @param  string $format     For date or timestamp columns the format should be the date/time format e.g. @b d.m.Y = '02.04.2011'. @n
-     *                            For text columns the format can be @b database that would return the original database value without any transformations
-     * @return mixed  Returns the value of the database column or the value of adm_user_fields
-     *                           If the value was manipulated before with @b setValue than the manipulated value is returned.
+     * @param string $columnName The name of the database column whose value should be read or the internal unique profile field name
+     * @param string $format     For date or timestamp columns the format should be the date/time format e.g. @b d.m.Y = '02.04.2011'. @n
+     *                           For text columns the format can be @b database that would return the original database value without any transformations
+     * @return mixed Returns the value of the database column or the value of adm_user_fields
+     *               If the value was manipulated before with @b setValue than the manipulated value is returned.
      * @par Examples
      * @code  // reads data of adm_users column
      * $loginname = $gCurrentUser->getValue('usr_login_name');
@@ -638,8 +685,8 @@ class User extends TableUsers
     /**
      * Creates a vcard with all data of this user object @n
      * (Windows XP address book can't process utf8, so vcard output is iso-8859-1)
-     * @param  bool   $allowedToEditProfile If set to @b true than logged in user is allowed to edit profiles
-     *                                      so he can see more data in the vcard
+     * @param bool $allowedToEditProfile If set to @b true than logged in user is allowed to edit profiles
+     *                                   so he can see more data in the vcard
      * @return string Returns the vcard as a string
      */
     public function getVCard($allowedToEditProfile = false)
@@ -732,9 +779,9 @@ class User extends TableUsers
       * Checks if the current user is allowed to edit the profile of the user of the parameter.
       * If will check if user can generally edit all users or if he is a group leader and can edit users
       * of a special role where @b $user is a member or if it's the own profile and he could edit this.
-      * @param  object $user            User object of the user that should be checked if the current user can edit his profile.
-      * @param  bool   $checkOwnProfile If set to @b false than this method don't check the role right to edit the own profile.
-      * @return bool   Return @b true if the current user is allowed to edit the profile of the user from @b $user.
+      * @param object $user            User object of the user that should be checked if the current user can edit his profile.
+      * @param bool   $checkOwnProfile If set to @b false than this method don't check the role right to edit the own profile.
+      * @return bool Return @b true if the current user is allowed to edit the profile of the user from @b $user.
       */
      public function hasRightEditProfile(&$user, $checkOwnProfile = true)
     {
@@ -800,7 +847,7 @@ class User extends TableUsers
 
     /**
      * Checks if the current user has the right to send an email to the role.
-     * @param  int  $roleId Id of the role that should be checked.
+     * @param int $roleId Id of the role that should be checked.
      * @return bool Return @b true if the user has the right to send an email to the role.
      */
     public function hasRightSendMailToRole($roleId)
@@ -829,8 +876,8 @@ class User extends TableUsers
      * Checks if the current user is allowed to view the profile of the user of the parameter.
      * If will check if user has edit rights with method editProfile or if the user is a member
      * of a role where the current user has the right to view profiles.
-     * @param  object $user User object of the user that should be checked if the current user can view his profile.
-     * @return bool   Return @b true if the current user is allowed to view the profile of the user from @b $user.
+     * @param object $user User object of the user that should be checked if the current user can view his profile.
+     * @return bool Return @b true if the current user is allowed to view the profile of the user from @b $user.
      */
     public function hasRightViewProfile($user)
     {
@@ -889,8 +936,8 @@ class User extends TableUsers
 
     /**
      * Check if the user of this object has the right to view the role that is set in the parameter.
-     * @param  int|string $roleId The id of the role that should be checked.
-     * @return bool       Return @b true if the user has the right to view the role otherwise @b false.
+     * @param int|string $roleId The id of the role that should be checked.
+     * @return bool Return @b true if the user has the right to view the role otherwise @b false.
      */
     public function hasRightViewRole($roleId)
     {
@@ -913,7 +960,7 @@ class User extends TableUsers
 
     /**
      * check if user is leader of a role
-     * @param  int|string $roleId
+     * @param int|string $roleId
      * @return bool
      */
     public function isLeaderOfRole($roleId)
@@ -930,7 +977,7 @@ class User extends TableUsers
 
     /**
      * check if user is member of a role
-     * @param  int|string $roleId
+     * @param int|string $roleId
      * @return bool
      */
     public function isMemberOfRole($roleId)
@@ -968,8 +1015,8 @@ class User extends TableUsers
     /**
      * Reads a user record out of the table adm_users in database selected by the unique user id.
      * Also all profile fields of the object @b mProfileFieldsData will be read.
-     * @param  int|string $userId Unique id of the user that should be read
-     * @return bool       Returns @b true if one record is found
+     * @param int|string $userId Unique id of the user that should be read
+     * @return bool Returns @b true if one record is found
      */
     public function readDataById($userId)
     {
@@ -1007,10 +1054,10 @@ class User extends TableUsers
      * If the table has columns for creator or editor than these column with their timestamp will be updated.
      * First save recordset and then save all user fields. After that the session of this got a renew for the user object.
      * If the user doesn't have the right to save data of this user than an exception will be thrown.
-     * @param  bool         $updateFingerPrint Default @b true. Will update the creator or editor of the recordset
-     *                                         if table has columns like @b usr_id_create or @b usr_id_changed
+     * @param bool $updateFingerPrint Default @b true. Will update the creator or editor of the recordset
+     *                                if table has columns like @b usr_id_create or @b usr_id_changed
      * @throws AdmException
-     * @return void
+     * @return bool
      */
     public function save($updateFingerPrint = true)
     {
@@ -1037,14 +1084,14 @@ class User extends TableUsers
                 $this->columnsValueChanged = true;
             }
 
-            parent::save($updateFingerPrint);
+            $returnValue = parent::save($updateFingerPrint);
 
             // if this was an registration then set this user id to create user id
             if($updateCreateUserId)
             {
                 $this->setValue('usr_timestamp_create', DATETIME_NOW);
                 $this->setValue('usr_usr_id_create', $this->getValue('usr_id'));
-                parent::save($updateFingerPrint);
+                $returnValue = parent::save($updateFingerPrint);
             }
 
             // save data of all user fields
@@ -1057,6 +1104,8 @@ class User extends TableUsers
                 $gCurrentSession->renewUserObject($this->getValue('usr_id'));
             }
             $this->db->endTransaction();
+
+            return $returnValue;
         }
         else
         {
@@ -1078,7 +1127,7 @@ class User extends TableUsers
      * Set the id of the organization which should be used in this user object.
      * The organization is used to read the rights of the user. If @b setOrganization isn't called
      * than the default organization @b gCurrentOrganization is set for the current user object.
-     * @param  int  $organizationId Id of the organization
+     * @param int $organizationId Id of the organization
      * @return void
      */
     public function setOrganization($organizationId)
@@ -1094,12 +1143,12 @@ class User extends TableUsers
      * Create a new membership to a role for the current user. If the date range contains
      * a future or past membership of the same role then the two memberships will be merged.
      * In opposite to setRoleMembership this method can't be used to end a membership earlier!
-     * @param  int         $roleId    Id of the role for which the membership should be set.
-     * @param  string      $startDate Start date of the membership. Default will be @b DATE_NOW.
-     * @param  string      $endDate   End date of the membership. Default will be @b 31.12.9999
-     * @param  bool|string $leader    If set to @b 1 then the member will be leader of the role and
-     *                                might get more rights for this role.
-     * @return bool        Return @b true if the membership was successfully added.
+     * @param int         $roleId    Id of the role for which the membership should be set.
+     * @param string      $startDate Start date of the membership. Default will be @b DATE_NOW.
+     * @param string      $endDate   End date of the membership. Default will be @b 31.12.9999
+     * @param bool|string $leader    If set to @b 1 then the member will be leader of the role and
+     *                               might get more rights for this role.
+     * @return bool Return @b true if the membership was successfully added.
      */
     public function setRoleMembership($roleId, $startDate = DATE_NOW, $endDate = '9999-12-31', $leader = '')
     {
@@ -1132,7 +1181,7 @@ class User extends TableUsers
                    AND mem_usr_id = '.$this->getValue('usr_id').'
                    AND mem_begin <= \''.$endDate.'\'
                    AND mem_end   >= \''.$startDate.'\'
-                 ORDER BY mem_begin ASC';
+              ORDER BY mem_begin ASC';
         $membershipStatement = $this->db->query($sql);
 
         if($membershipStatement->rowCount() === 1)
@@ -1258,7 +1307,6 @@ class User extends TableUsers
             // users data from adm_users table
             $returnCode = parent::setValue($columnName, $newValue);
         }
-
         $newFieldValue = $this->mProfileFieldsData->getValue($columnName, 'database');
 
         // Nicht alle Aenderungen werden geloggt. Ausnahmen:
@@ -1266,7 +1314,8 @@ class User extends TableUsers
         // Felder, die mit usr_ beginnen, werden nicht geloggt
         // Falls die Feldwerte sich nicht geaendert haben, wird natuerlich ebenfalls nicht geloggt
         if($gPreferences['profile_log_edit_fields'] == 1 && $this->getValue('usr_id') != 0
-        && strpos($columnName, 'usr_') === false && $newFieldValue !== $oldFieldValue)
+        && strpos($columnName, 'usr_') === false && $newFieldValue !== $oldFieldValue
+        && $returnCode === true)
         {
             $logEntry = new TableAccess($this->db, TBL_USER_LOG, 'usl');
             $logEntry->setValue('usl_usr_id', $this->getValue('usr_id'));

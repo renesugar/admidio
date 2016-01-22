@@ -121,7 +121,7 @@ $sql = 'SELECT *
            AND (  cat_org_id = '. $gCurrentOrganization->getValue('org_id'). '
                 OR cat_org_id IS NULL )
                '.$sqlRolesStatus.'
-         ORDER BY cat_sequence ASC, rol_name ASC';
+      ORDER BY cat_sequence ASC, rol_name ASC';
 $rolStatement = $gDb->query($sql);
 
 // Create role object
@@ -218,7 +218,7 @@ while($row = $rolStatement->fetch())
     // if no assigned roles
     if($assignRoles === '')
     {
-        $assignRoles= '&nbsp;';
+        $assignRoles = '&nbsp;';
     }
 
     if($role->getValue("rol_this_list_view") == 1)
@@ -252,7 +252,7 @@ while($row = $rolStatement->fetch())
         $listView = '&nbsp;';
     }
 
-    $linkAdministration .= '<a class="admidio-icon-link" href="'.$g_root_path.'/adm_program/modules/lists/lists_show.php?mode=html&amp;rol_id='.$role->getValue("rol_id").'"><img
+    $linkAdministration .= '<a class="admidio-icon-link" href="'.$g_root_path.'/adm_program/modules/lists/lists_show.php?mode=html&amp;rol_ids='.$role->getValue("rol_id").'"><img
                                 src="'. THEME_PATH. '/icons/list.png" alt="'.$gL10n->get('ROL_SHOW_MEMBERS').'" title="'.$gL10n->get('ROL_SHOW_MEMBERS').'" /></a>';
 
     if($getInactive)

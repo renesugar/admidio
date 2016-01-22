@@ -82,7 +82,9 @@ if($getInline)
                         $("#roles_assignment_form .form-alert").attr("class", "alert alert-success form-alert");
                         $("#roles_assignment_form .form-alert").html("<span class=\"glyphicon glyphicon-ok\"></span><strong>'.$gL10n->get('SYS_SAVE_DATA').'</strong>");
                         $("#roles_assignment_form .form-alert").fadeIn("slow");
-                        setTimeout("$(\"#admidio_modal\").modal(\"hide\");",2000);
+                        setTimeout(function () {
+                            $("#admidio_modal").modal("hide");
+                        }, 2000);
 
                         profileJS.reloadRoleMemberships();
                         profileJS.reloadFormerRoleMemberships();
@@ -136,7 +138,7 @@ if($gCurrentUser->manageRoles())
     // Benutzer mit Rollenrechten darf ALLE Rollen zuordnen
     $sql = 'SELECT cat_id, cat_name, rol_name, rol_description, rol_id, rol_visible, rol_leader_rights,
                      mem_rol_id, mem_usr_id, mem_leader
-              FROM '.TBL_CATEGORIES.'
+              FROM '.TBL_ROLES.'
         INNER JOIN '.TBL_CATEGORIES.'
                 ON cat_id = rol_cat_id
          LEFT JOIN '.TBL_MEMBERS.'
@@ -148,7 +150,7 @@ if($gCurrentUser->manageRoles())
                AND rol_visible = 1
                AND (  cat_org_id = '. $gCurrentOrganization->getValue('org_id'). '
                    OR cat_org_id IS NULL )
-             ORDER BY cat_sequence, cat_id, rol_name';
+          ORDER BY cat_sequence, cat_id, rol_name';
 }
 else
 {
@@ -174,7 +176,7 @@ else
                AND rol_visible    = 1
                AND (  cat_org_id  = '. $gCurrentOrganization->getValue('org_id'). '
                    OR cat_org_id IS NULL )
-             ORDER BY cat_sequence, cat_id, rol_name';
+          ORDER BY cat_sequence, cat_id, rol_name';
 }
 $statement = $gDb->query($sql);
 $category  = '';

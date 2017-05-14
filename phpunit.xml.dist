@@ -1,0 +1,35 @@
+<phpunit
+    backupGlobals="true"
+    backupStaticAttributes="false"
+    bootstrap="tests/bootstrap.php"
+    colors="true"
+    convertErrorsToExceptions="true"
+    convertNoticesToExceptions="true"
+    convertWarningsToExceptions="true"
+    processIsolation="false"
+    stopOnError="false"
+    stopOnFailure="false"
+    syntaxCheck="true"
+>
+    <testsuites>
+        <testsuite name="Unit Tests">
+            <directory suffix="Test.php">./tests</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">./adm_program/system/classes</directory>
+        </whitelist>
+    </filter>
+    <logging>
+        <log type="coverage-html" target="./tests/report" lowUpperBound="35" highLowerBound="70"/>
+        <log type="coverage-clover" target="./tests/coverage.xml"/>
+    </logging>
+    <php>
+        <!--<server name="HTTPS" value="true"/>-->
+        <server name="SERVER_PORT" value="443"/>
+        <server name="HTTP_HOST" value="www.example.org:1234"/>
+        <!--<server name="DOCUMENT_ROOT" value="/var/www"/>-->
+        <server name="REQUEST_URI" value="https://www.example.org:1234/subfolder/adm_program/index.php?param=value"/>
+    </php>
+</phpunit>

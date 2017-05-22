@@ -207,4 +207,18 @@ class PasswordHashingTest extends TestCase
     {
         $this->assertEquals($expectedScore, PasswordHashing::passwordStrength($password, $userData));
     }
+
+    public function testCostBenchmark()
+    {
+        $result = PasswordHashing::costBenchmark();
+
+        $this->assertArrayHasKey('cost', $result);
+        $this->assertArrayHasKey('time', $result);
+        $this->assertInternalType('int', $result['cost']);
+        $this->assertInternalType('float', $result['time']);
+        $this->assertGreaterThanOrEqual(10, $result['cost']);
+        $this->assertLessThanOrEqual(999999999, $result['cost']);
+        $this->assertGreaterThanOrEqual(0.35, $result['time']);
+        $this->assertLessThanOrEqual(1, $result['time']);
+    }
 }

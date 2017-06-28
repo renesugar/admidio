@@ -4,23 +4,53 @@ use PHPUnit\Framework\TestCase;
 
 class PasswordHashingTest extends TestCase
 {
-    public function getHashProvider()
+    /**
+     * @return array[]
+     */
+    public function hashProvider()
     {
         return array(
-            array('$2y$12$oCCb222SWprQ5hXLXHuv/.bR9oAaPsD6yh3svXPsN94aNV8Io2W4O', 'asdfasdf')
+            array('2y', '12',            'asdfasdf', 'DEFAULT', array()),
+            array('2y', '12',            'asdfasdf', 'BCRYPT',  array()),
+            array('6',  'rounds=100000', 'asdfasdf', 'SHA512',  array()),
+            array('2y', '14',            'asdfasdf', 'DEFAULT', array('cost' => 14)),
+            array('2y', '14',            'asdfasdf', 'BCRYPT',  array('cost' => 14)),
+            array('6',  'rounds=200000', 'asdfasdf', 'SHA512',  array('cost' => 200000)),
+            array('2y', '10',            'asdfasdf', 'DEFAULT', array('cost' => 8)),
+            array('2y', '10',            'asdfasdf', 'BCRYPT',  array('cost' => 8)),
+            array('6',  'rounds=50000',  'asdfasdf', 'SHA512',  array('cost' => 10000))
         );
     }
     /**
-     * @dataProvider getHashProvider
+     * @param string $expectedHashFlag
+     * @param string $expectedCost
+     * @param string $password
+     * @param string $algorithm
+     * @param array  $options
+     * @dataProvider hashProvider
      */
-//    public function testGetHash($expectedHash, $password)
-//    {
-//        $hash = PasswordHashing::hash('asdfasdf');
-//        $this->assertEquals('asd', $password);
-//
-//        return $password;
-//    }
+    public function testHash($expectedHashFlag, $expectedCost, $password, $algorithm, array $options)
+    {
+        $hash = PasswordHashing::hash($password, $algorithm, $options);
+        $hashLength = strlen($hash);
+        $hashParts = explode('$', $hash);
 
+        $this->assertEquals($expectedHashFlag, $hashParts[1]);
+        $this->assertEquals($expectedCost, $hashParts[2]);
+
+        if ($expectedHashFlag === '6')
+        {
+            $this->assertGreaterThanOrEqual(HASH_LENGTH_SHA512, $hashLength);
+        }
+        else
+        {
+            $this->assertEquals(HASH_LENGTH_BCRYPT, $hashLength);
+        }
+    }
+
+    /**
+     * @return array[]
+     */
     public function verifyProvider()
     {
         return array(
@@ -33,6 +63,9 @@ class PasswordHashingTest extends TestCase
         );
     }
     /**
+     * @param bool   $expectedResult
+     * @param string $password
+     * @param string $hash
      * @dataProvider verifyProvider
      */
     public function testVerify($expectedResult, $password, $hash)
@@ -40,6 +73,9 @@ class PasswordHashingTest extends TestCase
         $this->assertEquals($expectedResult, PasswordHashing::verify($password, $hash));
     }
 
+    /**
+     * @return array[]
+     */
     public function needsRehashProvider()
     {
         return array(
@@ -70,13 +106,20 @@ class PasswordHashingTest extends TestCase
         );
     }
     /**
+     * @param bool   $expectedResult
+     * @param string $algorithm
+     * @param array  $options
+     * @param string $hash
      * @dataProvider needsRehashProvider
      */
-    public function testNeedsRehash($expectedResult, $algorithm, $options, $hash)
+    public function testNeedsRehash($expectedResult, $algorithm, array $options, $hash)
     {
         $this->assertEquals($expectedResult, PasswordHashing::needsRehash($hash, $algorithm, $options));
     }
 
+    /**
+     * @return array[]
+     */
     public function getRandomPasswordProvider()
     {
         return array(
@@ -98,6 +141,9 @@ class PasswordHashingTest extends TestCase
         );
     }
     /**
+     * @param bool   $exception
+     * @param int    $length
+     * @param string $charset
      * @dataProvider getRandomPasswordProvider
      */
     public function testGetRandomPassword($exception, $length, $charset)
@@ -116,6 +162,9 @@ class PasswordHashingTest extends TestCase
         }
     }
 
+    /**
+     * @return array[]
+     */
     public function getRandomIntProvider()
     {
         return array(
@@ -126,11 +175,12 @@ class PasswordHashingTest extends TestCase
             array(-10, 0),
             array(-10, 10),
             array(10, 11),
-            array(1, 1000),
-//            array(10, 1)
+            array(1, 1000)
         );
     }
     /**
+     * @param int $min
+     * @param int $max
      * @dataProvider getRandomIntProvider
      */
     public function testGetRandomInt($min, $max)
@@ -140,7 +190,43 @@ class PasswordHashingTest extends TestCase
         $this->assertGreaterThanOrEqual($min, $randomInt);
         $this->assertLessThanOrEqual($max, $randomInt);
     }
+    /**
+     * @return array[]
+     */
+    public function getRandomIntErrorExceptionProvider()
+    {
+        return array(
+            array(1, 0),
+            array(10, 5)
+        );
+    }
+    /**
+     * @param int $min
+     * @param int $max
+     * @dataProvider getRandomIntErrorExceptionProvider
+     * @expectedException PHPUnit_Framework_Error
+     */
+    public function testGetRandomIntError($min, $max)
+    {
+        $randomInt = PasswordHashing::genRandomInt($min, $max);
 
+        $this->assertEquals(false, $randomInt);
+    }
+    /**
+     * @param int $min
+     * @param int $max
+     * @dataProvider getRandomIntErrorExceptionProvider
+     * @expectedException              AdmException
+     * @expectedExceptionMessageRegExp 'SYS_GEN_RANDOM_ERROR'
+     */
+    public function testGetRandomIntException($min, $max)
+    {
+        $randomInt = PasswordHashing::genRandomInt($min, $max, true);
+    }
+
+    /**
+     * @return array[]
+     */
     public function passwordInfoProvider()
     {
         return array(
@@ -152,13 +238,18 @@ class PasswordHashingTest extends TestCase
         );
     }
     /**
+     * @param array  $expectedPasswordInfo
+     * @param string $password
      * @dataProvider passwordInfoProvider
      */
-    public function testPasswordInfo($expectedPasswordInfo, $password)
+    public function testPasswordInfo(array $expectedPasswordInfo, $password)
     {
         $this->assertEquals($expectedPasswordInfo, PasswordHashing::passwordInfo($password));
     }
 
+    /**
+     * @return array[]
+     */
     public function hashInfoProvider()
     {
         return array(
@@ -176,6 +267,8 @@ class PasswordHashingTest extends TestCase
         );
     }
     /**
+     * @param string|array $expectedHashInfo
+     * @param string       $hash
      * @dataProvider hashInfoProvider
      */
     public function testHashInfo($expectedHashInfo, $hash)
@@ -183,6 +276,9 @@ class PasswordHashingTest extends TestCase
         $this->assertEquals($expectedHashInfo, PasswordHashing::hashInfo($hash));
     }
 
+    /**
+     * @return array
+     */
     public function passwordStrengthProvider()
     {
         $userData = array('test', 'home', 'mustermann', '1234', 'asdf');
@@ -201,24 +297,82 @@ class PasswordHashingTest extends TestCase
         );
     }
     /**
+     * @param int    $expectedScore
+     * @param string $password
+     * @param array  $userData
      * @dataProvider passwordStrengthProvider
      */
-    public function testPasswordStrength($expectedScore, $password, $userData)
+    public function testPasswordStrength($expectedScore, $password, array $userData)
     {
         $this->assertEquals($expectedScore, PasswordHashing::passwordStrength($password, $userData));
     }
 
-    public function testCostBenchmark()
+
+    /**
+     * @return array[]
+     */
+    public function costBenchmarkProvider()
     {
-        $result = PasswordHashing::costBenchmark();
+        return array(
+            array(0.35, 'password', 'DEFAULT', array('cost' => null)),
+            array(0.1,  'password', 'DEFAULT', array('cost' => null)),
+            array(1,    'password', 'DEFAULT', array('cost' => null)),
+            array(0.35, 'password', 'DEFAULT', array('cost' => 14)),
+            array(0.35, 'password', 'DEFAULT', array('cost' => 8)),
+            array(0.35, 'password', 'SHA512',  array('cost' => null)),
+            array(0.1,  'password', 'SHA512',  array('cost' => null)),
+            array(1,    'password', 'SHA512',  array('cost' => null)),
+            array(0.35, 'password', 'SHA512',  array('cost' => 500000)),
+            array(0.35, 'password', 'SHA512',  array('cost' => 10000))
+        );
+    }
+    /**
+     * @param int    $maxTime
+     * @param string $password
+     * @param string $algorithm
+     * @param array  $options
+     * @dataProvider costBenchmarkProvider
+     */
+    public function testCostBenchmark($maxTime, $password, $algorithm, array $options)
+    {
+        $result = PasswordHashing::costBenchmark($maxTime, $password, $algorithm, $options);
+
+        $defaultMinCost = $options['cost'];
+
+        if ($algorithm === 'SHA512')
+        {
+            $minCost = HASH_COST_SHA512_MIN;
+            $maxCost = HASH_COST_SHA512_MAX;
+
+            if ($defaultMinCost === null)
+            {
+                $defaultMinCost = HASH_COST_SHA512_DEFAULT;
+            }
+        }
+        else
+        {
+            $minCost = HASH_COST_BCRYPT_MIN;
+            $maxCost = HASH_COST_BCRYPT_MAX;
+
+            if ($defaultMinCost === null)
+            {
+                $defaultMinCost = HASH_COST_BCRYPT_DEFAULT;
+            }
+        }
 
         $this->assertArrayHasKey('cost', $result);
         $this->assertArrayHasKey('time', $result);
         $this->assertInternalType('int', $result['cost']);
         $this->assertInternalType('float', $result['time']);
-        $this->assertGreaterThanOrEqual(10, $result['cost']);
-        $this->assertLessThanOrEqual(999999999, $result['cost']);
-        $this->assertGreaterThanOrEqual(0.35, $result['time']);
-        $this->assertLessThanOrEqual(1, $result['time']);
+        $this->assertGreaterThanOrEqual($minCost, $result['cost']);
+        $this->assertLessThanOrEqual($maxCost, $result['cost']);
+        $this->assertGreaterThan(0, $result['time']);
+        // If $result['cost'] is greater than the default or min cost,
+        // it could be that $result['time'] is greater than $maxTime
+        // >> don't test it
+        if ($defaultMinCost < $result['cost'])
+        {
+            $this->assertLessThanOrEqual($maxTime, $result['time']);
+        }
     }
 }

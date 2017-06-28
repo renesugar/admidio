@@ -94,6 +94,11 @@ class TableCategory extends TableAccess
             throw new AdmException('CAT_DONT_DELETE_CATEGORY', $this->getValue('cat_name'), $this->getNumberElements());
         }
 
+        // delete all roles assignments that have the right to view this category
+        $categoryViewRoles = new RolesRights($this->db, 'category_view', $this->getValue('cat_id'));
+        $categoryViewRoles->delete();
+
+        // now delete category
         $return = parent::delete();
 
         $this->db->endTransaction();
@@ -323,7 +328,7 @@ class TableCategory extends TableAccess
         }
 
         // if new category than generate new name intern, otherwise no change will be made
-        if ($this->new_record)
+        if ($this->new_record && $this->getValue('cat_name_intern') === '')
         {
             $this->setValue('cat_name_intern', $this->getNewNameIntern($this->getValue('cat_name'), 1));
         }

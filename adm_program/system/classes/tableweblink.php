@@ -32,6 +32,36 @@ class TableWeblink extends TableAccess
     }
 
     /**
+     * This method checks if the current user is allowed to edit this weblink. Therefore
+     * the weblink must be visible to the user and must be of the current organization.
+     * The user must be a member of at least one role that have the right to manage weblinks.
+     * Global weblinks could be only edited by the parent organization.
+     * @return bool Return true if the current user is allowed to edit this weblink
+     */
+    public function editable()
+    {
+        global $gCurrentOrganization, $gCurrentUser;
+
+        if($this->visible() && $gCurrentUser->editDates())
+        {
+            if ($gCurrentOrganization->countAllRecords() === 1)
+            {
+                return true;
+            }
+
+            // parent organizations could edit global weblinks,
+            // child organizations could only edit their own weblinks
+            if ($gCurrentOrganization->isParentOrganization()
+            || ($gCurrentOrganization->isChildOrganization() && (int) $gCurrentOrganization->getValue('org_id') == (int) $this->getValue('cat_org_id')))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Get the value of a column of the database table.
      * If the value was manipulated before with @b setValue than the manipulated value is returned.
      * @param string $columnName The name of the database column whose value should be read
@@ -99,5 +129,18 @@ class TableWeblink extends TableAccess
         }
 
         return parent::setValue($columnName, $newValue, $checkValue);
+    }
+
+    /**
+     * This method checks if the current user is allowed to view this weblink. Therefore
+     * the visibility of the category is checked.
+     * @return bool Return true if the current user is allowed to view this weblink
+     */
+    public function visible()
+    {
+        global $gCurrentUser;
+
+        // check if the current user could view the category of the announcement
+        return in_array((int) $this->getValue('cat_id'), $gCurrentUser->getAllVisibleCategories('LNK'), true);
     }
 }

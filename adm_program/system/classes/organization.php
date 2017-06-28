@@ -122,25 +122,25 @@ class Organization extends TableAccess
 
         // create default category for roles, events and weblinks
         $sql = 'INSERT INTO '.TBL_CATEGORIES.'
-                       (cat_org_id, cat_type, cat_name_intern, cat_name, cat_hidden, cat_default, cat_sequence, cat_usr_id_create, cat_timestamp_create)
-                VALUES (?, \'ROL\', \'COMMON\', \'SYS_COMMON\', 0, 1, 1, ?, ?)';
+                       (cat_org_id, cat_type, cat_name_intern, cat_name, cat_default, cat_sequence, cat_usr_id_create, cat_timestamp_create)
+                VALUES (?, \'ROL\', \'COMMON\', \'SYS_COMMON\', 1, 1, ?, ?)';
         $queryParams = array($orgId, $systemUserId, DATETIME_NOW);
         $this->db->queryPrepared($sql, $queryParams);
         $categoryCommon = $this->db->lastInsertId();
 
         $sql = 'INSERT INTO '.TBL_CATEGORIES.'
-                       (cat_org_id, cat_type, cat_name_intern, cat_name, cat_hidden, cat_default, cat_system, cat_sequence, cat_usr_id_create, cat_timestamp_create)
-                VALUES (?, \'ROL\', \'GROUPS\',    \'INS_GROUPS\',    0, 0, 0, 2, ?, ?)
-                     , (?, \'ROL\', \'COURSES\',   \'INS_COURSES\',   0, 0, 0, 3, ?, ?)
-                     , (?, \'ROL\', \'TEAMS\',     \'INS_TEAMS\',     0, 0, 0, 4, ?, ?)
-                     , (?, \'ROL\', \'EVENTS\',    \'SYS_EVENTS_CONFIRMATION_OF_PARTICIPATION\', 1, 0, 1, 5, ?, ?)
-                     , (?, \'LNK\', \'COMMON\',    \'SYS_COMMON\',    0, 1, 0, 1, ?, ?)
-                     , (?, \'LNK\', \'INTERN\',    \'INS_INTERN\',    1, 0, 0, 2, ?, ?)
-                     , (?, \'ANN\', \'COMMON\',    \'SYS_COMMON\',    0, 1, 0, 1, ?, ?)
-                     , (?, \'ANN\', \'IMPORTANT\', \'SYS_IMPORTANT\', 0, 0, 0, 2, ?, ?)
-                     , (?, \'DAT\', \'COMMON\',    \'SYS_COMMON\',    0, 1, 0, 1, ?, ?)
-                     , (?, \'DAT\', \'TRAINING\',  \'INS_TRAINING\',  0, 0, 0, 2, ?, ?)
-                     , (?, \'DAT\', \'COURSES\',   \'INS_COURSES\',   0, 0, 0, 3, ?, ?)';
+                       (cat_org_id, cat_type, cat_name_intern, cat_name, cat_default, cat_system, cat_sequence, cat_usr_id_create, cat_timestamp_create)
+                VALUES (?, \'ROL\', \'GROUPS\',    \'INS_GROUPS\',    0, 0, 2, ?, ?)
+                     , (?, \'ROL\', \'COURSES\',   \'INS_COURSES\',   0, 0, 3, ?, ?)
+                     , (?, \'ROL\', \'TEAMS\',     \'INS_TEAMS\',     0, 0, 4, ?, ?)
+                     , (?, \'ROL\', \'EVENTS\',    \'SYS_EVENTS_CONFIRMATION_OF_PARTICIPATION\', 0, 1, 5, ?, ?)
+                     , (?, \'LNK\', \'COMMON\',    \'SYS_COMMON\',    1, 0, 1, ?, ?)
+                     , (?, \'LNK\', \'INTERN\',    \'INS_INTERN\',    0, 0, 2, ?, ?)
+                     , (?, \'ANN\', \'COMMON\',    \'SYS_COMMON\',    1, 0, 1, ?, ?)
+                     , (?, \'ANN\', \'IMPORTANT\', \'SYS_IMPORTANT\', 0, 0, 2, ?, ?)
+                     , (?, \'DAT\', \'COMMON\',    \'SYS_COMMON\',    1, 0, 1, ?, ?)
+                     , (?, \'DAT\', \'TRAINING\',  \'INS_TRAINING\',  0, 0, 2, ?, ?)
+                     , (?, \'DAT\', \'COURSES\',   \'INS_COURSES\',   0, 0, 3, ?, ?)';
         $queryParams = array(
             $orgId, $systemUserId, DATETIME_NOW,
             $orgId, $systemUserId, DATETIME_NOW,
@@ -154,6 +154,28 @@ class Organization extends TableAccess
             $orgId, $systemUserId, DATETIME_NOW
         );
         $this->db->queryPrepared($sql, $queryParams);
+
+        // if the second organization is added than also create global categories
+        if($this->countAllRecords() === 2)
+        {
+            $categoryAnnouncement = new TableCategory($this->db);
+            $categoryAnnouncement->setValue('cat_type', 'ANN');
+            $categoryAnnouncement->setValue('cat_name_intern', 'ANN_ALL_ORGANIZATIONS');
+            $categoryAnnouncement->setValue('cat_name', 'SYS_ALL_ORGANIZATIONS');
+            $categoryAnnouncement->save();
+
+            $categoryEvents = new TableCategory($this->db);
+            $categoryEvents->setValue('cat_type', 'DAT');
+            $categoryEvents->setValue('cat_name_intern', 'DAT_ALL_ORGANIZATIONS');
+            $categoryEvents->setValue('cat_name', 'SYS_ALL_ORGANIZATIONS');
+            $categoryEvents->save();
+
+            $categoryWeblinks = new TableCategory($this->db);
+            $categoryWeblinks->setValue('cat_type', 'LNK');
+            $categoryWeblinks->setValue('cat_name_intern', 'LNK_ALL_ORGANIZATIONS');
+            $categoryWeblinks->setValue('cat_name', 'SYS_ALL_ORGANIZATIONS');
+            $categoryWeblinks->save();
+        }
 
         // insert root folder name for download module
         $sql = 'INSERT INTO '.TBL_FOLDERS.'
@@ -422,29 +444,21 @@ class Organization extends TableAccess
     }
 
     /**
-     * Method checks if this organization is the parent of other organizations.
-     * @return bool Return @b true if the organization has child organizations.
+     * Method checks if the organization is configured as a child organization in the recordset.
+     * @return bool Return @b true if the organization is a child of another organization
      */
-    public function hasChildOrganizations()
+    public function isChildOrganization()
     {
-        return count($this->getChildOrganizations()) > 0;
+        return $this->getValue('org_org_id_parent') > 0;
     }
 
     /**
-     * Method checks if the organization is configured as a child organization in the recordset.
-     * @param int $organizationId The @b org_shortname or @b org_id of the organization that should be set.
-     *                            If parameter isn't set than check the organization of this object.
-     * @return bool Return @b true if the organization is a child of another organization
+     * Method checks if the organization is configured as a parent organization in the recordset.
+     * @return bool Return @b true if the organization is the parent of a least one other organization
      */
-    public function isChildOrganization($organizationId = 0)
+    public function isParentOrganization()
     {
-        // if no organization was set in parameter then check the organization of this object
-        if($organizationId === 0)
-        {
-            $organizationId = $this->getValue('org_id');
-        }
-
-        return array_key_exists($organizationId, $this->getChildOrganizations());
+        return count($this->getChildOrganizations()) > 0;
     }
 
     /**

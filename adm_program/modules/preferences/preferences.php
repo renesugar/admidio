@@ -196,7 +196,7 @@ $page->addHtml('
                         $form->addInput('org_homepage', $gL10n->get('SYS_WEBSITE'), $formValues['org_homepage'], array('maxLength' => 60));
 
                         // Falls andere Orgas untergeordnet sind, darf diese Orga keiner anderen Orga untergeordnet werden
-                        if(!$gCurrentOrganization->hasChildOrganizations())
+                        if(!$gCurrentOrganization->isParentOrganization())
                         {
                             $sqlData = array();
                             $sqlData['query'] = 'SELECT org_id, org_longname
@@ -266,8 +266,7 @@ $page->addHtml('
                     <div class="panel-body">');
                         // show form
                         $form = new HtmlForm('registration_preferences_form', ADMIDIO_URL.FOLDER_MODULES.'/preferences/preferences_function.php?form=registration', $page, array('class' => 'form-preferences'));
-                        $selectBoxEntries = array(0 => $gL10n->get('SYS_DEACTIVATED'), 1 => $gL10n->get('ORG_FAST_REGISTRATION'), 2 => $gL10n->get('ORG_ADVANCED_REGISTRATION'));
-                        $form->addSelectBox('registration_mode', $gL10n->get('SYS_REGISTRATION'), $selectBoxEntries, array('defaultValue' => $formValues['registration_mode'], 'showContextDependentFirstEntry' => false, 'helpTextIdInline' => 'ORG_REGISTRATION_MODE'));
+                        $form->addCheckbox('registration_enable_module', $gL10n->get('ORG_ENABLE_REGISTRATION_MODULE'), (bool) $formValues['registration_enable_module'], array('helpTextIdInline' => 'ORG_ENABLE_REGISTRATION_MODULE_DESC'));
                         $form->addCheckbox('enable_registration_captcha', $gL10n->get('ORG_ENABLE_CAPTCHA'), (bool) $formValues['enable_registration_captcha'], array('helpTextIdInline' => 'ORG_CAPTCHA_REGISTRATION'));
                         $form->addCheckbox('enable_registration_admin_mail', $gL10n->get('ORG_EMAIL_ALERTS'), (bool) $formValues['enable_registration_admin_mail'], array('helpTextIdInline' => array('ORG_EMAIL_ALERTS_DESC', 'ROL_RIGHT_APPROVE_USERS')));
                         $form->addSubmitButton('btn_save_registration', $gL10n->get('SYS_SAVE'), array('icon' => THEME_URL.'/icons/disk.png', 'class' => ' col-sm-offset-3'));
@@ -769,7 +768,7 @@ $page->addHtml('
                         $form->addCheckbox('profile_show_former_roles', $gL10n->get('PRO_SHOW_FORMER_ROLE_MEMBERSHIP'), (bool) $formValues['profile_show_former_roles'], array('helpTextIdInline' => 'PRO_SHOW_FORMER_ROLE_MEMBERSHIP_DESC'));
 
                         if($gCurrentOrganization->getValue('org_org_id_parent') > 0
-                        || $gCurrentOrganization->hasChildOrganizations())
+                        || $gCurrentOrganization->isParentOrganization())
                         {
                             $form->addCheckbox('profile_show_extern_roles', $gL10n->get('PRO_SHOW_ROLES_OTHER_ORGANIZATIONS'), (bool) $formValues['profile_show_extern_roles'], array('helpTextIdInline' => 'PRO_SHOW_ROLES_OTHER_ORGANIZATIONS_DESC'));
                         }

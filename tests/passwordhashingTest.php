@@ -233,8 +233,8 @@ class PasswordHashingTest extends TestCase
             array(array('length' => 0,  'number' => false, 'lowerCase' => false, 'upperCase' => false, 'symbol' => false), ''),
             array(array('length' => 4,  'number' => false, 'lowerCase' => true,  'upperCase' => false, 'symbol' => false), 'asdf'),
             array(array('length' => 8,  'number' => true,  'lowerCase' => false, 'upperCase' => true,  'symbol' => false), 'ASDF1234'),
-            array(array('length' => 4,  'number' => true,  'lowerCase' => true,  'upperCase' => true,  'symbol' => true ), 'qQ@1'),
-            array(array('length' => 21, 'number' => true,  'lowerCase' => false, 'upperCase' => true,  'symbol' => true ), '!"§$%&/()=00000AAAAA')
+            array(array('length' => 4,  'number' => true,  'lowerCase' => true,  'upperCase' => true,  'symbol' => true),  'qQ@1'),
+            array(array('length' => 21, 'number' => true,  'lowerCase' => false, 'upperCase' => true,  'symbol' => true),  '!"§$%&/()=00000AAAAA')
         );
     }
     /**

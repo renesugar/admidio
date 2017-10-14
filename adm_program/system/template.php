@@ -16,7 +16,7 @@ if (basename($_SERVER['SCRIPT_FILENAME']) === 'template.php')
 
 /**
  * Function to Read a file and store all data into a variable
- * @param  string $filename
+ * @param string $filename
  * @return string
  */
 function admReadTemplateFile(string $filename)

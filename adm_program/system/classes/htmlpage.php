@@ -44,7 +44,7 @@ class HtmlPage
      */
     protected $pageContent = '';
     /**
-     * @var \HtmlNavbar An object of the menu of this page
+     * @var HtmlNavbar An object of the menu of this page
      */
     protected $menu;
     /**
@@ -433,7 +433,7 @@ class HtmlPage
 
     /**
      * Returns the menu object of this html page.
-     * @return \HtmlNavbar Returns the menu object of this html page.
+     * @return HtmlNavbar Returns the menu object of this html page.
      */
     public function getMenu()
     {

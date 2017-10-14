@@ -31,9 +31,9 @@ class TableRoles extends TableAccess
     /**
      * Constructor that will create an object of a recordset of the table adm_roles.
      * If the id is set than the specific role will be loaded.
-     * @param \Database $database Object of the class Database. This should be the default global object @b $gDb.
-     * @param int       $rolId    The recordset of the role with this id will be loaded.
-     *                            If id isn't set than an empty object of the table is created.
+     * @param Database $database Object of the class Database. This should be the default global object @b $gDb.
+     * @param int      $rolId    The recordset of the role with this id will be loaded.
+     *                           If id isn't set than an empty object of the table is created.
      */
     public function __construct(Database $database, $rolId = 0)
     {
@@ -45,7 +45,7 @@ class TableRoles extends TableAccess
 
     /**
      * checks if user is allowed to assign members to this role
-     * @param \User $user UserObject of user who should be checked
+     * @param User $user UserObject of user who should be checked
      * @return bool
      */
     public function allowedToAssignMembers(User $user)
@@ -81,7 +81,7 @@ class TableRoles extends TableAccess
 
     /**
      * checks if user is allowed to edit members of this role
-     * @param \User $user UserObject of user who should be checked
+     * @param User $user UserObject of user who should be checked
      * @return bool
      */
     public function allowedToEditMembers(User $user)
@@ -264,7 +264,7 @@ class TableRoles extends TableAccess
 
         $this->db->endTransaction();
 
-        if ($gCurrentSession instanceof \Session)
+        if ($gCurrentSession instanceof Session)
         {
             // all active users must renew their user data because maybe their
             // rights have been changed if they where members of this role
@@ -386,7 +386,7 @@ class TableRoles extends TableAccess
         $returnValue = parent::save($updateFingerPrint);
 
         // Nach dem Speichern noch pruefen, ob Userobjekte neu eingelesen werden muessen,
-        if ($fieldsChanged && $gCurrentSession instanceof \Session)
+        if ($fieldsChanged && $gCurrentSession instanceof Session)
         {
             // all active users must renew their user data because maybe their
             // rights have been changed if they where members of this role

@@ -92,7 +92,7 @@ function getFormerRolesFromDatabase(int $userId)
 
 /**
  * @param string        $htmlListId
- * @param \User         $user
+ * @param User          $user
  * @param \PDOStatement $roleStatement
  * @param int           $countRole
  * @param bool          $directOutput

@@ -158,8 +158,8 @@ if($gDbType === Database::PDO_ENGINE_MYSQL)
 }
 
 /**
- * @param string    $filename The SQL filename (db.sql, data.sql)
- * @param \Database $database
+ * @param string   $filename The SQL filename (db.sql, data.sql)
+ * @param Database $database
  */
 function readAndExecuteSQLFromFile(string $filename, Database $database)
 {

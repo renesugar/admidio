@@ -17,7 +17,7 @@ declare(strict_types=1);
  * @param string $string
  * @return string
  */
-function admStrToLower($string)
+function admStrToLower(string $string)
 {
     if(function_exists('mb_strtolower'))
     {
@@ -33,7 +33,7 @@ function admStrToLower($string)
  * @param string $string
  * @return string
  */
-function admStrToUpper($string)
+function admStrToUpper(string $string)
 {
     if(function_exists('mb_strtoupper'))
     {
@@ -142,7 +142,7 @@ function strStripSlashesDeep($value)
  * @param bool $reverse
  * @return string
  */
-function strNextLetter($letter, $reverse = false)
+function strNextLetter(string $letter, bool $reverse = false)
 {
     $ascii      = ord($letter);
     $aLowerCase = ord('a');
@@ -185,7 +185,7 @@ function strNextLetter($letter, $reverse = false)
  *                          Each type has a different valid character list.
  * @return bool Returns @b true if all characters of @b string match the internal character list.
  */
-function strValidCharacters($string, $checkType)
+function strValidCharacters(string $string, string $checkType)
 {
     if (trim($string) === '')
     {
@@ -241,7 +241,7 @@ function strValidCharacters($string, $checkType)
  *                      DOW_FILE_EXTENSION_INVALID : Filename contains invalid extension
  * @return true Returns @true if filename contains only valid characters. Otherwise an AdmException is thrown
  */
-function admStrIsValidFileName($filename, $checkExtension = false)
+function admStrIsValidFileName(string $filename, bool $checkExtension = false)
 {
     // If the filename was not empty
     if (trim($filename) === '')

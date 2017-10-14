@@ -17,7 +17,7 @@ declare(strict_types=1);
  * @param string $className Name of the class for which the file should be loaded.
  * @return null|false Return @b false if the file for the class wasn't found.
  */
-function admFuncAutoload($className)
+function admFuncAutoload(string $className)
 {
     global $gLogger;
 

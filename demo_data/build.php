@@ -161,7 +161,7 @@ if($gDbType === Database::PDO_ENGINE_MYSQL)
  * @param string    $filename The SQL filename (db.sql, data.sql)
  * @param \Database $database
  */
-function readAndExecuteSQLFromFile($filename, Database $database)
+function readAndExecuteSQLFromFile(string $filename, Database $database)
 {
     global $g_tbl_praefix, $gL10n;
 

@@ -22,7 +22,7 @@ if (!function_exists('hash_equals'))
      * @param string $userInput
      * @return bool
      */
-    function hash_equals($knownString, $userInput)
+    function hash_equals(string $knownString, string $userInput)
     {
         if (!is_string($knownString))
         {

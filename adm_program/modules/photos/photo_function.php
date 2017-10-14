@@ -46,7 +46,7 @@ if (!$gCurrentUser->editPhotoRight())
  * @param \TablePhotos $photoAlbum Referenz auf Objekt des relevanten Albums
  * @param int          $picNr      Nr des Bildes dessen Thumbnail geloescht werden soll
  */
-function deleteThumbnail(TablePhotos $photoAlbum, $picNr)
+function deleteThumbnail(TablePhotos $photoAlbum, int $picNr)
 {
     // Ordnerpfad zusammensetzen
     $photoPath = ADMIDIO_PATH . FOLDER_DATA . '/photos/'.$photoAlbum->getValue('pho_begin', 'Y-m-d') . '_' . (int) $photoAlbum->getValue('pho_id') . '/thumbnails/' . $picNr . '.jpg';
@@ -62,7 +62,7 @@ function deleteThumbnail(TablePhotos $photoAlbum, $picNr)
 /**
  * @param string $path
  */
-function tryDelete($path)
+function tryDelete(string $path)
 {
     if (is_file($path))
     {
@@ -75,7 +75,7 @@ function tryDelete($path)
  * @param string $path
  * @param string $newPath
  */
-function tryRename($path, $newPath)
+function tryRename(string $path, string $newPath)
 {
     if (is_file($path))
     {
@@ -89,7 +89,7 @@ function tryRename($path, $newPath)
  * @param int $phoId
  * @param int $picNr
  */
-function deletePhoto($phoId, $picNr)
+function deletePhoto(int $phoId, int $picNr)
 {
     global $gDb;
 

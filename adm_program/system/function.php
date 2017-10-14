@@ -18,7 +18,7 @@ declare(strict_types=1);
  *                         If @userId is not set than this will be checked for the current user
  * @return bool Returns @b true if the user is a member of the role
  */
-function hasRole($roleName, $userId = 0)
+function hasRole(string $roleName, int $userId = 0)
 {
     global $gDb, $gCurrentUser, $gCurrentOrganization;
 
@@ -50,7 +50,7 @@ function hasRole($roleName, $userId = 0)
  * @param int $userId The id of the user who should be checked if he is a member of the current organization
  * @return bool Returns @b true if the user is a member
  */
-function isMember($userId)
+function isMember(int $userId)
 {
     global $gDb, $gCurrentOrganization;
 
@@ -84,7 +84,7 @@ function isMember($userId)
  *                    otherwise it checks if the user is group leader in one role of the current organization
  * @return bool Returns @b true if the user is a group leader
  */
-function isGroupLeader($userId, $roleId = 0)
+function isGroupLeader(int $userId, int $roleId = 0)
 {
     global $gDb, $gCurrentOrganization;
 
@@ -133,7 +133,7 @@ function isGroupLeader($userId, $roleId = 0)
  * @param string $queryParamName (optional) You can set a new name for the parameter that should be used as start parameter.
  * @return string
  */
-function admFuncGeneratePagination($baseUrl, $itemsCount, $itemsPerPage, $pageStartItem, $addPrevNextText = true, $queryParamName = 'start')
+function admFuncGeneratePagination(string $baseUrl, int $itemsCount, int $itemsPerPage, int $pageStartItem, bool $addPrevNextText = true, string $queryParamName = 'start')
 {
     global $gL10n;
 
@@ -158,7 +158,7 @@ function admFuncGeneratePagination($baseUrl, $itemsCount, $itemsPerPage, $pageSt
      * @param int    $itemsPerPage
      * @return string
      */
-    function getListElementsFromTo($start, $end, $page, $url, $paramName, $itemsPerPage)
+    function getListElementsFromTo(int $start, int $end, int $page, string $url, string $paramName, int $itemsPerPage)
     {
         $pageNavString = '';
 
@@ -185,7 +185,7 @@ function admFuncGeneratePagination($baseUrl, $itemsCount, $itemsPerPage, $pageSt
      * @param string $paramValue
      * @return string
      */
-    function getListElementString($linkText, $className = '', $url = '', $paramName = '', $paramValue = '')
+    function getListElementString(string $linkText, string $className = '', string $url = '', string $paramName = '', string $paramValue = '')
     {
         $classString = '';
         if ($className !== '')
@@ -322,7 +322,7 @@ function admFuncProcessableImageSize()
  * $getMode = admFuncVariableIsValid($_GET, 'mode', 'string', array('defaultValue' => 'actual', 'validValues' => array('actual', 'old')));
  * @endcode
  */
-function admFuncVariableIsValid(array $array, $variableName, $datatype, array $options = array())
+function admFuncVariableIsValid(array $array, string $variableName, string $datatype, array $options = array())
 {
     global $gL10n, $gMessage, $gPreferences;
 
@@ -503,7 +503,7 @@ function admFuncVariableIsValid(array $array, $variableName, $datatype, array $o
  * @param string $timestampEdited Date and time of the moment when the user last changed the recordset
  * @return string Returns a html string with usernames who creates item and edit item the last time
  */
-function admFuncShowCreateChangeInfoById($userIdCreated, $timestampCreate, $userIdEdited = 0, $timestampEdited = '')
+function admFuncShowCreateChangeInfoById(int $userIdCreated, string $timestampCreate, int $userIdEdited = 0, string $timestampEdited = '')
 {
     global $gDb, $gProfileFields, $gL10n, $gPreferences;
 
@@ -586,7 +586,7 @@ function admFuncShowCreateChangeInfoById($userIdCreated, $timestampCreate, $user
  *                                If id is set than a link to the user profile will be created
  * @return string Returns a html string with usernames who creates item and edit item the last time
  */
-function admFuncShowCreateChangeInfoByName($userNameCreated, $timestampCreate, $userNameEdited, $timestampEdited, $userIdCreated = 0, $userIdEdited = 0)
+function admFuncShowCreateChangeInfoByName(string $userNameCreated, string $timestampCreate, string $userNameEdited, string $timestampEdited, int $userIdCreated = 0, int $userIdEdited = 0)
 {
     global $gL10n, $gValidLogin, $gPreferences;
 
@@ -653,7 +653,7 @@ function admFuncShowCreateChangeInfoByName($userNameCreated, $timestampCreate, $
  *                           the type of entries that should be searched.
  * @return false|array<string,string> Returns an array with all found entries or false if an error occurs.
  */
-function admFuncGetDirectoryEntries($directory, $searchType = 'file')
+function admFuncGetDirectoryEntries(string $directory, string $searchType = 'file')
 {
     if (!is_dir($directory))
     {
@@ -698,7 +698,7 @@ function admFuncGetDirectoryEntries($directory, $searchType = 'file')
  * @param $url string
  * @return false|string
  */
-function admFuncCheckUrl($url)
+function admFuncCheckUrl(string $url)
 {
     // Homepage url have to start with "http://"
     if (strpos(admStrToLower($url), 'http://')  !== 0
@@ -722,7 +722,7 @@ function admFuncCheckUrl($url)
  * @param int    $statusCode The status-code which should be send. (301, 302, 303 (default), 307)
  * @see https://www.owasp.org/index.php/Open_redirect
  */
-function admRedirect($url, $statusCode = 303)
+function admRedirect(string $url, int $statusCode = 303)
 {
     global $gLogger, $gMessage, $gL10n;
 
@@ -775,7 +775,7 @@ function admRedirect($url, $statusCode = 303)
  * @param string $encoding Define character encoding tue use
  * @return string Escaped string
  */
-function noHTML($input, $encoding = 'UTF-8')
+function noHTML(string $input, string $encoding = 'UTF-8')
 {
     // backwards compatibility for PHP-Version < 5.4
     if (!defined('ENT_HTML5'))
@@ -816,7 +816,7 @@ function admFuncMaxUploadSize()
  * @param bool   $decimalMulti
  * @return int
  */
-function admFuncGetBytesFromSize($data, $decimalMulti = false)
+function admFuncGetBytesFromSize(string $data, bool $decimalMulti = false)
 {
     global $gLogger;
 

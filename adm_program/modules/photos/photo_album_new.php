@@ -80,7 +80,7 @@ if (isset($_SESSION['photo_album_request']))
  * @param        $photoAlbum
  * @param        $phoId
  */
-function subfolder($parentId, $vorschub, $photoAlbum, $phoId)
+function subfolder(int $parentId, string $vorschub, $photoAlbum, int $phoId)
 {
     global $gDb, $gCurrentOrganization, $photoAlbumsArray;
 

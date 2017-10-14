@@ -19,7 +19,7 @@ if (basename($_SERVER['SCRIPT_FILENAME']) === 'template.php')
  * @param  string $filename
  * @return string
  */
-function admReadTemplateFile($filename)
+function admReadTemplateFile(string $filename)
 {
     $file = ADMIDIO_PATH . FOLDER_DATA . '/mail_templates/' . $filename;
 

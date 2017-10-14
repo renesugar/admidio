@@ -16,7 +16,7 @@ declare(strict_types=1);
  * @param string $idCol
  * @param string $col
  */
-function validateBBCodes($table, $idCol, $col)
+function validateBBCodes(string $table, string $idCol, string $col)
 {
     global $gDb;
 

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  ***********************************************************************************************
  * Konfigurationsdatei fuer das Admidio-Plugin Login Form

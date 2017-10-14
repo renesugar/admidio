@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  ***********************************************************************************************
  * Funktionen zum Verwalten der Rollenmitgliedschaft im Profil

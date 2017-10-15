@@ -235,7 +235,7 @@ class Language
         }
 
         // read all countries from xml file
-        $countriesXml = new \SimpleXMLElement($file, null, true);
+        $countriesXml = new \SimpleXMLElement($file, 0, true);
 
         foreach ($countriesXml->children() as $stringNode)
         {
@@ -343,7 +343,7 @@ class Language
     {
         if(count($this->languages) === 0)
         {
-            $languagesXml = new \SimpleXMLElement(ADMIDIO_PATH . FOLDER_LANGUAGES . '/languages.xml', null, true);
+            $languagesXml = new \SimpleXMLElement(ADMIDIO_PATH . FOLDER_LANGUAGES . '/languages.xml', 0, true);
 
             foreach($languagesXml->children() as $stringNode)
             {
@@ -373,7 +373,7 @@ class Language
 
             if(is_file($languageFile))
             {
-                $objectArray[$languagePath] = new \SimpleXMLElement($languageFile, null, true);
+                $objectArray[$languagePath] = new \SimpleXMLElement($languageFile, 0, true);
             }
         }
 

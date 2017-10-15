@@ -136,7 +136,7 @@ class TableFolder extends TableAccess
      */
     public function addRolesOnFolder(string $rolesRightNameIntern, array $rolesArray, bool $recursive = true)
     {
-        $this->editRolesOnFolder('add', $rolesRightNameIntern, $rolesArray, $recursive, 0);
+        $this->editRolesOnFolder('add', $rolesRightNameIntern, $rolesArray, $recursive);
     }
 
     /**

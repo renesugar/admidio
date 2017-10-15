@@ -147,7 +147,7 @@ class ModuleDates extends Modules
      * @param int $limit        Limit of query rows (default: 0)
      * @return array<string,mixed> Array with all results, dates and parameters.
      */
-    public function getDataSet($startElement = 0, $limit = null)
+    public function getDataSet(int $startElement = 0, $limit = null)
     {
         global $gDb, $gPreferences, $gCurrentUser;
 
@@ -212,7 +212,7 @@ class ModuleDates extends Modules
      * @param string $headline The initial headline of the module.
      * @return string Returns the full headline of the module
      */
-    public function getHeadline($headline)
+    public function getHeadline(string $headline)
     {
         global $gDb, $gL10n, $gCurrentOrganization;
 
@@ -278,7 +278,7 @@ class ModuleDates extends Modules
      * @throws AdmException SYS_DATE_END_BEFORE_BEGIN
      * @return bool Returns false if invalid date format is submitted
      */
-    public function setDateRange($dateRangeStart = '', $dateRangeEnd = '')
+    public function setDateRange(string $dateRangeStart = '', string $dateRangeEnd = '')
     {
         global $gPreferences;
 
@@ -492,7 +492,7 @@ class ModuleDates extends Modules
      * @param string $date Date to be validated and formated if needed
      * @return string|false
      */
-    private function formatDate($date)
+    private function formatDate(string $date)
     {
         global $gLogger, $gPreferences;
 
@@ -525,7 +525,7 @@ class ModuleDates extends Modules
      * @param string $reference Reference date
      * @return string|false String with date value, or an empty string, if $date is '1970-01-01' or reference date
      */
-    public function getFormValue($date, $reference)
+    public function getFormValue(string $date, string $reference)
     {
         global $gLogger;
 
@@ -547,7 +547,7 @@ class ModuleDates extends Modules
      * @param string $reference
      * @return string
      */
-    private function setFormValue($date, $reference)
+    private function setFormValue(string $date, string $reference)
     {
         global $gLogger;
 

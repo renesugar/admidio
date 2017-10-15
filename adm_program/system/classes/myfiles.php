@@ -55,7 +55,7 @@ class MyFiles extends Folder
      * Example: 'PHOTOS', 'BACKUP', 'DOWNLOAD'
      * @param string $module
      */
-    public function __construct($module)
+    public function __construct(string $module)
     {
         if($module === 'DOWNLOAD')
         {
@@ -177,7 +177,7 @@ class MyFiles extends Folder
      * @param string $folder subfolder name
      * @return bool Returns true if folder is successfully created and writable.
      */
-    public function setSubFolder($folder)
+    public function setSubFolder(string $folder)
     {
         if(!admStrIsValidFileName($folder))
         {

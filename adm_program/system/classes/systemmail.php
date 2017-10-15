@@ -69,7 +69,7 @@ class SystemMail extends Email
      * @param User   $user         Benutzerobjekt, zu dem die Daten dann ausgelesen und in die entsprechenden Platzhalter gesetzt werden
      * @return string
      */
-    public function getMailText($systemMailId, User $user)
+    public function getMailText(string $systemMailId, User $user)
     {
         global $gPreferences;
 
@@ -140,7 +140,7 @@ class SystemMail extends Email
      * @param int    $number
      * @param string $value
      */
-    public function setVariable($number, $value)
+    public function setVariable(int $number, string $value)
     {
         $this->smVariables[$number] = $value;
     }
@@ -152,7 +152,7 @@ class SystemMail extends Email
      * @throws AdmException SYS_EMAIL_NOT_SEND
      * @return true
      */
-    public function sendSystemMail($systemMailId, User $user)
+    public function sendSystemMail(string $systemMailId, User $user)
     {
         global $gPreferences;
 

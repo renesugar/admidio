@@ -60,7 +60,7 @@ class LanguageData
      * @param string $languagePath Optional a server path to the language files. If no path is set
      *                             than the default Admidio language path @b adm_program/languages will be set.
      */
-    public function __construct($language = '', $languagePath = '')
+    public function __construct(string $language = '', string $languagePath = '')
     {
         if ($languagePath === '')
         {
@@ -85,7 +85,7 @@ class LanguageData
      * where Admidio should search for language files.
      * @param string $path Server path where Admidio should search for language files.
      */
-    public function addLanguagePath($path)
+    public function addLanguagePath(string $path)
     {
         if ($path !== '' && !in_array($path, $this->languageFilePath, true))
         {
@@ -98,7 +98,7 @@ class LanguageData
      * @param string $defaultLanguage This language will be set if no browser language could be determined
      * @return string Return the preferred language code of the client browser
      */
-    public static function determineBrowserLanguage($defaultLanguage)
+    public static function determineBrowserLanguage(string $defaultLanguage)
     {
         if (!isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) || empty($_SERVER['HTTP_ACCEPT_LANGUAGE']))
         {
@@ -149,7 +149,7 @@ class LanguageData
      * @param bool $referenceLanguage If set to @b true than the language code of the reference language will returned.
      * @return string Returns the language code of the language of this object or the reference language.
      */
-    public function getLanguage($referenceLanguage = false)
+    public function getLanguage(bool $referenceLanguage = false)
     {
         global $gLogger;
 
@@ -176,7 +176,7 @@ class LanguageData
      * @param string $textId Unique text id of the text that should be read e.g. SYS_COMMON
      * @return string Returns the cached text or empty string if text id isn't found
      */
-    public function getTextCache($textId)
+    public function getTextCache(string $textId)
     {
         if (array_key_exists($textId, $this->textCache))
         {
@@ -199,7 +199,7 @@ class LanguageData
      * Set a language to this object. If there was a language before than initialize the cache
      * @param string $language ISO code of the language that should be set to this object.
      */
-    public function setLanguage($language)
+    public function setLanguage(string $language)
     {
         if ($language !== $this->language)
         {
@@ -216,7 +216,7 @@ class LanguageData
      * @param string $textId Unique text id where to set the text e.g. SYS_COMMON
      * @param string $text   The text to cache
      */
-    public function setTextCache($textId, $text)
+    public function setTextCache(string $textId, string $text)
     {
         $this->textCache[$textId] = $text;
     }

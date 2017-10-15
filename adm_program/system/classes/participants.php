@@ -53,7 +53,7 @@ class Participants
      * @param Database $database Object of the class Database. This should be the default global object @b $gDb.
      * @param int      $rolId    The role ID of a date
      */
-    public function __construct(Database $database, $rolId = 0)
+    public function __construct(Database $database, int $rolId = 0)
     {
         $this->db =& $database;
         $this->checkId($rolId);
@@ -65,7 +65,7 @@ class Participants
      * @param int $roleId
      * @return bool
      */
-    private function checkId($roleId)
+    private function checkId(int $roleId)
     {
         // check passed parameter and compare to current object
         if($this->rolId === -1 || ($this->rolId === 0 && $this->rolId !== $roleId))
@@ -94,7 +94,7 @@ class Participants
      * @param int $rolId
      * @return int Returns the result of count participants as numeric value in current object. Leaders are not counted!
      */
-    public function getCount($rolId = 0)
+    public function getCount(int $rolId = 0)
     {
         if ($rolId !== 0)
         {
@@ -151,7 +151,7 @@ class Participants
      * @param int $rolId
      * @return int Returns the limit of participants as numeric value of the current object. Leaders are not counted!
      */
-    public function getLimit($rolId = 0)
+    public function getLimit(int $rolId = 0)
     {
         // check if class variables $count and $leader are set to default flag.
         if($this->count === -1 && $this->leader === -1)
@@ -168,7 +168,7 @@ class Participants
      * @param int $rolId
      * @return int Returns the number of leaders as numeric value of the current object.
      */
-    public function getNumLeaders($rolId = 0)
+    public function getNumLeaders(int $rolId = 0)
     {
         // check if class variables $count and $leader are set to default flag.
         if($this->count === -1 && $this->leader === -1)
@@ -186,7 +186,7 @@ class Participants
      * @param string $order Values ASC/DESC Default: 'ASC'
      * @return false|array<int,array<string,string|int|bool>> Returns all participants in an array with fieldnames ['usrId'], ['surname'], ['firstname'], ['leader'], ['approved'].
      */
-    public function getParticipantsArray($roleId = 0, $order = 'ASC')
+    public function getParticipantsArray(int $roleId = 0, string $order = 'ASC')
     {
         global $gProfileFields;
 
@@ -238,7 +238,7 @@ class Participants
      * @param int    $userId
      * @return bool Returns true if userID is found and approval state is not set to disagreement (value: 3)
      */
-    public function isMemberOfEvent($userId)
+    public function isMemberOfEvent(int $userId)
     {
         // Read participants of current event role
         $eventMember = $this->getParticipantsArray($this->rolId);

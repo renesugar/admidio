@@ -72,7 +72,7 @@ class HtmlNavbar
      *                           default: will be the standard navbar of all modules.
      *                           filter:  should be used if this navbar is used to filter data of within the script.
      */
-    public function __construct($id, $name = null, HtmlPage $htmlPage = null, $type = 'default')
+    public function __construct(string $id, $name = null, HtmlPage $htmlPage = null, string $type = 'default')
     {
         global $gL10n;
 
@@ -124,7 +124,7 @@ class HtmlNavbar
      * This method adds an additional css class to the main nav tag of the menu.
      * @param string $className The name of a css class that should be add to the main nav tag of the manu
      */
-    public function addCssClass($className)
+    public function addCssClass(string $className)
     {
         $this->customCssClass = ' '.$className;
     }
@@ -133,7 +133,7 @@ class HtmlNavbar
      * Add a form to the menu. The form will be added between the left and the right part of the navbar.
      * @param string $htmlForm A html code of a form that will be added to the menu
      */
-    public function addForm($htmlForm)
+    public function addForm(string $htmlForm)
     {
         $this->htmlForm = $htmlForm;
     }
@@ -151,7 +151,7 @@ class HtmlNavbar
      *                            dropdown. Just commit the id of that item.
      * @param string $class       Optional a css class that will be set for the item.
      */
-    public function addItem($id, $url, $text, $icon, $orientation = 'left', $parentItem = 'navbar', $class = '')
+    public function addItem(string $id, string $url, string $text, string $icon, string $orientation = 'left', string $parentItem = 'navbar', string $class = '')
     {
         $urlStartRegex = '/^(http(s?):)?\/\//';
 
@@ -197,7 +197,7 @@ class HtmlNavbar
      * Set the name of the navbar that will be shown when navbar changed to vertical mode on small devices.
      * @param string $name New name of the navbar.
      */
-    public function setName($name)
+    public function setName(string $name)
     {
         $this->name = $name;
     }
@@ -207,7 +207,7 @@ class HtmlNavbar
      * @param string                                                                $class
      * @return string
      */
-    private function getNavHtml(array $items, $class = '')
+    private function getNavHtml(array $items, string $class = '')
     {
         $html = '<ul class="nav navbar-nav ' . $class . '">';
 

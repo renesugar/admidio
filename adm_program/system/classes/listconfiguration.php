@@ -39,7 +39,7 @@ class ListConfiguration extends TableLists
      * @param Database $database Object of the class Database. This should be the default global object @b $gDb.
      * @param int      $lstId    The id of the recordset that should be loaded. If id isn't set than an empty object of the table is created.
      */
-    public function __construct(Database $database, $lstId = 0)
+    public function __construct(Database $database, int $lstId = 0)
     {
         parent::__construct($database, $lstId);
 
@@ -57,7 +57,7 @@ class ListConfiguration extends TableLists
      * @param string     $filter
      * @return bool
      */
-    public function addColumn($number, $field, $sort = '', $filter = '')
+    public function addColumn(int $number, $field, string $sort = '', string $filter = '')
     {
         // can join max. 61 tables
         // Passed parameters must be set carefully
@@ -114,7 +114,7 @@ class ListConfiguration extends TableLists
      * @param bool $all Define all columns to be deleted
      * @return bool
      */
-    public function deleteColumn($number, $all = false)
+    public function deleteColumn(int $number, bool $all = false)
     {
         if($number > $this->countColumns()) {
             return false;
@@ -157,7 +157,7 @@ class ListConfiguration extends TableLists
      *                    This will be the position of the column in the list.
      * @return TableAccess|null Returns a TableAccess object of the database table @b adm_list_columns.
      */
-    public function getColumnObject($number)
+    public function getColumnObject(int $number)
     {
         if(array_key_exists($number, $this->columns))
         {
@@ -184,7 +184,7 @@ class ListConfiguration extends TableLists
      * @param array<int,int> $relationtypeIds
      * @return string
      */
-    public function getSQL(array $roleIds, $showFormerMembers = 0, $startDate = null, $endDate = null, array $relationtypeIds = array())
+    public function getSQL(array $roleIds, int $showFormerMembers = 0, $startDate = null, $endDate = null, array $relationtypeIds = array())
     {
         global $gL10n, $gProfileFields, $gCurrentOrganization, $gDbType;
 
@@ -443,7 +443,7 @@ class ListConfiguration extends TableLists
      * @param bool $updateFingerPrint
      * @return bool
      */
-    public function save($updateFingerPrint = true)
+    public function save(bool $updateFingerPrint = true)
     {
         $this->db->startTransaction();
 

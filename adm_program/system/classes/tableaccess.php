@@ -77,7 +77,7 @@ class TableAccess
      * @param string     $columnPrefix The prefix of each column of that table. E.g. for table @b adm_roles this is @b rol
      * @param string|int $id           The id of the recordset that should be loaded. If id isn't set than an empty object of the table is created.
      */
-    public function __construct(Database $database, $tableName, $columnPrefix, $id = '')
+    public function __construct(Database $database, string $tableName, string $columnPrefix, $id = '')
     {
         $this->db          =& $database;
         $this->tableName    = $tableName;
@@ -170,13 +170,13 @@ class TableAccess
      * @param string $columnNameClassTable      Name of the column in the class table that has the foreign key to the connected table
      * @par Examples
      * @code // Constructor of adm_dates object where the category (calendar) is connected
-     * public function __construct($database, $datId = 0)
+     * public function __construct(Database $database, $datId = 0)
      * {
      *     $this->connectAdditionalTable(TBL_CATEGORIES, 'cat_id', 'dat_cat_id');
      *     parent::__construct($db, TBL_DATES, 'dat', $datId);
      * } @endcode
      */
-    protected function connectAdditionalTable($table, $columnNameAdditionalTable, $columnNameClassTable)
+    protected function connectAdditionalTable(string $table, string $columnNameAdditionalTable, string $columnNameClassTable)
     {
         $this->additionalTables[] = array(
             'table'                     => $table,
@@ -224,7 +224,7 @@ class TableAccess
      *               If the value was manipulated before with @b setValue than the manipulated value is returned.
      * @see TableAccess#setValue
      */
-    public function getValue($columnName, $format = '')
+    public function getValue(string $columnName, string $format = '')
     {
         global $gPreferences;
 
@@ -334,7 +334,7 @@ class TableAccess
      * @see TableAccess#readDataById
      * @see TableAccess#readDataByColumns
      */
-    protected function readData($sqlWhereCondition, array $queryParams = array())
+    protected function readData(string $sqlWhereCondition, array $queryParams = array())
     {
         $sqlAdditionalTables = '';
 
@@ -397,7 +397,7 @@ class TableAccess
      * @see TableAccess#readData
      * @see TableAccess#readDataByColumns
      */
-    public function readDataById($id)
+    public function readDataById(int $id)
     {
         // initialize the object, so that all fields are empty
         $this->clear();
@@ -468,7 +468,7 @@ class TableAccess
      *                                if table has columns like @b usr_id_create or @b usr_id_changed
      * @return bool If an update or insert into the database was done then return true, otherwise false.
      */
-    public function save($updateFingerPrint = true)
+    public function save(bool $updateFingerPrint = true)
     {
         global $gCurrentUser;
 
@@ -611,7 +611,7 @@ class TableAccess
      * @return bool Returns @b true if the value is stored in the current object and @b false if a check failed
      * @see TableAccess#getValue
      */
-    public function setValue($columnName, $newValue, $checkValue = true)
+    public function setValue(string $columnName, $newValue, bool $checkValue = true)
     {
         if (!array_key_exists($columnName, $this->dbColumns))
         {

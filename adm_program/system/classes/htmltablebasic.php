@@ -147,7 +147,7 @@ class HtmlTableBasic extends HtmlElement
      * @param string $class  Class name of the table
      * @param int    $border Set the table border width
      */
-    public function __construct($id = null, $class = null, $border = 0)
+    public function __construct($id = null, $class = null, int $border = 0)
     {
         $this->border = $border;
 
@@ -179,7 +179,7 @@ class HtmlTableBasic extends HtmlElement
      * @param array<string,string> $arrAttributes Further attributes as array with key/value pairs
      * @param string               $columnType    Column element 'td' or 'th' (Default: 'td')
      */
-    public function addColumn($data = '', array $arrAttributes = null, $columnType = 'td')
+    public function addColumn($data = '', array $arrAttributes = null, string $columnType = 'td')
     {
         $this->addElement($columnType);
 
@@ -202,7 +202,7 @@ class HtmlTableBasic extends HtmlElement
      * @param string|array $data Content for the table row as string, or array
      * @param string       $col  Column element 'td' or 'th' (Default: 'td')
      */
-    private function addColumnsData($data = '', $col = 'td')
+    private function addColumnsData($data = '', string $col = 'td')
     {
         if ($data === '')
         {
@@ -233,7 +233,7 @@ class HtmlTableBasic extends HtmlElement
      * @param array<string,string> $arrAttributes Further attributes as array with key/value pairs
      * @param string               $columnType    Column element 'td' or 'th' (Default: 'td')
      */
-    public function addRow($data = '', array $arrAttributes = null, $columnType = 'td')
+    public function addRow($data = '', array $arrAttributes = null, string $columnType = 'td')
     {
         // Clear column counter
         $this->columnCount = 0;
@@ -293,7 +293,7 @@ class HtmlTableBasic extends HtmlElement
      * @param string|array $data      Content for the element as string, or array
      * @param string       $col
      */
-    private function addTableSection($element, $attribute = null, $value = null, $data = '', $col = 'td')
+    private function addTableSection(string $element, $attribute = null, $value = null, string $data = '', string $col = 'td')
     {
         $this->addParentElement($element);
 
@@ -318,7 +318,7 @@ class HtmlTableBasic extends HtmlElement
      * @param string|array $data      Content for the element as string, or array
      * @param string       $col
      */
-    public function addTableBody($attribute = null, $value = null, $data = '', $col = 'td')
+    public function addTableBody($attribute = null, $value = null, $data = '', string $col = 'td')
     {
         // always close tr if that was open before
         $this->closeParentElement('tr');
@@ -345,7 +345,7 @@ class HtmlTableBasic extends HtmlElement
      * @param string       $col
      * @return bool Returns @b false if tfoot element is already set
      */
-    public function addTableFooter($attribute = null, $value = null, $data = '', $col = 'td')
+    public function addTableFooter($attribute = null, $value = null, $data = '', string $col = 'td')
     {
         if ($this->thead && in_array('thead', $this->arrParentElements, true))
         {
@@ -374,7 +374,7 @@ class HtmlTableBasic extends HtmlElement
      * @param string       $col
      * @return bool Returns @b false if thead element is already set
      */
-    public function addTableHeader($attribute = null, $value = null, $data = '', $col = 'td')
+    public function addTableHeader($attribute = null, $value = null, $data = '', string $col = 'td')
     {
         // Check if table head already exists
         if ($this->thead)
@@ -425,7 +425,7 @@ class HtmlTableBasic extends HtmlElement
      * @param int    $column The column number where you want to set the width. The columns of the table starts with 1 (not 0).
      * @param string $width  The new width of the column. Here you can set all valid CSS values e.g. '100%' or '300px'
      */
-    public function setColumnWidth($column, $width)
+    public function setColumnWidth(int $column, string $width)
     {
         // internal datatable columns starts with 0
         $this->columnsWidth[$column - 1] = $width;

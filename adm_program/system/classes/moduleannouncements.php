@@ -86,7 +86,7 @@ class ModuleAnnouncements extends Modules
      * @param int $limit
      * @return array<string,mixed> Returns the Array with results, recordsets and validated parameters from $_GET Array
      */
-    public function getDataSet($startElement = 0, $limit = null)
+    public function getDataSet(int $startElement = 0, $limit = null)
     {
         global $gCurrentUser, $gDb;
 
@@ -256,7 +256,7 @@ class ModuleAnnouncements extends Modules
      * @param string $dateRangeEnd   A date in english or Admidio format that will be the end date of the range.
      * @return bool Returns false if invalid date format is submitted
      */
-    public function setDateRange($dateRangeStart = '1970-01-01', $dateRangeEnd = DATE_NOW)
+    public function setDateRange(string $dateRangeStart = '1970-01-01', string $dateRangeEnd = DATE_NOW)
     {
         global $gPreferences;
 
@@ -285,7 +285,7 @@ class ModuleAnnouncements extends Modules
      * @param string $dateFormat
      * @return bool
      */
-    private function setDateRangeParams($dateRange, $dateRangePoint, $dateFormat)
+    private function setDateRangeParams(string $dateRange, string $dateRangePoint, string $dateFormat)
     {
         global $gPreferences;
 

@@ -54,7 +54,7 @@ class UserRegistration extends User
      * @param int           $organizationId The id of the organization for which the user should be registered.
      *                                      If no id is set than the user will be registered for the current organization.
      */
-    public function __construct(Database $database, ProfileFields $userFields, $userId = 0, $organizationId = 0)
+    public function __construct(Database $database, ProfileFields $userFields, int $userId = 0, int $organizationId = 0)
     {
         parent::__construct($database, $userFields, $userId);
 
@@ -168,7 +168,7 @@ class UserRegistration extends User
      *                                if table has columns like @b usr_id_create or @b usr_id_changed
      * @return bool
      */
-    public function save($updateFingerPrint = true)
+    public function save(bool $updateFingerPrint = true)
     {
         global $gMessage, $gL10n, $gPreferences;
 

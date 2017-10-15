@@ -38,7 +38,7 @@ class Folder
     /**
      * @param string $folderWithPath
      */
-    public function __construct($folderWithPath = '')
+    public function __construct(string $folderWithPath = '')
     {
         if($folderWithPath !== '' && is_dir($folderWithPath))
         {
@@ -51,7 +51,7 @@ class Folder
      * @param string $folderWithPath
      * @return bool Returns true if given folder is an existing folder
      */
-    public function setFolder($folderWithPath = '')
+    public function setFolder(string $folderWithPath = '')
     {
         if($folderWithPath !== '' && is_dir($folderWithPath))
         {
@@ -81,7 +81,7 @@ class Folder
      * @param bool   $writable
      * @return bool
      */
-    public function createFolder($newFolder, $writable)
+    public function createFolder(string $newFolder, bool $writable)
     {
         $newPath = $this->folderWithPath.'/'.$newFolder;
         $returnValue = true;
@@ -116,7 +116,7 @@ class Folder
      * @param string $sourceFolder
      * @return bool
      */
-    public function copy($destinationFolder, $sourceFolder = '')
+    public function copy(string $destinationFolder, string $sourceFolder = '')
     {
         if($sourceFolder === '')
         {
@@ -179,7 +179,7 @@ class Folder
      *                                  folder will be deleted. The current folder will not be deleted.
      * @return bool
      */
-    public function delete($folder = '', $onlyDeleteContent = false)
+    public function delete(string $folder = '', bool $onlyDeleteContent = false)
     {
         if($folder === '')
         {
@@ -238,7 +238,7 @@ class Folder
      * @param string $sourceFolder der zu verschiebende Ordner, falls nicht gefuellt wird der Ordner aus der Klasse genommen
      * @return bool Returns true if the move works successfully
      */
-    public function move($destFolder, $sourceFolder = '')
+    public function move(string $destFolder, string $sourceFolder = '')
     {
         if($sourceFolder === '')
         {
@@ -260,7 +260,7 @@ class Folder
      * @param string $newName The new name of the folder.
      * @return bool Returns @b true on success or @b false on failure.
      */
-    public function rename($newName)
+    public function rename(string $newName)
     {
         return rename($this->folderWithPath, $newName);
     }

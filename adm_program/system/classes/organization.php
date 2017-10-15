@@ -98,7 +98,7 @@ class Organization extends TableAccess
      * @param int $userId The id of the administrator who creates the new organization.
      *                    This will be the first valid user of the new organization.
      */
-    public function createBasicData($userId)
+    public function createBasicData(int $userId)
     {
         global $gL10n, $gProfileFields;
 
@@ -341,7 +341,7 @@ class Organization extends TableAccess
      * @return string Returns a string with a comma separated list of all organization
      *                ids that are parents or children and the own id
      */
-    public function getFamilySQL($shortname = false)
+    public function getFamilySQL(bool $shortname = false)
     {
         $organizations = $this->getOrganizationsInRelationship(true, true);
 
@@ -351,7 +351,7 @@ class Organization extends TableAccess
              * @param string $value
              * @return string
              */
-            function addQuotationMarks($value)
+            function addQuotationMarks(string $value)
             {
                 return '\''.$value.'\'';
             }
@@ -375,7 +375,7 @@ class Organization extends TableAccess
      *                       otherwise it will be @b org_shortname
      * @return array<int,string> Returns an array with all child and parent organizations e.g. array('org_id' => 'org_shortname')
      */
-    public function getOrganizationsInRelationship($child = true, $parent = true, $longname = false)
+    public function getOrganizationsInRelationship(bool $child = true, bool $parent = true, bool $longname = false)
     {
         $sqlWhere = array();
         $queryParams = array();
@@ -420,7 +420,7 @@ class Organization extends TableAccess
      * @return array<string,string> Returns an array with all preferences of this organization.
      *                              Array key is the column @b prf_name and array value is the column @b prf_value.
      */
-    public function getPreferences($update = false)
+    public function getPreferences(bool $update = false)
     {
         if($update || count($this->preferences) === 0)
         {
@@ -480,7 +480,7 @@ class Organization extends TableAccess
      * @param array<string,string> $preferences Array with all preferences that should be stored in database. array('name_of_preference' => 'value')
      * @param bool                 $update      If set to @b false then no update will be done, only inserts
      */
-    public function setPreferences(array $preferences, $update = true)
+    public function setPreferences(array $preferences, bool $update = true)
     {
         $this->db->startTransaction();
         $this->getPreferences();
@@ -523,7 +523,7 @@ class Organization extends TableAccess
      * @param bool   $checkValue The value will be checked if it's valid. If set to @b false than the value will not be checked.
      * @return bool Returns @b true if the value is stored in the current object and @b false if a check failed
      */
-    public function setValue($columnName, $newValue, $checkValue = true)
+    public function setValue(string $columnName, $newValue, bool $checkValue = true)
     {
         // org_shortname shouldn't be edited
         if($columnName === 'org_shortname' && !$this->newRecord)

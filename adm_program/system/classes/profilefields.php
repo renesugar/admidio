@@ -50,7 +50,7 @@ class ProfileFields
      * @param Database $database       Database object (should be @b $gDb)
      * @param int      $organizationId The id of the organization for which the profile field structure should be read
      */
-    public function __construct(Database $database, $organizationId)
+    public function __construct(Database $database, int $organizationId)
     {
         $this->db =& $database;
         $this->readProfileFields($organizationId);
@@ -100,7 +100,7 @@ class ProfileFields
      * @param string $format          Optional the format (is necessary for timestamps)
      * @return mixed
      */
-    public function getProperty($fieldNameIntern, $column, $format = '')
+    public function getProperty(string $fieldNameIntern, string $column, string $format = '')
     {
         if (array_key_exists($fieldNameIntern, $this->mProfileFields))
         {
@@ -122,7 +122,7 @@ class ProfileFields
      * @param string $format  Optional the format (is necessary for timestamps)
      * @return string
      */
-    public function getPropertyById($fieldId, $column, $format = '')
+    public function getPropertyById(int $fieldId, string $column, string $format = '')
     {
         foreach ($this->mProfileFields as $field)
         {
@@ -143,7 +143,7 @@ class ProfileFields
      * @param int        $value2          An optional parameter that is necessary for some special fields like email to commit the user id
      * @return string Returns an html formated string that considered the profile field settings
      */
-    public function getHtmlValue($fieldNameIntern, $value, $value2 = null)
+    public function getHtmlValue(string $fieldNameIntern, $value, $value2 = null)
     {
         global $gPreferences, $gL10n;
 
@@ -354,7 +354,7 @@ class ProfileFields
      *                                or datetime (detailed description in method description)
      * @return string|int|bool Returns the value for the column.
      */
-    public function getValue($fieldNameIntern, $format = '')
+    public function getValue(string $fieldNameIntern, string $format = '')
     {
         global $gL10n, $gPreferences;
 
@@ -442,7 +442,7 @@ class ProfileFields
      * @param int $organizationId The id of the organization for which the profile fields
      *                            structure should be read.
      */
-    public function readProfileFields($organizationId)
+    public function readProfileFields(int $organizationId)
     {
         // first initialize existing data
         $this->mProfileFields = array();
@@ -476,7 +476,7 @@ class ProfileFields
      * @param int $organizationId The id of the organization for which the profile fields
      *                            structure should be read if necessary.
      */
-    public function readUserData($userId, $organizationId)
+    public function readUserData(int $userId, int $organizationId)
     {
         if (count($this->mProfileFields) === 0)
         {
@@ -511,7 +511,7 @@ class ProfileFields
      * save data of every user field
      * @param int $userId id is necessary if new user, that id was not known before
      */
-    public function saveUserData($userId)
+    public function saveUserData(int $userId)
     {
         $this->db->startTransaction();
 
@@ -555,7 +555,7 @@ class ProfileFields
      * @param mixed  $fieldValue
      * @return bool
      */
-    public function setValue($fieldNameIntern, $fieldValue)
+    public function setValue(string $fieldNameIntern, $fieldValue)
     {
         global $gPreferences;
 
@@ -670,7 +670,7 @@ class ProfileFields
      *                                    set if you are not in a user context.
      * @return bool Return true if the current user is allowed to view this profile field
      */
-    public function visible($fieldNameIntern, $allowedToEditProfile = false)
+    public function visible(string $fieldNameIntern, bool $allowedToEditProfile = false)
     {
         global $gCurrentUser;
 

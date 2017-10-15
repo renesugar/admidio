@@ -36,7 +36,7 @@ class TableFolder extends TableAccess
      * @param Database $database Object of the class Database. This should be the default global object @b $gDb.
      * @param int      $folId    The recordset of the folder with this id will be loaded. If id isn't set than an empty object of the table is created.
      */
-    public function __construct(Database $database, $folId = 0)
+    public function __construct(Database $database, int $folId = 0)
     {
         parent::__construct($database, TBL_FOLDERS, 'fol', $folId);
 
@@ -134,7 +134,7 @@ class TableFolder extends TableAccess
      * @param array<int,int> $rolesArray
      * @param bool           $recursive            If set to @b true than the rights will be set recursive to all subfolders
      */
-    public function addRolesOnFolder($rolesRightNameIntern, array $rolesArray, $recursive = true)
+    public function addRolesOnFolder(string $rolesRightNameIntern, array $rolesArray, bool $recursive = true)
     {
         $this->editRolesOnFolder('add', $rolesRightNameIntern, $rolesArray, $recursive, 0);
     }
@@ -144,7 +144,7 @@ class TableFolder extends TableAccess
      * @param string $folderName
      * @return null|array<string,string>
      */
-    public function createFolder($folderName)
+    public function createFolder(string $folderName)
     {
         $this->folderPath->setFolder($this->getFullFolderPath());
         $this->folderPath->createFolder($folderName, true);
@@ -167,7 +167,7 @@ class TableFolder extends TableAccess
      * @param int $folderId
      * @return bool @b true if no error occurred
      */
-    public function delete($folderId = 0)
+    public function delete(int $folderId = 0)
     {
         $folId = (int) $this->getValue('fol_id');
         $folderPath = '';
@@ -246,7 +246,7 @@ class TableFolder extends TableAccess
      * @param bool           $recursive            If set to @b true than the rights will be set recursive to all subfolders
      * @param int            $folderId             The folder id of the subfolder if this method is called recursive
      */
-    private function editRolesOnFolder($mode, $rolesRightNameIntern, array $rolesArray, $recursive, $folderId = 0)
+    private function editRolesOnFolder(string $mode, string $rolesRightNameIntern, array $rolesArray, bool $recursive, int $folderId = 0)
     {
         if (count($rolesArray) === 0)
         {
@@ -291,7 +291,7 @@ class TableFolder extends TableAccess
      * @param bool $lockedFlag
      * @param int  $folderId
      */
-    public function editLockedFlagOnFolder($lockedFlag, $folderId = 0)
+    public function editLockedFlagOnFolder(bool $lockedFlag, int $folderId = 0)
     {
         if ($folderId === 0)
         {
@@ -329,7 +329,7 @@ class TableFolder extends TableAccess
      * @param bool $publicFlag If set to @b 1 then all users could see this folder.
      * @param int  $folderId   The id of the folder where the public flag should be set.
      */
-    public function editPublicFlagOnFolder($publicFlag, $folderId = 0)
+    public function editPublicFlagOnFolder(bool $publicFlag, int $folderId = 0)
     {
         if ($folderId === 0)
         {
@@ -445,7 +445,7 @@ class TableFolder extends TableAccess
      * @throws AdmException
      * @return true Returns @b true if everything is ok otherwise an AdmException is thrown.
      */
-    public function getFolderForDownload($folderId)
+    public function getFolderForDownload(int $folderId)
     {
         global $gCurrentOrganization, $gCurrentUser;
 
@@ -530,7 +530,7 @@ class TableFolder extends TableAccess
      * @param string $currentNavigation
      * @return string
      */
-    public function getNavigationForDownload($folderId = 0, $currentNavigation = '')
+    public function getNavigationForDownload(int $folderId = 0, string $currentNavigation = '')
     {
         global $gCurrentOrganization, $gL10n;
 
@@ -611,7 +611,7 @@ class TableFolder extends TableAccess
      * @param array<int,string> $columns  The columns that should be in the statement
      * @return \PDOStatement SubfolderStatement with fol_id column
      */
-    private function getSubfolderStatement($folderId, array $columns = array('fol_id'))
+    private function getSubfolderStatement(int $folderId, array $columns = array('fol_id'))
     {
         // select all subfolders of the current folder
         $sql = 'SELECT ' . implode(',', $columns) . '
@@ -697,7 +697,7 @@ class TableFolder extends TableAccess
      * @return mixed Returns the value of the database column.
      *         If the value was manipulated before with @b setValue than the manipulated value is returned.
      */
-    public function getValue($columnName, $format = '')
+    public function getValue(string $columnName, string $format = '')
     {
         $value = parent::getValue($columnName, $format);
 
@@ -742,7 +742,7 @@ class TableFolder extends TableAccess
      * @see TableAccess#readDataById
      * @see TableAccess#readDataByColumns
      */
-    protected function readData($sqlWhereCondition, array $queryParams = array())
+    protected function readData(string $sqlWhereCondition, array $queryParams = array())
     {
         if (parent::readData($sqlWhereCondition, $queryParams))
         {
@@ -763,7 +763,7 @@ class TableFolder extends TableAccess
      * @param array<int,int> $rolesArray
      * @param bool           $recursive            If set to @b true than the rights will be set recursive to all subfolders
      */
-    public function removeRolesOnFolder($rolesRightNameIntern, array $rolesArray, $recursive = true)
+    public function removeRolesOnFolder(string $rolesRightNameIntern, array $rolesArray, bool $recursive = true)
     {
         $this->editRolesOnFolder('remove', $rolesRightNameIntern, $rolesArray, $recursive, 0);
     }
@@ -774,7 +774,7 @@ class TableFolder extends TableAccess
      * @param string $newPath
      * @param int $folderId
      */
-    public function rename($newName, $newPath, $folderId = 0)
+    public function rename(string $newName, string $newPath, int $folderId = 0)
     {
         if ($folderId === 0)
         {
@@ -811,7 +811,7 @@ class TableFolder extends TableAccess
      * @param bool $updateFingerPrint Default @b true. Will update the creator or editor of the recordset if table has columns like @b usr_id_create or @b usr_id_changed
      * @return bool If an update or insert into the database was done then return true, otherwise false.
      */
-    public function save($updateFingerPrint = true)
+    public function save(bool $updateFingerPrint = true)
     {
         global $gCurrentOrganization, $gCurrentUser;
 

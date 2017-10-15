@@ -95,7 +95,7 @@ class RoleDependency
      * @param int $parentRoleId
      * @return bool
      */
-    public function get($childRoleId, $parentRoleId)
+    public function get(int $childRoleId, int $parentRoleId)
     {
         $this->clear();
 
@@ -132,7 +132,7 @@ class RoleDependency
      * @param int      $childId
      * @return array<int,int>
      */
-    public static function getParentRoles(Database $database, $childId)
+    public static function getParentRoles(Database $database, int $childId)
     {
         $allParentIds = array();
 
@@ -160,7 +160,7 @@ class RoleDependency
      * @param int      $parentId
      * @return array<int,int>
      */
-    public static function getChildRoles(Database $database, $parentId)
+    public static function getChildRoles(Database $database, int $parentId)
     {
         $allChildIds = array();
 
@@ -196,7 +196,7 @@ class RoleDependency
      * @param int $loginUserId
      * @return bool
      */
-    public function insert($loginUserId)
+    public function insert(int $loginUserId)
     {
         if ($loginUserId > 0 && !$this->isEmpty())
         {
@@ -218,7 +218,7 @@ class RoleDependency
      * @param int      $parentId
      * @return bool
      */
-    public static function removeChildRoles(Database $database, $parentId)
+    public static function removeChildRoles(Database $database, int $parentId)
     {
         if ($parentId > 0)
         {
@@ -236,7 +236,7 @@ class RoleDependency
      * @param int $parentId
      * @return bool
      */
-    public function setParent($parentId)
+    public function setParent(int $parentId)
     {
         if ($parentId > 0)
         {
@@ -253,7 +253,7 @@ class RoleDependency
      * @param int $childId
      * @return bool
      */
-    public function setChild($childId)
+    public function setChild(int $childId)
     {
         if ($childId > 0)
         {
@@ -271,7 +271,7 @@ class RoleDependency
      * @param int $loginUserId
      * @return bool
      */
-    public function update($loginUserId)
+    public function update(int $loginUserId)
     {
         if ($loginUserId > 0 && !$this->isEmpty())
         {

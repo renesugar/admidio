@@ -171,7 +171,7 @@ abstract class HtmlElement
      * @param string $element The html element to be defined
      * @param bool   $nesting Enables nesting of main elements ( Default: true )
      */
-    public function __construct($element, $nesting = true)
+    public function __construct(string $element, bool $nesting = true)
     {
         $this->nesting        = $nesting;
         $this->mainElement    = $element;
@@ -186,7 +186,7 @@ abstract class HtmlElement
      * @param string $element   Optional the element for which the attribute should be set,
      *                          if this is not the current element
      */
-    public function addAttribute($attrKey, $attrValue, $element = null)
+    public function addAttribute(string $attrKey, string $attrValue, $element = null)
     {
         if ($element === null)
         {
@@ -235,7 +235,7 @@ abstract class HtmlElement
      * @param string|string[] $data        Content for the element as string, or array
      * @param bool            $selfClosing Element has self closing tag ( default: false)
      */
-    public function addData($data, $selfClosing = false)
+    public function addData($data, bool $selfClosing = false)
     {
         if ($selfClosing)
         {
@@ -282,7 +282,7 @@ abstract class HtmlElement
      * @param string $data         content values can be passed as string, array, bidimensional Array and assoc. Array. ( Default: no data )
      * @param bool   $selfClosing  Element has self closing tag ( default: false)
      */
-    public function addElement($childElement, $attrKey = '', $attrValue = '', $data = '', $selfClosing = false)
+    public function addElement(string $childElement, string $attrKey = '', string $attrValue = '', string $data = '', bool $selfClosing = false)
     {
         // if previous current element was not written to html string and the same child element is set
         // than this could be a call of parent class so do not reinitialize the current element
@@ -349,7 +349,7 @@ abstract class HtmlElement
      * html string than this will be done before your string will be added.
      * @param string $string Text as string in current string position
      */
-    public function addHtml($string = '')
+    public function addHtml(string $string = '')
     {
         // If first child is set start writing the html beginning with main element and attributes
         if ($this->currentElement === $this->mainElement && $this->mainElement !== '' && !$this->mainElementWritten)
@@ -373,7 +373,7 @@ abstract class HtmlElement
      * @param string $attrKey       Attribute name
      * @param string $attrValue     Value for the attribute
      */
-    public function addParentElement($parentElement, $attrKey = '', $attrValue = '')
+    public function addParentElement(string $parentElement, string $attrKey = '', string $attrValue = '')
     {
         // Only possible for child elements of the main element or nesting mode is active!
         if (!$this->nesting && $this->currentElement === $this->mainElement)
@@ -437,7 +437,7 @@ abstract class HtmlElement
      * @param string $parentElement Parent element to be closed
      * @return bool
      */
-    public function closeParentElement($parentElement)
+    public function closeParentElement(string $parentElement)
     {
         // count entries in array
         $totalCount = count($this->arrParentElements);

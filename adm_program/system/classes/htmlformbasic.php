@@ -74,7 +74,7 @@ class HtmlFormBasic extends HtmlElement
      * @param string $event  Optional event handler
      * @param string $script Optional script or function called from event handler
      */
-    public function __construct($action = null, $id = null, $method = 'get', $event = null, $script = null)
+    public function __construct($action = null, $id = null, string $method = 'get', $event = null, $script = null)
     {
         parent::__construct('form');
 
@@ -130,7 +130,7 @@ class HtmlFormBasic extends HtmlElement
      * @param string               $value         Value of the field (Default: empty)
      * @param array<string,string> $arrAttributes Further attributes as array with key/value pairs
      */
-    public function addSimpleInput($type, $name, $id = null, $value = '', array $arrAttributes = null)
+    public function addSimpleInput(string $type, string $name, $id = null, string $value = '', array $arrAttributes = null)
     {
         $this->addElement('input', '', '', '', true);
 
@@ -160,7 +160,7 @@ class HtmlFormBasic extends HtmlElement
      * @param string $refId
      * @param string $attribute
      */
-    public function addLabel($string = '', $refId = null, $attribute = 'for')
+    public function addLabel(string $string = '', $refId = null, string $attribute = 'for')
     {
         $this->addElement('label');
 
@@ -175,7 +175,7 @@ class HtmlFormBasic extends HtmlElement
      * Add a legend element in current fieldset.
      * @param string $legend Data for the element as string
      */
-    public function addLegend($legend)
+    public function addLegend(string $legend)
     {
         $this->addElement('legend', '', '', $legend);
     }
@@ -189,7 +189,7 @@ class HtmlFormBasic extends HtmlElement
      * @param bool                 $disable       Disable option (optional)
      * @param array<string,string> $arrAttributes Further attributes as array with key/value pairs
      */
-    public function addOption($value, $label, $id = null, $selected = false, $disable = false, array $arrAttributes = null)
+    public function addOption(string $value, string $label, $id = null, bool $selected = false, bool $disable = false, array $arrAttributes = null)
     {
         $this->addElement('option');
         // set attributes
@@ -227,7 +227,7 @@ class HtmlFormBasic extends HtmlElement
      * @param bool                 $disable       Disable option group (Default: false)
      * @param array<string,string> $arrAttributes Further attributes as array with key/value pairs
      */
-    public function addOptionGroup($label, $id = null, $disable = false, array $arrAttributes = null)
+    public function addOptionGroup(string $label, $id = null, bool $disable = false, array $arrAttributes = null)
     {
         $this->addParentElement('optgroup');
 
@@ -258,7 +258,7 @@ class HtmlFormBasic extends HtmlElement
      * @param array<string,string> $arrAttributes Further attributes as array with key/value pairs
      * @param bool                 $disable       Disable select (Default: false)
      */
-    public function addSelect($name, $id = null, array $arrAttributes = null, $disable = false)
+    public function addSelect(string $name, $id = null, array $arrAttributes = null, bool $disable = false)
     {
         $this->addParentElement('select', 'name', $name);
 
@@ -289,7 +289,7 @@ class HtmlFormBasic extends HtmlElement
      * @param string $link  If set a javascript click event with a page load to this link
      *                      will be attached to the button.
      */
-    public function addSimpleButton($name, $type = 'button', $value, $id = null, $link = null)
+    public function addSimpleButton(string $name, string $type = 'button', string $value, $id = null, $link = null)
     {
         $this->addElement('button');
 
@@ -319,7 +319,7 @@ class HtmlFormBasic extends HtmlElement
      * @param array<string,string> $arrAttributes Further attributes as array with key/value pairs
      * @param bool                 $disable       Disable text area (Default: false)
      */
-    public function addTextArea($name, $rows, $cols, $text = '', $id = null, array $arrAttributes = null, $disable = false)
+    public function addTextArea(string $name, int $rows, int $cols, string $text = '', $id = null, array $arrAttributes = null, bool $disable = false)
     {
         $this->addElement('textarea');
 

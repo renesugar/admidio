@@ -132,7 +132,7 @@ class Database
      * @param array  $options
      * @throws AdmException
      */
-    public function __construct($engine, $host, $port = null, $dbName, $username = null, $password = null, array $options = array())
+    public function __construct(string $engine, string $host, $port = null, string $dbName, $username = null, $password = null, array $options = array())
     {
         global $gLogger;
 
@@ -194,7 +194,7 @@ class Database
      * @param string $engine The database type that is supported from Admidio. @b mysql and @b pgsql are valid values.
      * @throws \PDOException
      */
-    private function setDSNString($engine)
+    private function setDSNString(string $engine)
     {
         switch ($engine)
         {
@@ -263,7 +263,7 @@ class Database
      * @param string $property Property name of the in use database config
      * @return string Returns the value of the chosen property
      */
-    protected function getPropertyFromDatabaseConfig($property)
+    protected function getPropertyFromDatabaseConfig(string $property)
     {
         $xmlDatabases = new \SimpleXMLElement(ADMIDIO_PATH . '/adm_program/system/databases.xml', null, true);
         $node = $xmlDatabases->xpath('/databases/database[@id="' . $this->dbEngine . '"]/' . $property);
@@ -399,7 +399,7 @@ class Database
      * @return string Returns a quoted string that is theoretically safe to pass into an SQL statement.
      * @see <a href="https://secure.php.net/manual/en/pdo.quote.php">PDO::quote</a>
      */
-    public function escapeString($string)
+    public function escapeString(string $string)
     {
         return trim($this->pdo->quote($string), "'");
     }
@@ -487,7 +487,7 @@ class Database
      * @param string $sql
      * @return string
      */
-    private function preparePgSqlQuery($sql)
+    private function preparePgSqlQuery(string $sql)
     {
         $sqlCompare = strtolower($sql);
 
@@ -533,7 +533,7 @@ class Database
      * @return \PDOStatement|false For @b SELECT statements an object of <a href="https://secure.php.net/manual/en/class.pdostatement.php">\PDOStatement</a> will be returned.
      *                             This should be used to fetch the returned rows. If an error occurred then @b false will be returned.
      */
-    public function query($sql, $showError = true)
+    public function query(string $sql, bool $showError = true)
     {
         global $gLogger;
 
@@ -582,7 +582,7 @@ class Database
      * @return \PDOStatement|false For @b SELECT statements an object of <a href="https://secure.php.net/manual/en/class.pdostatement.php">\PDOStatement</a> will be returned.
      *                             This should be used to fetch the returned rows. If an error occurred then @b false will be returned.
      */
-    public function queryPrepared($sql, array $params = array(), $showError = true)
+    public function queryPrepared(string $sql, array $params = array(), bool $showError = true)
     {
         global $gLogger;
 
@@ -680,7 +680,7 @@ class Database
      *       https://wiki.postgresql.org/wiki/Retrieve_primary_key_columns
      *       https://dev.mysql.com/doc/refman/5.7/en/columns-table.html
      */
-    private function loadTableColumnsProperties($table)
+    private function loadTableColumnsProperties(string $table)
     {
         $tableColumnsProperties = array();
 
@@ -764,7 +764,7 @@ class Database
      * @param string $table Name of the database table for which the columns-properties should be shown.
      * @return array<string,array<string,mixed>> Returns an array with column-names.
      */
-    public function getTableColumnsProperties($table)
+    public function getTableColumnsProperties(string $table)
     {
         if (!array_key_exists($table, $this->dbStructure))
         {
@@ -779,7 +779,7 @@ class Database
      * @param string $table Name of the database table for which the columns should be shown.
      * @return array<int,string> Returns an array with each column and their properties.
      */
-    public function getTableColumns($table)
+    public function getTableColumns(string $table)
     {
         if (!array_key_exists($table, $this->dbStructure))
         {
@@ -866,7 +866,7 @@ class Database
      * @return mixed|null Returns an array that corresponds to the fetched row and moves the internal data pointer ahead.
      * @see <a href="https://secure.php.net/manual/en/pdostatement.fetch.php">\PDOStatement::fetch</a>
      */
-    public function fetch_array(\PDOStatement $pdoStatement = null, $fetchType = PDO::FETCH_BOTH)
+    public function fetch_array(\PDOStatement $pdoStatement = null, int $fetchType = PDO::FETCH_BOTH)
     {
         global $gLogger;
 
@@ -970,7 +970,7 @@ class Database
      * @param bool   $showColumnProperties If this is set to @b false only the column names were returned.
      * @return array<string,array<string,mixed>>|array<int,string> Returns an array with each column and their properties if $showColumnProperties is set to @b true.
      */
-    public function showColumns($table, $showColumnProperties = true)
+    public function showColumns(string $table, bool $showColumnProperties = true)
     {
         global $gLogger;
 

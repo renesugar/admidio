@@ -63,7 +63,7 @@ class Image
     /**
      * @param string $pathAndFilename
      */
-    public function __construct($pathAndFilename = '')
+    public function __construct(string $pathAndFilename = '')
     {
         if ($pathAndFilename !== '')
         {
@@ -92,7 +92,7 @@ class Image
      * @param string $pathAndFilename
      * @return bool
      */
-    public function setImageFromPath($pathAndFilename)
+    public function setImageFromPath(string $pathAndFilename)
     {
         if (!is_file($pathAndFilename))
         {
@@ -119,7 +119,7 @@ class Image
      * @param string $imageData String with binary image data
      * @return bool
      */
-    public function setImageFromData($imageData)
+    public function setImageFromData(string $imageData)
     {
         $imageResource = imagecreatefromstring($imageData);
 
@@ -141,7 +141,7 @@ class Image
      * @param string $pathAndFilename
      * @return bool
      */
-    private function createResource($pathAndFilename)
+    private function createResource(string $pathAndFilename)
     {
         switch ($this->imageType)
         {
@@ -173,7 +173,7 @@ class Image
      * @param int           $quality         die Qualitaet kann fuer jpeg-Dateien veraendert werden
      * @return bool true, falls erfolgreich
      */
-    public function copyToFile($imageResource = null, $pathAndFilename = '', $quality = 95)
+    public function copyToFile($imageResource = null, string $pathAndFilename = '', int $quality = 95)
     {
         if ($imageResource === null)
         {
@@ -204,7 +204,7 @@ class Image
      * @param int           $quality       die Qualitaet kann fuer jpeg-Dateien veraendert werden
      * @return bool
      */
-    public function copyToBrowser($imageResource = null, $quality = 95)
+    public function copyToBrowser($imageResource = null, int $quality = 95)
     {
         if ($imageResource === null)
         {
@@ -242,7 +242,7 @@ class Image
      * @param string $imageType
      * @return bool
      */
-    public function setImageType($imageType)
+    public function setImageType(string $imageType)
     {
         switch ($imageType)
         {
@@ -265,7 +265,7 @@ class Image
      * @param string $direction 'right' o. 'left' Richtung, in die gedreht wird
      * @return bool
      */
-    public function rotate($direction = self::ROTATE_DIRECTION_RIGHT)
+    public function rotate(string $direction = self::ROTATE_DIRECTION_RIGHT)
     {
         switch ($direction)
         {
@@ -299,7 +299,7 @@ class Image
      * @param int $newMaxSize
      * @return bool
      */
-    public function scaleLargerSide($newMaxSize)
+    public function scaleLargerSide(int $newMaxSize)
     {
         // calc aspect ratio
         $aspectRatio = $this->imageWidth / $this->imageHeight;
@@ -329,7 +329,7 @@ class Image
      *                                  but maybe one side will be smaller than set with the parameters.
      * @return bool
      */
-    public function scale($newXSize, $newYSize, $maintainAspectRatio = true)
+    public function scale(int $newXSize, int $newYSize, bool $maintainAspectRatio = true)
     {
         if ($maintainAspectRatio)
         {

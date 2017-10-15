@@ -112,7 +112,7 @@ class HtmlDiv extends HtmlElement
      * @param string $class   Class Attribute
      * @param string $data    Data of the element (optional)
      */
-    public function addInline($element, $id = null, $class = null, $data = null)
+    public function addInline(string $element, $id = null, $class = null, $data = null)
     {
         $this->addElement($element);
 
@@ -140,7 +140,7 @@ class HtmlDiv extends HtmlElement
      * @param string $parentElement Parent element to be closed
      * @return bool
      */
-    public function closeParentElement($parentElement)
+    public function closeParentElement(string $parentElement)
     {
         // count entries in array
         $totalCount = count($this->arrParentElements);

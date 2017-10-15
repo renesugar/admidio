@@ -40,7 +40,7 @@ class TablePhotos extends TableAccess
      * @param Database $database Object of the class Database. This should be the default global object @b $gDb.
      * @param int      $phoId    The recordset of the photo album with this id will be loaded. If id isn't set than an empty object of the table is created.
      */
-    public function __construct(Database $database, $phoId = 0)
+    public function __construct(Database $database, int $phoId = 0)
     {
         parent::__construct($database, TBL_PHOTOS, 'pho', $phoId);
     }
@@ -51,7 +51,7 @@ class TablePhotos extends TableAccess
      * @param int $phoId
      * @return int
      */
-    public function countImages($phoId = 0)
+    public function countImages(int $phoId = 0)
     {
         $totalImages = 0;
 
@@ -126,7 +126,7 @@ class TablePhotos extends TableAccess
      * @param int $photoId
      * @return bool
      */
-    public function deleteInDatabase($photoId)
+    public function deleteInDatabase(int $photoId)
     {
         $returnValue = true;
 
@@ -203,7 +203,7 @@ class TablePhotos extends TableAccess
      * @param bool $updateFingerPrint Default @b true. Will update the creator or editor of the recordset if table has columns like @b usr_id_create or @b usr_id_changed
      * @return bool If an update or insert into the database was done then return true, otherwise false.
      */
-    public function save($updateFingerPrint = true)
+    public function save(bool $updateFingerPrint = true)
     {
         global $gCurrentOrganization;
 
@@ -221,7 +221,7 @@ class TablePhotos extends TableAccess
      * @param int $phoId
      * @return array
      */
-    public function shuffleImage($phoId = 0)
+    public function shuffleImage(int $phoId = 0)
     {
         $shuffleImage = array('shuffle_pho_id' => 0, 'shuffle_img_nr' => 0, 'shuffle_img_begin' => '');
 

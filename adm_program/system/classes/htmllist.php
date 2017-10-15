@@ -63,7 +63,7 @@ class HtmlList extends HtmlElement
      * @param string $id    Id of the list
      * @param string $class Class name of the list
      */
-    public function __construct($list = 'ul', $id = null, $class = null)
+    public function __construct(string $list = 'ul', $id = null, $class = null)
     {
         parent::__construct($list);
 
@@ -109,7 +109,7 @@ class HtmlList extends HtmlElement
      * @param string $term        Term as string for datalist
      * @param string $description Description as string for data
      */
-    public function addDataListItems($term, $description)
+    public function addDataListItems(string $term, string $description)
     {
         $this->addElement('dt', '', '', $term);
         $this->addElement('dd', '', '', $description);

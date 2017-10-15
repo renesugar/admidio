@@ -36,7 +36,7 @@ class Htaccess
     /**
      * @param string $folderPath
      */
-    public function __construct($folderPath)
+    public function __construct(string $folderPath)
     {
         $this->folderPath = $folderPath;
     }

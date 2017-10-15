@@ -79,7 +79,7 @@ class Language
      * should search for language files.
      * @param string $path Server path where Admidio should search for language files.
      */
-    public function addLanguagePath($path)
+    public function addLanguagePath(string $path)
     {
         $this->languageData->addLanguagePath($path);
     }
@@ -90,7 +90,7 @@ class Language
      * @param string                          $textId             Unique text id of the text that should be read e.g. SYS_COMMON
      * @return string Returns the text string of the text id or empty string if not found.
      */
-    private function searchTextIdInLangObject(array $xmlLanguageObjects, $language, $textId)
+    private function searchTextIdInLangObject(array $xmlLanguageObjects, string $language, string $textId)
     {
         foreach ($this->languageData->getLanguagePaths() as $languagePath)
         {
@@ -110,7 +110,7 @@ class Language
      * @param string $textId Unique text id of the text that should be read e.g. SYS_COMMON
      * @return string Returns the text string of the text id or empty string if not found.
      */
-    private function getTextFromTextId($textId)
+    private function getTextFromTextId(string $textId)
     {
         // first search text id in text-cache
         $text = $this->languageData->getTextCache($textId);
@@ -152,7 +152,7 @@ class Language
      * echo $gL10n->get('MAI_EMAIL_SEND_TO_ROLE_ACTIVE', ['John Doe', 'Demo-Organization', 'Administrator']);
      * @endcode
      */
-    public function get($textId, $params = array())
+    public function get(string $textId, $params = array())
     {
         global $gLogger;
 
@@ -255,7 +255,7 @@ class Language
      * @param string $isoCode The three digits ISO code of the country where the name should be returned.
      * @return string Return the name of the country in the language of this object.
      */
-    public function getCountryByCode($isoCode)
+    public function getCountryByCode(string $isoCode)
     {
         if($isoCode === '')
         {
@@ -277,7 +277,7 @@ class Language
      * @param string $country The name of the country in the language of this object.
      * @return string|false Return the three digits ISO code of the country or false if country not found.
      */
-    public function getCountryByName($country)
+    public function getCountryByName(string $country)
     {
         $countries = $this->languageData->getCountriesArray();
 
@@ -293,7 +293,7 @@ class Language
      * @param bool $referenceLanguage If set to @b true than the ISO code of the reference language will returned.
      * @return string Returns the ISO code of the language of this object or the reference language e.g. @b de or @b en.
      */
-    public function getLanguageIsoCode($referenceLanguage = false)
+    public function getLanguageIsoCode(bool $referenceLanguage = false)
     {
         global $gLogger;
 
@@ -320,7 +320,7 @@ class Language
      * @param bool $referenceLanguage If set to @b true than the language code of the reference language will returned.
      * @return string Returns the language code of the language of this object or the reference language.
      */
-    public function getLanguage($referenceLanguage = false)
+    public function getLanguage(bool $referenceLanguage = false)
     {
         global $gLogger;
 
@@ -363,7 +363,7 @@ class Language
      * @param string                          $textId       The id of the text that will be searched in the file.
      * @return string Return the text in the language or nothing if text id wasn't found.
      */
-    public function searchLanguageText(array &$objectArray, $languagePath, $language, $textId)
+    public function searchLanguageText(array &$objectArray, string $languagePath, string $language, string $textId)
     {
         // if not exists create a \SimpleXMLElement of the language file in the language path
         // and add it to the array of language objects
@@ -407,7 +407,7 @@ class Language
      * Set a language to this object. If there was a language before than initialize the cache
      * @param string $language ISO code of the language that should be set to this object.
      */
-    public function setLanguage($language)
+    public function setLanguage(string $language)
     {
         if($language !== $this->languageData->getLanguage())
         {

@@ -25,7 +25,7 @@ class PhpIni
      * @param int    $multi Factor to multiply. Default: 1024
      * @return int
      */
-    private static function getBytesFromSize($data, $multi = self::BYTES_UNIT_FACTOR_1024)
+    private static function getBytesFromSize(string $data, int $multi = self::BYTES_UNIT_FACTOR_1024)
     {
         if ($data === '' || $data === '-1')
         {
@@ -147,7 +147,7 @@ class PhpIni
      * @param string $dirPath The path to check
      * @return bool
      */
-    private static function isInBaseDirs($dirPath)
+    private static function isInBaseDirs(string $dirPath)
     {
         $baseDirs = self::getBaseDirs();
 
@@ -199,7 +199,7 @@ class PhpIni
      * @return bool|string
      * @throws Exception
      */
-    public static function setFileUploadTmpDir($dirPath)
+    public static function setFileUploadTmpDir(string $dirPath)
     {
         $realDirPath = realpath($dirPath);
 

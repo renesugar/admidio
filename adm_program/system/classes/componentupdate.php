@@ -61,7 +61,7 @@ class ComponentUpdate extends Component
      * @param string $versionString A version string
      * @return array<int,int> Returns an array with the version parts
      */
-    private static function getVersionArrayFromVersion($versionString)
+    private static function getVersionArrayFromVersion(string $versionString)
     {
         return array_map('intval', explode('.', $versionString));
     }
@@ -73,7 +73,7 @@ class ComponentUpdate extends Component
      * @param int $subVersion  Contains a string with the main version number e.g. 1 or 2 from x.1 or x.2.
      * @return bool
      */
-    private function createXmlObject($mainVersion, $subVersion)
+    private function createXmlObject(int $mainVersion, int $subVersion)
     {
         // update of Admidio core has another path for the xml files as plugins
         if($this->getValue('com_type') === 'SYSTEM')
@@ -188,7 +188,7 @@ class ComponentUpdate extends Component
      * This information should be read from the files of the component.
      * @param string $version Target version of the component after update
      */
-    public function setTargetVersion($version)
+    public function setTargetVersion(string $version)
     {
         $this->targetVersionArray = self::getVersionArrayFromVersion($version);
     }
@@ -638,7 +638,7 @@ class ComponentUpdate extends Component
      * @param string $folder
      * @return bool
      */
-    public function updateStepRewriteFolderRights($folder = '')
+    public function updateStepRewriteFolderRights(string $folder = '')
     {
         $returnValue = true;
 

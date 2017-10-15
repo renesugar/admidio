@@ -31,7 +31,7 @@ class TableFile extends TableAccess
      * @param Database $database Object of the class Database. This should be the default global object @b $gDb.
      * @param int      $filId    The recordset of the files with this id will be loaded. If id isn't set than an empty object of the table is created.
      */
-    public function __construct(Database $database, $filId = 0)
+    public function __construct(Database $database, int $filId = 0)
     {
         // read also data of assigned folder
         $this->connectAdditionalTable(TBL_FOLDERS, 'fol_id', 'fil_fol_id');
@@ -79,7 +79,7 @@ class TableFile extends TableAccess
      *                      SYS_INVALID_PAGE_VIEW
      * @return true Returns @b true if everything is ok otherwise an AdmException is thrown.
      */
-    public function getFileForDownload($fileId)
+    public function getFileForDownload(int $fileId)
     {
         global $gCurrentUser;
 
@@ -130,7 +130,7 @@ class TableFile extends TableAccess
      * @return int|string|bool Returns the value of the database column.
      *                         If the value was manipulated before with @b setValue than the manipulated value is returned.
      */
-    public function getValue($columnName, $format = '')
+    public function getValue(string $columnName, string $format = '')
     {
         $value = parent::getValue($columnName, $format);
 
@@ -151,7 +151,7 @@ class TableFile extends TableAccess
      * @param bool $updateFingerPrint Default @b true. Will update the creator or editor of the recordset if table has columns like @b usr_id_create or @b usr_id_changed
      * @return bool If an update or insert into the database was done then return true, otherwise false.
      */
-    public function save($updateFingerPrint = true)
+    public function save(bool $updateFingerPrint = true)
     {
         global $gCurrentUser;
 

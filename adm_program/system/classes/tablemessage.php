@@ -30,7 +30,7 @@ class TableMessage extends TableAccess
      * @param Database $database Object of the class Database. This should be the default global object @b $gDb.
      * @param int      $msgId    The recordset of the message with this conversation id will be loaded. If id isn't set than an empty object of the table is created.
      */
-    public function __construct(Database $database, $msgId = 0)
+    public function __construct(Database $database, int $msgId = 0)
     {
         $this->msgId = $msgId;
 
@@ -42,7 +42,7 @@ class TableMessage extends TableAccess
      * @param int $usrId
      * @return int Number of unread messages of this table
      */
-    public function countUnreadMessageRecords($usrId)
+    public function countUnreadMessageRecords(int $usrId)
     {
         $sql = 'SELECT COUNT(*) AS count
                   FROM '.$this->tableName.'
@@ -84,7 +84,7 @@ class TableMessage extends TableAccess
      * @param int $usrId of the receiver - just for security reasons.
      * @return \PDOStatement Returns @b answer of the SQL execution
      */
-    public function setReadValue($usrId)
+    public function setReadValue(int $usrId)
     {
         $sql = 'UPDATE '.TBL_MESSAGES.'
                    SET msg_read = \'0\'
@@ -99,7 +99,7 @@ class TableMessage extends TableAccess
      * @param int $msgId of the conversation - just for security reasons.
      * @return \PDOStatement Returns @b answer of the SQL execution
      */
-    public function getConversation($msgId)
+    public function getConversation(int $msgId)
     {
         $sql = 'SELECT msc_usr_id, msc_message, msc_timestamp
                   FROM '. TBL_MESSAGES_CONTENT. '
@@ -115,7 +115,7 @@ class TableMessage extends TableAccess
      * @param int $usrId
      * @return int Returns @b ID of the user that is partner in the actual conversation
      */
-    public function getConversationPartner($usrId)
+    public function getConversationPartner(int $usrId)
     {
         $sql = 'SELECT
                   CASE

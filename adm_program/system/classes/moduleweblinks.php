@@ -108,7 +108,7 @@ class ModuleWeblinks extends Modules
      * @param int $limit        Number of elements returned max. Default NULL will take number from preferences.
      * @return array<string,mixed> with links and corresponding information
      */
-    public function getDataSet($startElement = 0, $limit = null)
+    public function getDataSet(int $startElement = 0, $limit = null)
     {
         global $gCurrentUser, $gPreferences, $gDb;
 
@@ -178,7 +178,7 @@ class ModuleWeblinks extends Modules
      * @param string $headline The initial headline of the module.
      * @return string Returns the full headline of the module
      */
-    public function getHeadline($headline)
+    public function getHeadline(string $headline)
     {
         global $gDb;
 

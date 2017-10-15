@@ -32,7 +32,7 @@ class TableMembers extends TableAccess
      * @param Database $database Object of the class Database. This should be the default global object @b $gDb.
      * @param int      $memId    The recordset of the membership with this id will be loaded. If id isn't set than an empty object of the table is created.
      */
-    public function __construct(Database $database, $memId = 0)
+    public function __construct(Database $database, int $memId = 0)
     {
         // read also data of assigned category
         $this->connectAdditionalTable(TBL_ROLES, 'rol_id', 'mem_rol_id');
@@ -48,7 +48,7 @@ class TableMembers extends TableAccess
      * @param int $userId The user who should loose the member of the role.
      * @return bool Return @b true if the membership was successful deleted.
      */
-    public function deleteMembership($roleId = 0, $userId = 0)
+    public function deleteMembership(int $roleId = 0, int $userId = 0)
     {
         global $gCurrentUser;
 
@@ -82,7 +82,7 @@ class TableMembers extends TableAccess
      * @param bool $updateFingerPrint Default @b true. Will update the creator or editor of the recordset if table has columns like @b usr_id_create or @b usr_id_changed
      * @return bool If an update or insert into the database was done then return true, otherwise false.
      */
-    public function save($updateFingerPrint = true)
+    public function save(bool $updateFingerPrint = true)
     {
         global $gCurrentSession;
 
@@ -107,7 +107,7 @@ class TableMembers extends TableAccess
      * @param int  $approvalState Option for User to confirm and adjust the membership ( @b 1 = User confirmed membership but maybe disagreed, @b 2 = user accepted membership
      * @return bool Return @b true if the assignment was successful.
      */
-    public function startMembership($roleId = 0, $userId = 0, $leader = null, $approvalState = null)
+    public function startMembership(int $roleId = 0, int $userId = 0, $leader = null, $approvalState = null)
     {
         global $gCurrentUser;
 
@@ -172,7 +172,7 @@ class TableMembers extends TableAccess
      * @throws AdmException
      * @return bool Return @b true if the membership removal was successful.
      */
-    public function stopMembership($roleId = 0, $userId = 0)
+    public function stopMembership(int $roleId = 0, int $userId = 0)
     {
         global $gCurrentUser;
 

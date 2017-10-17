@@ -54,7 +54,7 @@ class RolesRights extends TableAccess
      * @param string   $rolesRightName The recordset of the roles right with this name will be loaded.
      * @param int      $objectId       Id of the object of which the roles should be loaded.
      */
-    public function __construct(Database $database, string $rolesRightName, string $objectId)
+    public function __construct(Database $database, string $rolesRightName, int $objectId)
     {
         parent::__construct($database, TBL_ROLES_RIGHTS, 'ror');
 

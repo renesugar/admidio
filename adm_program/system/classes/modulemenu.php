@@ -23,8 +23,10 @@ declare(strict_types=1);
  * $myModuleMenu = new ModuleMenu('admMenuMyModule');
  *
  * // show link to create new announcement
- * $myModuleMenu->addItem('admMenuItemNewEntry', ADMIDIO_URL.FOLDER_MODULES.'/mymodule/mymodule_new.php',
- *                         $gL10n->get('SYS_CREATE'), 'add.png');
+ * $myModuleMenu->addItem(
+ *     'admMenuItemNewEntry', ADMIDIO_URL.FOLDER_MODULES.'/mymodule/mymodule_new.php',
+ *     $gL10n->get('SYS_CREATE'), 'add.png'
+ * );
  * $myModuleMenu->show(); @endcode
  */
 class ModuleMenu

@@ -80,22 +80,28 @@ if($weblinks->getId() === 0)
     if($gCurrentUser->editWeblinksRight())
     {
         // show link to create new announcement
-        $linksMenu->addItem('menu_item_new_link', ADMIDIO_URL.FOLDER_MODULES.'/links/links_new.php?headline='. $getHeadline,
-                            $gL10n->get('LNK_CREATE_LINK'), 'add.png');
+        $linksMenu->addItem(
+            'menu_item_new_link', ADMIDIO_URL.FOLDER_MODULES.'/links/links_new.php?headline='. $getHeadline,
+            $gL10n->get('LNK_CREATE_LINK'), 'add.png'
+        );
     }
 
     if($gCurrentUser->editWeblinksRight())
     {
         // show link to maintain categories
-        $linksMenu->addItem('menu_item_maintain_categories', ADMIDIO_URL.FOLDER_MODULES.'/categories/categories.php?type=LNK&title='. $getHeadline,
-                            $gL10n->get('SYS_MAINTAIN_CATEGORIES'), 'application_view_tile.png');
+        $linksMenu->addItem(
+            'menu_item_maintain_categories', ADMIDIO_URL.FOLDER_MODULES.'/categories/categories.php?type=LNK&title='. $getHeadline,
+            $gL10n->get('SYS_MAINTAIN_CATEGORIES'), 'application_view_tile.png'
+        );
     }
 
     if($gCurrentUser->isAdministrator())
     {
         // show link to system preferences of weblinks
-        $linksMenu->addItem('menu_items_links_preferences', ADMIDIO_URL.FOLDER_MODULES.'/preferences/preferences.php?show_option=links',
-                            $gL10n->get('SYS_MODULE_PREFERENCES'), 'options.png', 'right');
+        $linksMenu->addItem(
+            'menu_items_links_preferences', ADMIDIO_URL.FOLDER_MODULES.'/preferences/preferences.php?show_option=links',
+            $gL10n->get('SYS_MODULE_PREFERENCES'), 'options.png', 'right'
+        );
     }
 
     $page->addJavascript('
@@ -106,7 +112,10 @@ if($weblinks->getId() === 0)
     );
 
     $navbarForm = new HtmlForm('navbar_cat_id_form', ADMIDIO_URL.FOLDER_MODULES.'/links/links.php?headline='. $getHeadline, $page, array('type' => 'navbar', 'setFocus' => false));
-    $navbarForm->addSelectBoxForCategories('cat_id', $gL10n->get('SYS_CATEGORY'), $gDb, 'LNK', 'FILTER_CATEGORIES', array('defaultValue' => $getCatId));
+    $navbarForm->addSelectBoxForCategories(
+        'cat_id', $gL10n->get('SYS_CATEGORY'), $gDb, 'LNK', 'FILTER_CATEGORIES',
+        array('defaultValue' => $getCatId)
+    );
     $linksMenu->addForm($navbarForm->show(false));
 }
 

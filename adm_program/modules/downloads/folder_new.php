@@ -46,8 +46,8 @@ if(isset($_SESSION['download_request']))
 }
 else
 {
-    $formValues['new_folder'] = null;
-    $formValues['new_description'] = null;
+    $formValues['new_folder'] = '';
+    $formValues['new_description'] = '';
 }
 
 try

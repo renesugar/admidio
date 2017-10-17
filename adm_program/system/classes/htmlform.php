@@ -1492,7 +1492,7 @@ class HtmlForm extends HtmlFormBasic
      * $form->addSelectBoxFromSql('admProfileFieldsBox', $gL10n->get('SYS_FIELDS'), $gDb, $sql, array('defaultValue' => $gL10n->get('SYS_SURNAME'), 'showContextDependentFirstEntry' => true));
      * $form->show(); @endcode
      */
-    public function addSelectBoxFromSql(string $id, string $label, Database $database, string $sql, array $options = array())
+    public function addSelectBoxFromSql(string $id, string $label, Database $database, $sql, array $options = array())
     {
         global $gL10n;
 

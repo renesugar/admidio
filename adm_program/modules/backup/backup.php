@@ -2,7 +2,7 @@
 declare(strict_types=1);
 /**
  ***********************************************************************************************
- * Show list with avaiable backup files and button to create a new backup
+ * Show list with available backup files and button to create a new backup
  *
  * @copyright 2004-2017 The Admidio Team
  * @see https://www.admidio.org/

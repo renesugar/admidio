@@ -29,6 +29,10 @@ declare(strict_types=1);
  */
 class PasswordHashing
 {
+    const HASH_ALGORITHM_DEFAULT = 'DEFAULT';
+    const HASH_ALGORITHM_BCRYPT = 'BCRYPT';
+    const HASH_ALGORITHM_SHA512 = 'SHA512';
+
     const HASH_COST_BCRYPT_DEFAULT = 12;
     const HASH_COST_BCRYPT_MIN = 10;
     const HASH_COST_BCRYPT_MAX = 31;
@@ -43,6 +47,10 @@ class PasswordHashing
     const HASH_LENGTH_PORTABLE = 34;
     const HASH_LENGTH_MD5 = 32;
 
+    const HASH_INDICATOR_BCRYPT = '$2y$';
+    const HASH_INDICATOR_SHA512 = '$6$';
+    const HASH_INDICATOR_PORTABLE = '$P$';
+
     /**
      * Hash the given password with the given options. The default algorithm uses the password_* methods,
      * otherwise the builtin helper for SHA-512 crypt hashes from the operating system. Minimum cost is 10.
@@ -51,9 +59,9 @@ class PasswordHashing
      * @param array<string,mixed> $options   The hash-options array
      * @return string|false Returns the hashed password or false if an error occurs
      */
-    public static function hash(string $password, string $algorithm = 'DEFAULT', array $options = array())
+    public static function hash(string $password, string $algorithm = self::HASH_ALGORITHM_DEFAULT, array $options = array())
     {
-        if ($algorithm === 'SHA512')
+        if ($algorithm === self::HASH_ALGORITHM_SHA512)
         {
             if (!array_key_exists('cost', $options))
             {
@@ -67,7 +75,7 @@ class PasswordHashing
             $salt = self::genRandomPassword(8, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ./');
             return crypt($password, '$6$rounds=' . $options['cost'] . '$' . $salt . '$');
         }
-        elseif ($algorithm === 'BCRYPT')
+        elseif ($algorithm === self::HASH_ALGORITHM_BCRYPT)
         {
             $algorithmPhpConstant = PASSWORD_BCRYPT;
         }
@@ -98,16 +106,16 @@ class PasswordHashing
     public static function verify(string $password, string $hash)
     {
         $hashLength = strlen($hash);
-        if ($hashLength === self::HASH_LENGTH_BCRYPT && strpos($hash, '$2y$') === 0)
+        if ($hashLength === self::HASH_LENGTH_BCRYPT && strpos($hash, self::HASH_INDICATOR_BCRYPT) === 0)
         {
             return password_verify($password, $hash);
         }
-        elseif ($hashLength >= self::HASH_LENGTH_SHA512 && strpos($hash, '$6$') === 0)
+        elseif ($hashLength >= self::HASH_LENGTH_SHA512 && strpos($hash, self::HASH_INDICATOR_SHA512) === 0)
         {
             $passwordHash = crypt($password, $hash);
             return hash_equals($passwordHash, $hash);
         }
-        elseif ($hashLength === self::HASH_LENGTH_PORTABLE && strpos($hash, '$P$') === 0)
+        elseif ($hashLength === self::HASH_LENGTH_PORTABLE && strpos($hash, self::HASH_INDICATOR_PORTABLE) === 0)
         {
             $passwordHasher = new PasswordHash(9, true);
             return $passwordHasher->CheckPassword($password, $hash);
@@ -129,10 +137,10 @@ class PasswordHashing
      * @param array<string,mixed> $options   The hash-options the hash should match to
      * @return bool Returns false if the hash match the given options and false if not
      */
-    public static function needsRehash(string $hash, string $algorithm = 'DEFAULT', array $options = array())
+    public static function needsRehash(string $hash, string $algorithm = self::HASH_ALGORITHM_DEFAULT, array $options = array())
     {
         $hashLength = strlen($hash);
-        if ($algorithm === 'SHA512' && $hashLength >= self::HASH_LENGTH_SHA512 && strpos($hash, '$6$') === 0)
+        if ($algorithm === self::HASH_ALGORITHM_SHA512 && $hashLength >= self::HASH_LENGTH_SHA512 && strpos($hash, self::HASH_INDICATOR_SHA512) === 0)
         {
             if (!array_key_exists('cost', $options))
             {
@@ -148,11 +156,11 @@ class PasswordHashing
 
             return $cost !== $options['cost'];
         }
-        elseif ($algorithm === 'BCRYPT' && $hashLength === self::HASH_LENGTH_BCRYPT && strpos($hash, '$2y$') === 0)
+        elseif ($algorithm === self::HASH_ALGORITHM_BCRYPT && $hashLength === self::HASH_LENGTH_BCRYPT && strpos($hash, self::HASH_INDICATOR_BCRYPT) === 0)
         {
             $algorithmPhpConstant = PASSWORD_BCRYPT;
         }
-        elseif ($algorithm === 'DEFAULT')
+        elseif ($algorithm === self::HASH_ALGORITHM_DEFAULT)
         {
             $algorithmPhpConstant = PASSWORD_DEFAULT;
         }
@@ -308,15 +316,15 @@ class PasswordHashing
     public static function hashInfo(string $hash)
     {
         $hashLength = strlen($hash);
-        if ($hashLength === self::HASH_LENGTH_BCRYPT && strpos($hash, '$2y$') === 0)
+        if ($hashLength === self::HASH_LENGTH_BCRYPT && strpos($hash, self::HASH_INDICATOR_BCRYPT) === 0)
         {
             return password_get_info($hash);
         }
-        elseif ($hashLength >= self::HASH_LENGTH_SHA512 && strpos($hash, '$6$') === 0)
+        elseif ($hashLength >= self::HASH_LENGTH_SHA512 && strpos($hash, self::HASH_INDICATOR_SHA512) === 0)
         {
             return 'SHA512';
         }
-        elseif ($hashLength === self::HASH_LENGTH_PORTABLE && strpos($hash, '$P$') === 0)
+        elseif ($hashLength === self::HASH_LENGTH_PORTABLE && strpos($hash, self::HASH_INDICATOR_PORTABLE) === 0)
         {
             return 'PRIVATE/PORTABLE_HASH';
         }
@@ -350,13 +358,13 @@ class PasswordHashing
      * @param array<string,mixed> $options   The options to test
      * @return array<string,int|float> Returns an array with the maximum tested cost with the required time
      */
-    public static function costBenchmark(float $maxTime = 0.35, string $password = 'password', string $algorithm = 'DEFAULT', array $options = array('cost' => null))
+    public static function costBenchmark(float $maxTime = 0.35, string $password = 'password', string $algorithm = self::HASH_ALGORITHM_DEFAULT, array $options = array('cost' => null))
     {
         global $gLogger;
 
         $cost = $options['cost'];
 
-        if ($algorithm === 'SHA512')
+        if ($algorithm === self::HASH_ALGORITHM_SHA512)
         {
             $maxCost = self::HASH_COST_SHA512_MAX;
             $costIncrement = self::HASH_COST_SHA512_INCREMENT;

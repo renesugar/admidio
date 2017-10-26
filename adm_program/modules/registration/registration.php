@@ -98,7 +98,6 @@ $columnHeading = array(
     '&nbsp;'
 );
 $table->setColumnAlignByArray(array('left', 'left', 'left', 'left', 'right'));
-$table->setDatatablesOrderColumns(array(1));
 $table->addRowHeadingByArray($columnHeading);
 
 while($row = $usrStatement->fetch())

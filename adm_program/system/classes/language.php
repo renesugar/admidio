@@ -112,6 +112,15 @@ class Language
      */
     private function getTextFromTextId(string $textId)
     {
+        global $gLogger;
+
+        if (!$this->languageData instanceof LanguageData)
+        {
+            $gLogger->critical('$this->languageData is not an instance of LanguageData!', array('languageData' => $this->languageData));
+
+            return '';
+        }
+
         // first search text id in text-cache
         $text = $this->languageData->getTextCache($textId);
 
@@ -127,6 +136,11 @@ class Language
         {
             // search for text id in every \SimpleXMLElement (language file) of the object array
             $text = $this->searchTextIdInLangObject($this->xmlRefLanguageObjects, LanguageData::REFERENCE_LANGUAGE, $textId);
+        }
+
+        if ($text === '')
+        {
+            $gLogger->error('L10n: Could not found translation id!', array('textId' => $textId));
         }
 
         return $text;
@@ -155,13 +169,6 @@ class Language
     public function get(string $textId, $params = array())
     {
         global $gLogger;
-
-        if (!$this->languageData instanceof LanguageData)
-        {
-            $gLogger->error('$this->languageData is not an instance of LanguageData!', array('languageData' => $this->languageData));
-
-            return 'Error: $this->languageData is not an instance of LanguageData!';
-        }
 
         $text = $this->getTextFromTextId($textId);
 

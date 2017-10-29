@@ -271,11 +271,11 @@ class TableAccess
                     {
                         if ($format === '' && isset($gPreferences))
                         {
-                            if (strpos($this->columnsInfos[$columnName]['type'], 'timestamp') !== false)
+                            if (admStrContains($this->columnsInfos[$columnName]['type'], 'timestamp'))
                             {
                                 $format = $gPreferences['system_date'] . ' ' . $gPreferences['system_time'];
                             }
-                            elseif (strpos($this->columnsInfos[$columnName]['type'], 'date') !== false)
+                            elseif (admStrContains($this->columnsInfos[$columnName]['type'], 'date'))
                             {
                                 $format = $gPreferences['system_date'];
                             }
@@ -349,7 +349,7 @@ class TableAccess
         }
 
         // if condition starts with AND then remove this
-        if (strpos(strtoupper(ltrim($sqlWhereCondition)), 'AND') === 0)
+        if (admStrStartsWith(strtoupper(ltrim($sqlWhereCondition)), 'AND'))
         {
             $sqlWhereCondition = substr($sqlWhereCondition, 4);
         }
@@ -508,7 +508,7 @@ class TableAccess
         {
             // Auto-Increment-Felder duerfen nicht im Insert/Update erscheinen
             // Felder anderer Tabellen auch nicht
-            if (strpos($key, $this->columnPrefix . '_') === 0
+            if (admStrStartsWith($key, $this->columnPrefix . '_')
             && !$this->columnsInfos[$key]['serial'] && $this->columnsInfos[$key]['changed'])
             {
                 if ($this->newRecord)

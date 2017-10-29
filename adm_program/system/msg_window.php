@@ -162,7 +162,7 @@ switch ($getMessageId)
         $msgVar1 = '';
         if($getMessageVar1 !== '')
         {
-            if(strpos($getMessageVar1, '_') === 3)
+            if(admIsTranslationStrId($getMessageVar1))
             {
                 $msgVar1 = $gL10n->get($getMessageVar1);
             }

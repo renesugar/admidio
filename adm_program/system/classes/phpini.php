@@ -159,7 +159,7 @@ class PhpIni
         $isInBaseDirs = false;
         foreach ($baseDirs as $baseDir)
         {
-            if (strpos($dirPath, $baseDir) === 0)
+            if (admStrStartsWith($dirPath, $baseDir))
             {
                 $isInBaseDirs = true;
             }
@@ -171,8 +171,8 @@ class PhpIni
     /**
      * Sets the allowed base-dirs
      * @param array<int,string> $dirPaths The paths to set as allowed base-dirs
-     * @return bool|string
      * @throws Exception
+     * @return bool|string
      */
     public static function setBaseDirs(array $dirPaths = array())
     {
@@ -196,8 +196,8 @@ class PhpIni
     /**
      * Sets the file upload temporary directory
      * @param string $dirPath The path to set the file upload temporary directory
-     * @return bool|string
      * @throws Exception
+     * @return bool|string
      */
     public static function setFileUploadTmpDir(string $dirPath)
     {

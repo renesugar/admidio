@@ -222,7 +222,7 @@ class ProfileFields
                     {
                         // if value is imagefile or imageurl then show image
                         if ($usfType === 'RADIO_BUTTON'
-                        && (strpos(admStrToLower($listValue), '.png') > 0 || strpos(admStrToLower($listValue), '.jpg') > 0))
+                        && (admStrEndsWith(admStrToLower($listValue), '.png') || admStrEndsWith(admStrToLower($listValue), '.jpg')))
                         {
                             // if there is imagefile and text separated by | then explode them
                             if (strpos($listValue, '|') > 0)
@@ -237,7 +237,7 @@ class ProfileFields
                             }
 
                             // if text is a translation-id then translate it
-                            if (strpos($listValueText, '_') === 3)
+                            if (admIsTranslationStrId($listValueText))
                             {
                                 $listValueText = $gL10n->get(admStrToUpper($listValueText));
                             }
@@ -245,7 +245,7 @@ class ProfileFields
                             try
                             {
                                 // create html for optionbox entry
-                                if (strValidCharacters($listValueImage, 'url') && strpos(admStrToLower($listValueImage), 'http') === 0)
+                                if (strValidCharacters($listValueImage, 'url') && admStrStartsWith(admStrToLower($listValueImage), 'http'))
                                 {
                                     $listValue = '<img class="admidio-icon-info" src="' . $listValueImage . '" title="' . $listValueText . '" alt="' . $listValueText . '" />';
                                 }
@@ -262,7 +262,7 @@ class ProfileFields
                         }
 
                         // if text is a translation-id then translate it
-                        if (strpos($listValue, '_') === 3)
+                        if (admIsTranslationStrId($listValue))
                         {
                             $listValue = $gL10n->get(admStrToUpper($listValue));
                         }
@@ -285,7 +285,7 @@ class ProfileFields
                         $displayValue = $value;
 
                         // trim "http://", "https://", "//"
-                        if (strpos($displayValue, '//') !== false)
+                        if (admStrContains($displayValue, '//'))
                         {
                             $displayValue = substr($displayValue, strpos($displayValue, '//') + 2);
                         }
@@ -318,7 +318,7 @@ class ProfileFields
                 }
 
                 // replace a variable in url with user value
-                if (strpos($usfUrl, '#user_content#') !== false)
+                if (admStrContains($usfUrl, '#user_content#'))
                 {
                     $htmlValue = str_replace('#user_content#', $value, $htmlValue);
                 }

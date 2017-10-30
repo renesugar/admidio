@@ -18,7 +18,7 @@ declare(strict_types=1);
  *                         If @userId is not set than this will be checked for the current user
  * @return bool Returns @b true if the user is a member of the role
  */
-function hasRole(string $roleName, int $userId = 0)
+function hasRole(string $roleName, int $userId = 0): bool
 {
     global $gDb, $gCurrentUser, $gCurrentOrganization;
 
@@ -50,7 +50,7 @@ function hasRole(string $roleName, int $userId = 0)
  * @param int $userId The id of the user who should be checked if he is a member of the current organization
  * @return bool Returns @b true if the user is a member
  */
-function isMember(int $userId)
+function isMember(int $userId): bool
 {
     global $gDb, $gCurrentOrganization;
 
@@ -84,7 +84,7 @@ function isMember(int $userId)
  *                    otherwise it checks if the user is group leader in one role of the current organization
  * @return bool Returns @b true if the user is a group leader
  */
-function isGroupLeader(int $userId, int $roleId = 0)
+function isGroupLeader(int $userId, int $roleId = 0): bool
 {
     global $gDb, $gCurrentOrganization;
 
@@ -133,7 +133,7 @@ function isGroupLeader(int $userId, int $roleId = 0)
  * @param string $queryParamName (optional) You can set a new name for the parameter that should be used as start parameter.
  * @return string
  */
-function admFuncGeneratePagination(string $baseUrl, int $itemsCount, int $itemsPerPage, int $pageStartItem, bool $addPrevNextText = true, string $queryParamName = 'start')
+function admFuncGeneratePagination(string $baseUrl, int $itemsCount, int $itemsPerPage, int $pageStartItem, bool $addPrevNextText = true, string $queryParamName = 'start'): string
 {
     global $gL10n;
 
@@ -158,7 +158,7 @@ function admFuncGeneratePagination(string $baseUrl, int $itemsCount, int $itemsP
      * @param int    $itemsPerPage
      * @return string
      */
-    function getListElementsFromTo(int $start, int $end, int $page, string $url, string $paramName, int $itemsPerPage)
+    function getListElementsFromTo(int $start, int $end, int $page, string $url, string $paramName, int $itemsPerPage): string
     {
         $pageNavString = '';
 
@@ -185,7 +185,7 @@ function admFuncGeneratePagination(string $baseUrl, int $itemsCount, int $itemsP
      * @param string $paramValue
      * @return string
      */
-    function getListElementString(string $linkText, string $className = '', string $url = '', string $paramName = '', string $paramValue = '')
+    function getListElementString(string $linkText, string $className = '', string $url = '', string $paramName = '', string $paramValue = ''): string
     {
         $classString = '';
         if ($className !== '')
@@ -269,7 +269,7 @@ function admFuncGeneratePagination(string $baseUrl, int $itemsCount, int $itemsP
  * Funktion gibt die maximale Pixelzahl zurück die der Speicher verarbeiten kann
  * @return int
  */
-function admFuncProcessableImageSize()
+function admFuncProcessableImageSize(): int
 {
     $memoryLimit = PhpIni::getMemoryLimit();
     // if memory_limit is disabled in php.ini
@@ -503,7 +503,7 @@ function admFuncVariableIsValid(array $array, string $variableName, string $data
  * @param string $timestampEdited Date and time of the moment when the user last changed the recordset
  * @return string Returns a html string with usernames who creates item and edit item the last time
  */
-function admFuncShowCreateChangeInfoById(int $userIdCreated, string $timestampCreate, int $userIdEdited = 0, string $timestampEdited = '')
+function admFuncShowCreateChangeInfoById(int $userIdCreated, string $timestampCreate, int $userIdEdited = 0, string $timestampEdited = ''): string
 {
     global $gDb, $gProfileFields, $gL10n, $gPreferences;
 
@@ -586,7 +586,7 @@ function admFuncShowCreateChangeInfoById(int $userIdCreated, string $timestampCr
  *                                If id is set than a link to the user profile will be created
  * @return string Returns a html string with usernames who creates item and edit item the last time
  */
-function admFuncShowCreateChangeInfoByName(string $userNameCreated, string $timestampCreate, string $userNameEdited, string $timestampEdited, int $userIdCreated = 0, int $userIdEdited = 0)
+function admFuncShowCreateChangeInfoByName(string $userNameCreated, string $timestampCreate, string $userNameEdited, string $timestampEdited, int $userIdCreated = 0, int $userIdEdited = 0): string
 {
     global $gL10n, $gValidLogin, $gPreferences;
 
@@ -775,7 +775,7 @@ function admRedirect(string $url, int $statusCode = 303)
  * @param string $encoding Define character encoding tue use
  * @return string Escaped string
  */
-function noHTML(string $input, string $encoding = 'UTF-8')
+function noHTML(string $input, string $encoding = 'UTF-8'): string
 {
     // backwards compatibility for PHP-Version < 5.4
     if (!defined('ENT_HTML5'))
@@ -791,7 +791,7 @@ function noHTML(string $input, string $encoding = 'UTF-8')
  * @param array<int,mixed> $valuesArray An array with the values that should be replaced with question marks
  * @return string Question marks string
  */
-function replaceValuesArrWithQM(array $valuesArray)
+function replaceValuesArrWithQM(array $valuesArray): string
 {
     return implode(',', array_fill(0, count($valuesArray), '?'));
 }
@@ -801,7 +801,7 @@ function replaceValuesArrWithQM(array $valuesArray)
  * @deprecated 3.3.0:4.0.0 "admFuncMaxUploadSize()" is a typo. Use "PhpIni::getUploadMaxSize()" instead.
  * @return int
  */
-function admFuncMaxUploadSize()
+function admFuncMaxUploadSize(): int
 {
     global $gLogger;
 
@@ -816,7 +816,7 @@ function admFuncMaxUploadSize()
  * @param bool   $decimalMulti
  * @return int
  */
-function admFuncGetBytesFromSize(string $data, bool $decimalMulti = false)
+function admFuncGetBytesFromSize(string $data, bool $decimalMulti = false): int
 {
     global $gLogger;
 

@@ -32,7 +32,7 @@ if ($getMode === 3 && !$gCurrentUser->isAdministrator())
  * @param string $search
  * @return string
  */
-function getUpdateVersion(string $updateInfo, string $search)
+function getUpdateVersion(string $updateInfo, string $search): string
 {
     // Variablen festlegen
     $i = 0;
@@ -61,7 +61,7 @@ function getUpdateVersion(string $updateInfo, string $search)
  * @param string $betaFlag
  * @return int
  */
-function checkVersion(string $currentVersion, string $checkStableVersion, string $checkBetaVersion, string $betaRelease, string $betaFlag)
+function checkVersion(string $currentVersion, string $checkStableVersion, string $checkBetaVersion, string $betaRelease, string $betaFlag): int
 {
     // Updatezustand (0 = Kein Update, 1 = Neue stabile Version, 2 = Neue Beta-Version, 3 = Neue stabile + Beta Version)
     $update = 0;

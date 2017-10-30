@@ -39,7 +39,7 @@ class FunctionClass
      * @param string $directory Path of the directory with the template files
      * @return array<int,string> Returns an array of the template filenames
      */
-    public function getFileNames(string $directory)
+    public function getFileNames(string $directory): array
     {
         $files = array();
 
@@ -112,7 +112,7 @@ class FunctionClass
      * Bild Daten:             <%ecard_image_width%>       <%ecard_image_height%>      <%ecard_image_name%>
      * Nachricht:              <%ecard_message%>
      */
-    public function parseEcardTemplate(string $imageName, string $ecardMessage, string $ecardData, string $recipientName, string $recipientEmail)
+    public function parseEcardTemplate(string $imageName, string $ecardMessage, string $ecardData, string $recipientName, string $recipientEmail): string
     {
         global $gCurrentUser;
 

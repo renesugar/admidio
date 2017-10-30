@@ -17,7 +17,7 @@ declare(strict_types=1);
  * @param string $string
  * @return string
  */
-function admStrToLower(string $string)
+function admStrToLower(string $string): string
 {
     if(function_exists('mb_strtolower'))
     {
@@ -33,7 +33,7 @@ function admStrToLower(string $string)
  * @param string $string
  * @return string
  */
-function admStrToUpper(string $string)
+function admStrToUpper(string $string): string
 {
     if(function_exists('mb_strtoupper'))
     {
@@ -49,7 +49,7 @@ function admStrToUpper(string $string)
  * @param array<string,string|array<mixed,string>> $srcArray
  * @return array<string,string|array<mixed,string>>
  */
-function admStrStripTagsSpecial(array $srcArray)
+function admStrStripTagsSpecial(array $srcArray): array
 {
     // "ecard_message" => ckeditor-variable
     $specialKeys = array(
@@ -142,7 +142,7 @@ function strStripSlashesDeep($value)
  * @param bool $reverse
  * @return string
  */
-function strNextLetter(string $letter, bool $reverse = false)
+function strNextLetter(string $letter, bool $reverse = false): string
 {
     $ascii      = ord($letter);
     $aLowerCase = ord('a');
@@ -185,7 +185,7 @@ function strNextLetter(string $letter, bool $reverse = false)
  *                          Each type has a different valid character list.
  * @return bool Returns @b true if all characters of @b string match the internal character list.
  */
-function strValidCharacters(string $string, string $checkType)
+function strValidCharacters(string $string, string $checkType): bool
 {
     if (trim($string) === '')
     {
@@ -236,7 +236,7 @@ function strValidCharacters(string $string, string $checkType)
  * @param string $contains The containing string pattern
  * @return bool Returns true if the string contains the other string
  */
-function admStrContains(string $string, string $contains)
+function admStrContains(string $string, string $contains): bool
 {
     return strpos($string, $contains) !== false;
 }
@@ -247,7 +247,7 @@ function admStrContains(string $string, string $contains)
  * @param string $start  The starting string pattern
  * @return bool Returns true if the string starts with the other string
  */
-function admStrStartsWith(string $string, string $start)
+function admStrStartsWith(string $string, string $start): bool
 {
     return strpos($string, $start) === 0;
 }
@@ -258,7 +258,7 @@ function admStrStartsWith(string $string, string $start)
  * @param string $end    The ending string pattern
  * @return bool Returns true if the string ends with the other string
  */
-function admStrEndsWith(string $string, string $end)
+function admStrEndsWith(string $string, string $end): bool
 {
     return strrpos($string, $end) === strlen($string) - strlen($end);
 }
@@ -268,7 +268,7 @@ function admStrEndsWith(string $string, string $end)
  * @param string $string The string to check
  * @return bool Returns true if the given string is a translation-string-id
  */
-function admIsTranslationStrId(string $string)
+function admIsTranslationStrId(string $string): bool
 {
     return (bool) preg_match('/^[A-Z]{3}_[A-Z_]+/', $string);
 }
@@ -284,7 +284,7 @@ function admIsTranslationStrId(string $string)
  *                      DOW_FILE_EXTENSION_INVALID : Filename contains invalid extension
  * @return true Returns @true if filename contains only valid characters. Otherwise an AdmException is thrown
  */
-function admStrIsValidFileName(string $filename, bool $checkExtension = false)
+function admStrIsValidFileName(string $filename, bool $checkExtension = false): bool
 {
     // If the filename was not empty
     if (trim($filename) === '')

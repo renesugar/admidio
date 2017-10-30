@@ -49,7 +49,7 @@ function showNotice(string $message, string $url, string $buttonText, string $bu
  * @param Database $database
  * @return string
  */
-function checkDatabaseVersion(Database $database)
+function checkDatabaseVersion(Database $database): string
 {
     global $gL10n;
 
@@ -70,7 +70,7 @@ function checkDatabaseVersion(Database $database)
  * prueft, ob die Mindestvoraussetzungen bei PHP und MySQL eingehalten werden
  * @return string
  */
-function checkPhpVersion()
+function checkPhpVersion(): string
 {
     global $gL10n;
 

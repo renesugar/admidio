@@ -44,7 +44,7 @@ if(!isset($gImportDemoData) || $gImportDemoData != 1)
  * parts of this function are from get_backtrace out of phpBB3
  * @return string Return a nicely formatted backtrace (parts from the php manual by diz at ysagoon dot com)
  */
-function getBacktrace()
+function getBacktrace(): string
 {
     $output = '<div style="font-family: monospace;">';
     $backtrace = debug_backtrace();

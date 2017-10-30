@@ -98,7 +98,7 @@ function getFormerRolesFromDatabase(int $userId)
  * @param bool          $directOutput
  * @return string
  */
-function getRoleMemberships(string $htmlListId, User $user, \PDOStatement $roleStatement, int $countRole, bool $directOutput)
+function getRoleMemberships(string $htmlListId, User $user, \PDOStatement $roleStatement, int $countRole, bool $directOutput): string
 {
     global $gDb, $gL10n, $gCurrentUser, $gPreferences;
 

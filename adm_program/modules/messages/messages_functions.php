@@ -15,7 +15,7 @@ declare(strict_types=1);
  * @param string $receiversString
  * @return string
  */
-function prepareReceivers(string $receiversString)
+function prepareReceivers(string $receiversString): string
 {
     global $gDb, $gProfileFields;
 

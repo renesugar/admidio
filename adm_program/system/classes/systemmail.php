@@ -152,7 +152,7 @@ class SystemMail extends Email
      * @throws AdmException SYS_EMAIL_NOT_SEND
      * @return true
      */
-    public function sendSystemMail(string $systemMailId, User $user)
+    public function sendSystemMail(string $systemMailId, User $user): bool
     {
         global $gPreferences;
 

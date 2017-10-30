@@ -37,7 +37,7 @@ class FormValidation
      * @return true Returns @b true if the value matches the captcha image.
      *              Otherwise throw an exception SYS_CAPTCHA_CODE_INVALID.
      */
-    public static function checkCaptcha(string $value)
+    public static function checkCaptcha(string $value): bool
     {
         global $gPreferences;
 

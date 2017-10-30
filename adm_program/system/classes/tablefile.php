@@ -79,7 +79,7 @@ class TableFile extends TableAccess
      *                      SYS_INVALID_PAGE_VIEW
      * @return true Returns @b true if everything is ok otherwise an AdmException is thrown.
      */
-    public function getFileForDownload(int $fileId)
+    public function getFileForDownload(int $fileId): bool
     {
         global $gCurrentUser;
 

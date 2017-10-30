@@ -132,7 +132,7 @@ $orgId = (int) $gCurrentOrganization->getValue('org_id');
  * @param string $body
  * @return string
  */
-function getPreferencePanel(string $id, string $title, string $icon, string $body)
+function getPreferencePanel(string $id, string $title, string $icon, string $body): string
 {
     return '
         <div class="panel panel-default" id="panel_' . $id . '">

@@ -84,7 +84,7 @@ if ($getMode === 'new' || $getMode === 'change')
     // Beginn
     if (strlen($phoBegin) > 0)
     {
-        $startDate = DateTime::createFromFormat($gPreferences['system_date'], $phoBegin);
+        $startDate = \DateTime::createFromFormat($gPreferences['system_date'], $phoBegin);
         if ($startDate === false)
         {
             $gMessage->show($gL10n->get('SYS_DATE_INVALID', $gL10n->get('SYS_START'), $gPreferences['system_date']));
@@ -104,7 +104,7 @@ if ($getMode === 'new' || $getMode === 'change')
     // Ende
     if (strlen($phoEnd) > 0)
     {
-        $endDate = DateTime::createFromFormat($gPreferences['system_date'], $phoEnd);
+        $endDate = \DateTime::createFromFormat($gPreferences['system_date'], $phoEnd);
         if ($endDate === false)
         {
             $gMessage->show($gL10n->get('SYS_DATE_INVALID', $gL10n->get('SYS_END'), $gPreferences['system_date']));

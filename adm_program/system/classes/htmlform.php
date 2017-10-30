@@ -895,7 +895,7 @@ class HtmlForm extends HtmlFormBasic
             $timeValue = '';
 
             // first try to split datetime to a date and a time value
-            $datetime = DateTime::createFromFormat($gPreferences['system_date'] . ' ' . $gPreferences['system_time'], $value);
+            $datetime = \DateTime::createFromFormat($gPreferences['system_date'] . ' ' . $gPreferences['system_time'], $value);
 
             if ($datetime)
             {
@@ -1510,7 +1510,7 @@ class HtmlForm extends HtmlFormBasic
         }
 
         // create array from sql result
-        while ($row = $pdoStatement->fetch())
+        while ($row = $pdoStatement->fetch(\PDO::FETCH_BOTH))
         {
             // if result has 3 columns then create a array in array
             if(array_key_exists(2, $row))
@@ -1860,19 +1860,8 @@ class HtmlForm extends HtmlFormBasic
 
         if ($helpTextId !== '')
         {
-            if (count($parameters) === 0)
-            {
-                // if text is a translation-id then translate it
-                if (admIsTranslationStrId($helpTextId))
-                {
-                    $helpText = $gL10n->get($helpTextId);
-                }
-                else
-                {
-                    $helpText = $helpTextId;
-                }
-            }
-            else
+            // if text is a translation-id then translate it
+            if (admIsTranslationStrId($helpTextId))
             {
                 foreach ($parameters as &$parameter)
                 {
@@ -1884,15 +1873,11 @@ class HtmlForm extends HtmlFormBasic
                 }
                 unset($parameter);
 
-                // PHP 5.6+ use: $helpText = $gL10n->get($helpTextId, ...$parameters);
-                if (count($parameters) === 1)
-                {
-                    $helpText = $gL10n->get($helpTextId, $parameters[0]);
-                }
-                else
-                {
-                    $helpText = $gL10n->get($helpTextId, $parameters[0], $parameters[1]);
-                }
+                $helpText = $gL10n->get($helpTextId, $parameters);
+            }
+            else
+            {
+                $helpText = $helpTextId;
             }
 
             $this->addHtml('<div class="help-block">' . $helpText . '</div>');

@@ -175,7 +175,7 @@ class ProfileFields
                     if ($value !== '')
                     {
                         // date must be formated
-                        $date = DateTime::createFromFormat('Y-m-d', $value);
+                        $date = \DateTime::createFromFormat('Y-m-d', $value);
                         if ($date instanceof \DateTime)
                         {
                             $htmlValue = $date->format($gPreferences['system_date']);
@@ -388,7 +388,7 @@ class ProfileFields
                         if ($value !== '')
                         {
                             // if date field then the current date format must be used
-                            $date = DateTime::createFromFormat('Y-m-d', $value);
+                            $date = \DateTime::createFromFormat('Y-m-d', $value);
                             if ($date === false)
                             {
                                 return $value;
@@ -577,10 +577,10 @@ class ProfileFields
                     break;
                 case 'DATE':
                     // Datum muss gueltig sein und formatiert werden
-                    $date = DateTime::createFromFormat($gPreferences['system_date'], $fieldValue);
+                    $date = \DateTime::createFromFormat($gPreferences['system_date'], $fieldValue);
                     if ($date === false)
                     {
-                        $date = DateTime::createFromFormat('Y-m-d', $fieldValue);
+                        $date = \DateTime::createFromFormat('Y-m-d', $fieldValue);
                         if ($date === false && !$this->noValueCheck)
                         {
                             return false;

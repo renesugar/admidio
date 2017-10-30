@@ -236,7 +236,7 @@ function strValidCharacters(string $string, string $checkType)
  * @param string $contains The containing string pattern
  * @return bool Returns true if the string contains the other string
  */
-function admStrContains($string, $contains)
+function admStrContains(string $string, string $contains)
 {
     return strpos($string, $contains) !== false;
 }
@@ -247,7 +247,7 @@ function admStrContains($string, $contains)
  * @param string $start  The starting string pattern
  * @return bool Returns true if the string starts with the other string
  */
-function admStrStartsWith($string, $start)
+function admStrStartsWith(string $string, string $start)
 {
     return strpos($string, $start) === 0;
 }
@@ -258,7 +258,7 @@ function admStrStartsWith($string, $start)
  * @param string $end    The ending string pattern
  * @return bool Returns true if the string ends with the other string
  */
-function admStrEndsWith($string, $end)
+function admStrEndsWith(string $string, string $end)
 {
     return strrpos($string, $end) === strlen($string) - strlen($end);
 }
@@ -268,7 +268,7 @@ function admStrEndsWith($string, $end)
  * @param string $string The string to check
  * @return bool Returns true if the given string is a translation-string-id
  */
-function admIsTranslationStrId($string)
+function admIsTranslationStrId(string $string)
 {
     return (bool) preg_match('/^[A-Z]{3}_[A-Z_]+/', $string);
 }

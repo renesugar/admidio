@@ -153,7 +153,7 @@ class HtmlNavbar
      *                            dropdown. Just commit the id of that item.
      * @param string $class       Optional a css class that will be set for the item.
      */
-    public function addItem(string $id, string $url, string $text, string $icon, string $orientation = 'left', string $parentItem = 'navbar', string $class = '')
+    public function addItem(string $id, string $url, string $text, string $icon = '', string $orientation = 'left', string $parentItem = 'navbar', string $class = '')
     {
         $urlStartRegex = '/^(http(s?):)?\/\//';
 

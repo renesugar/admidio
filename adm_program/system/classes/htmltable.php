@@ -298,7 +298,7 @@ class HtmlTable extends HtmlTableBasic
              * @param int $item
              * @return int decremented item
              */
-            function decrement($item): int
+            function decrement(int $item): int
             {
                 return --$item;
             }

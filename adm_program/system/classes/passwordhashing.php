@@ -230,7 +230,7 @@ class PasswordHashing
      * @throws AdmException SYS_GEN_RANDOM_ERROR, SYS_GEN_RANDOM_EXCEPTION
      * @return int Returns an insecure random integer
      */
-    private static function genRandomIntFallback(int $min, int $max, bool $exceptionOnInsecurePRNG, $exception, string $exceptionMessage)
+    private static function genRandomIntFallback(int $min, int $max, bool $exceptionOnInsecurePRNG, $exception, string $exceptionMessage): int
     {
         global $gLogger;
 
@@ -253,7 +253,7 @@ class PasswordHashing
      * @throws AdmException SYS_GEN_RANDOM_ERROR, SYS_GEN_RANDOM_EXCEPTION
      * @return int Returns a cryptographically strong random integer
      */
-    public static function genRandomInt(int $min, int $max, bool $exceptionOnInsecurePRNG = false)
+    public static function genRandomInt(int $min, int $max, bool $exceptionOnInsecurePRNG = false): int
     {
         try
         {
@@ -276,7 +276,7 @@ class PasswordHashing
      * @param string $password The password you want the get infos about
      * @return array<string,int|bool> Returns an array with infos about the given password
      */
-    public static function passwordInfo(string $password)
+    public static function passwordInfo(string $password): array
     {
         $passwordInfo = array(
             'length'    => 0,
@@ -343,7 +343,7 @@ class PasswordHashing
      * @param array<int,string> $userData An array of strings for dictionary attacks
      * @return int Returns the score of the password
      */
-    public static function passwordStrength(string $password, array $userData = array())
+    public static function passwordStrength(string $password, array $userData = array()): int
     {
         $zxcvbn = new \ZxcvbnPhp\Zxcvbn();
         $strength = $zxcvbn->passwordStrength($password, $userData);
@@ -358,7 +358,7 @@ class PasswordHashing
      * @param array<string,mixed> $options   The options to test
      * @return array<string,int|float> Returns an array with the maximum tested cost with the required time
      */
-    public static function costBenchmark(float $maxTime = 0.35, string $password = 'password', string $algorithm = self::HASH_ALGORITHM_DEFAULT, array $options = array('cost' => null))
+    public static function costBenchmark(float $maxTime = 0.35, string $password = 'password', string $algorithm = self::HASH_ALGORITHM_DEFAULT, array $options = array('cost' => null)): array
     {
         global $gLogger;
 

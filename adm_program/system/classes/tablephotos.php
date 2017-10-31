@@ -51,7 +51,7 @@ class TablePhotos extends TableAccess
      * @param int $phoId
      * @return int
      */
-    public function countImages(int $phoId = 0)
+    public function countImages(int $phoId = 0): int
     {
         $totalImages = 0;
 
@@ -221,7 +221,7 @@ class TablePhotos extends TableAccess
      * @param int $phoId
      * @return array
      */
-    public function shuffleImage(int $phoId = 0)
+    public function shuffleImage(int $phoId = 0): array
     {
         $shuffleImage = array('shuffle_pho_id' => 0, 'shuffle_img_nr' => 0, 'shuffle_img_begin' => '');
 

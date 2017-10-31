@@ -217,7 +217,7 @@ class Language
      * Returns an array with all countries and their ISO codes
      * @return array<string,string> Array with all countries and their ISO codes e.g.: array('DEU' => 'Germany' ...)
      */
-    public function getCountries()
+    public function getCountries(): array
     {
         $countries = $this->languageData->getCountriesArray();
 
@@ -346,7 +346,7 @@ class Language
      * The array will have the following syntax e.g.: array('DE' => 'deutsch' ...)
      * @return array<string,string> Return an array with all available languages.
      */
-    public function getAvailableLanguages()
+    public function getAvailableLanguages(): array
     {
         if(count($this->languages) === 0)
         {

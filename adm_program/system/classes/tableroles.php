@@ -120,7 +120,7 @@ class TableRoles extends TableAccess
      * Method determines the number of active leaders of this role
      * @return int Returns the number of leaders of this role
      */
-    public function countLeaders()
+    public function countLeaders(): int
     {
         if ($this->countLeaders === -1)
         {
@@ -143,7 +143,7 @@ class TableRoles extends TableAccess
      * @param int $exceptUserId UserId witch shouldn't be counted
      * @return int Returns the number of members of this role
      */
-    public function countMembers($exceptUserId = null)
+    public function countMembers($exceptUserId = null): int
     {
         if ($this->countMembers === -1)
         {
@@ -300,7 +300,7 @@ class TableRoles extends TableAccess
      * If there is no list stored then the system default list will be returned
      * @return int Returns the default list id of this role
      */
-    public function getDefaultList()
+    public function getDefaultList(): int
     {
         global $gPreferences;
 

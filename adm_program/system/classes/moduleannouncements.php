@@ -86,7 +86,7 @@ class ModuleAnnouncements extends Modules
      * @param int $limit
      * @return array<string,mixed> Returns the Array with results, recordsets and validated parameters from $_GET Array
      */
-    public function getDataSet(int $startElement = 0, $limit = null)
+    public function getDataSet(int $startElement = 0, $limit = null): array
     {
         global $gCurrentUser, $gDb;
 
@@ -154,7 +154,7 @@ class ModuleAnnouncements extends Modules
      * Get additional tables for sql statement
      * @return array<string,string|array<int,int>> Returns an array of a SQL string with the necessary joins and it's query params.
      */
-    private function sqlGetAdditional()
+    private function sqlGetAdditional(): array
     {
         global $gPreferences, $gProfileFields;
 
@@ -208,7 +208,7 @@ class ModuleAnnouncements extends Modules
      * as additional conditions in other SQL queries.
      * @return array<string,mixed> Returns an array of a SQL string with additional conditions and it's query params.
      */
-    private function getSqlConditions()
+    private function getSqlConditions(): array
     {
         $sqlConditions = '';
         $params = array();

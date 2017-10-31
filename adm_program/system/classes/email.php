@@ -545,7 +545,7 @@ class Email extends PHPMailer
      * @param string $sizeUnit 'Byte' = byte, 'KiB' = kibibyte, 'MiB' = mebibyte, 'GiB' = gibibyte, 'TiB' = tebibyte
      * @return float The maximum attachment size in the given size-unit
      */
-    public static function getMaxAttachmentSize(string $sizeUnit = self::SIZE_UNIT_BYTE)
+    public static function getMaxAttachmentSize(string $sizeUnit = self::SIZE_UNIT_BYTE): float
     {
         global $gPreferences;
 
@@ -595,7 +595,7 @@ class Email extends PHPMailer
      * @param string $sizeUnit 'b' = byte, 'kib' = kilobyte, 'mib' = megabyte, 'gib' = gigabyte, 'tib' = terabyte
      * @return float The maximum attachment size in the given size-unit
      */
-    public static function getMaxAttachementSize(string $sizeUnit = self::SIZE_UNIT_MEBIBYTE)
+    public static function getMaxAttachementSize(string $sizeUnit = self::SIZE_UNIT_MEBIBYTE): float
     {
         global $gLogger;
 

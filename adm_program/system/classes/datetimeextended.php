@@ -67,7 +67,7 @@ class DateTimeExtended extends DateTime
      *             Use \DateTime::createFromFormat()->diff(new \DateTime('now'))->y
      * @return int
      */
-    public function getAge()
+    public function getAge(): int
     {
         global $gLogger;
 

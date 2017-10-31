@@ -764,7 +764,7 @@ class Database
      * @param string $table Name of the database table for which the columns-properties should be shown.
      * @return array<string,array<string,mixed>> Returns an array with column-names.
      */
-    public function getTableColumnsProperties(string $table)
+    public function getTableColumnsProperties(string $table): array
     {
         if (!array_key_exists($table, $this->dbStructure))
         {
@@ -779,7 +779,7 @@ class Database
      * @param string $table Name of the database table for which the columns should be shown.
      * @return array<int,string> Returns an array with each column and their properties.
      */
-    public function getTableColumns(string $table)
+    public function getTableColumns(string $table): array
     {
         if (!array_key_exists($table, $this->dbStructure))
         {
@@ -845,7 +845,7 @@ class Database
      * @return array<int,string> Returns an array with all available PDO database drivers of the server.
      * @see <a href="https://secure.php.net/manual/en/pdo.getavailabledrivers.php">PDO::getAvailableDrivers</a>
      */
-    public static function getAvailableDBs()
+    public static function getAvailableDBs(): array
     {
         global $gLogger;
 
@@ -970,7 +970,7 @@ class Database
      * @param bool   $showColumnProperties If this is set to @b false only the column names were returned.
      * @return array<string,array<string,mixed>>|array<int,string> Returns an array with each column and their properties if $showColumnProperties is set to @b true.
      */
-    public function showColumns(string $table, bool $showColumnProperties = true)
+    public function showColumns(string $table, bool $showColumnProperties = true): array
     {
         global $gLogger;
 

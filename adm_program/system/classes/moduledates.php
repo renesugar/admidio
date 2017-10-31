@@ -147,7 +147,7 @@ class ModuleDates extends Modules
      * @param int $limit        Limit of query rows (default: 0)
      * @return array<string,mixed> Array with all results, dates and parameters.
      */
-    public function getDataSet(int $startElement = 0, $limit = null)
+    public function getDataSet(int $startElement = 0, $limit = null): array
     {
         global $gDb, $gPreferences, $gCurrentUser;
 
@@ -244,7 +244,7 @@ class ModuleDates extends Modules
      * Get number of available dates.
      * @return int
      */
-    public function getDataSetCount()
+    public function getDataSetCount(): int
     {
         global $gDb, $gCurrentUser;
 
@@ -357,7 +357,7 @@ class ModuleDates extends Modules
      * Get additional tables for sql statement
      * @return array<string,string|array<int,int>> Returns an array of a SQL string with the necessary joins and it's query params.
      */
-    private function sqlGetAdditional()
+    private function sqlGetAdditional(): array
     {
         global $gPreferences, $gProfileFields;
 
@@ -410,7 +410,7 @@ class ModuleDates extends Modules
      * Add several conditions to an SQL string that could later be used as additional conditions in other SQL queries.
      * @return array<string,mixed> Returns an array of a SQL string with additional conditions and it's query params.
      */
-    private function getSqlConditions()
+    private function getSqlConditions(): array
     {
         global $gCurrentUser;
 

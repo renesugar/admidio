@@ -82,7 +82,7 @@ class Image
     /**
      * @return array<int,int> Returns an array of the image width and height
      */
-    public function getImageSize()
+    public function getImageSize(): array
     {
         return array($this->imageWidth, $this->imageHeight);
     }

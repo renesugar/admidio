@@ -94,7 +94,7 @@ abstract class Modules
      * @param int $limit
      * @return array
      */
-    abstract public function getDataSet(int $startElement = 0, $limit = null);
+    abstract public function getDataSet(int $startElement = 0, $limit = null): array;
 
     /**
      * @return mixed
@@ -120,7 +120,7 @@ abstract class Modules
      * Return ID
      * @return int Returns the ID of the record
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -129,7 +129,7 @@ abstract class Modules
      * Return the daterange
      * @return array[] Returns daterange as array with English format and system format
      */
-    public function getDaterange()
+    public function getDaterange(): array
     {
         return $this->daterange;
     }
@@ -156,7 +156,7 @@ abstract class Modules
      * Return start element
      * @return int Returns Integer value for the start element
      */
-    public function getStartElement()
+    public function getStartElement(): int
     {
         return $this->start;
     }
@@ -180,7 +180,7 @@ abstract class Modules
      * Return parameter set as Array
      * @return array<string,mixed> Returns an Array with all needed parameters as Key/Value pair
      */
-    public function getParameters()
+    public function getParameters(): array
     {
         // Set Array
         $this->arrParameter['active_role']  = $this->activeRole;

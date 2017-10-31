@@ -253,7 +253,7 @@ class ModuleLists extends Modules
      * @param int $limit        Number of elements returned max. Default NULL will take number from preferences.
      * @return array<string,mixed> with list and corresponding information
      */
-    public function getDataSet(int $startElement = 0, $limit = null)
+    public function getDataSet(int $startElement = 0, $limit = null): array
     {
         global $gCurrentOrganization, $gPreferences, $gDb;
 
@@ -316,7 +316,7 @@ class ModuleLists extends Modules
      * Function to get total number of lists limited by current conditions.
      * @return int Number of lists.
      */
-    public function getDataSetCount()
+    public function getDataSetCount(): int
     {
         global $gCurrentOrganization, $gDb;
 
@@ -341,7 +341,7 @@ class ModuleLists extends Modules
      * Function to get list configurations accessible by current user
      * @return array<int,array<int,int|string|bool>> with accessible list configurations
      */
-    public function getListConfigurations()
+    public function getListConfigurations(): array
     {
         global $gCurrentOrganization, $gCurrentUser, $gDb;
 

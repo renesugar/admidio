@@ -83,7 +83,7 @@ class Organization extends TableAccess
      * this method will cache the value and will return the cached value on multiple calls.
      * @return int Number of all organizations in database.
      */
-    public function countAllRecords()
+    public function countAllRecords(): int
     {
         if($this->countOrganizations === 0)
         {
@@ -375,7 +375,7 @@ class Organization extends TableAccess
      *                       otherwise it will be @b org_shortname
      * @return array<int,string> Returns an array with all child and parent organizations e.g. array('org_id' => 'org_shortname')
      */
-    public function getOrganizationsInRelationship(bool $child = true, bool $parent = true, bool $longname = false)
+    public function getOrganizationsInRelationship(bool $child = true, bool $parent = true, bool $longname = false): array
     {
         $sqlWhere = array();
         $queryParams = array();
@@ -420,7 +420,7 @@ class Organization extends TableAccess
      * @return array<string,string> Returns an array with all preferences of this organization.
      *                              Array key is the column @b prf_name and array value is the column @b prf_value.
      */
-    public function getPreferences(bool $update = false)
+    public function getPreferences(bool $update = false): array
     {
         if($update || count($this->preferences) === 0)
         {
@@ -444,7 +444,7 @@ class Organization extends TableAccess
     /**
      * @return array<int,string> Returns an array with all child organizations
      */
-    protected function getChildOrganizations()
+    protected function getChildOrganizations(): array
     {
         if(!$this->bCheckChildOrganizations)
         {
@@ -546,7 +546,7 @@ class Organization extends TableAccess
     /**
      * @return array<string,mixed>
      */
-    public function getDbColumns()
+    public function getDbColumns(): array
     {
         return $this->dbColumns;
     }

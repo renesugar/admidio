@@ -47,7 +47,7 @@ class TableFolder extends TableAccess
      * @param array<string,array<int,array<string,mixed>>> $completeFolder
      * @return array<string,array<int,array<string,mixed>>>
      */
-    private function addAdditionalToFolderContents(array $completeFolder)
+    private function addAdditionalToFolderContents(array $completeFolder): array
     {
         global $gCurrentUser;
 
@@ -373,7 +373,7 @@ class TableFolder extends TableAccess
     /**
      * @return array<int,array<string,mixed>> All files with their properties
      */
-    private function getFilesWithProperties()
+    private function getFilesWithProperties(): array
     {
         global $gCurrentUser;
 
@@ -428,7 +428,7 @@ class TableFolder extends TableAccess
      * Inhalt des aktuellen Ordners, abhaengig von den Benutzerrechten, als Array zurueckliefern...
      * @return array<string,array<int,array<string,mixed>>>
      */
-    public function getFolderContentsForDownload()
+    public function getFolderContentsForDownload(): array
     {
         $completeFolder = array(
             'folders' => $this->getSubfoldersWithProperties(),
@@ -591,7 +591,7 @@ class TableFolder extends TableAccess
      * Returns an array with all roles ids that have the right to view the folder.
      * @return array<int,int> Returns an array with all role ids that have the right to view the folder.
      */
-    public function getRoleViewArrayOfFolder()
+    public function getRoleViewArrayOfFolder(): array
     {
         return $this->folderViewRolesObject->getRolesIds();
     }
@@ -600,7 +600,7 @@ class TableFolder extends TableAccess
      * Returns an array with all roles ids that have the right to upload files to the folder.
      * @return array<int,int> Returns an array with all role ids that have the right to upload files to the folder.
      */
-    public function getRoleUploadArrayOfFolder()
+    public function getRoleUploadArrayOfFolder(): array
     {
         return $this->folderUploadRolesObject->getRolesIds();
     }
@@ -624,7 +624,7 @@ class TableFolder extends TableAccess
     /**
      * @return array<int,array<string,mixed>> All sub-folders with their properties
      */
-    private function getSubfoldersWithProperties()
+    private function getSubfoldersWithProperties(): array
     {
         global $gCurrentOrganization, $gCurrentUser, $gValidLogin;
 

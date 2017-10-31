@@ -103,7 +103,7 @@ class ListConfiguration extends TableLists
      * Return count of columns
      * @return int
      */
-    public function countColumns()
+    public function countColumns(): int
     {
         return count($this->columns);
     }

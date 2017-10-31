@@ -108,7 +108,7 @@ class ModuleWeblinks extends Modules
      * @param int $limit        Number of elements returned max. Default NULL will take number from preferences.
      * @return array<string,mixed> with links and corresponding information
      */
-    public function getDataSet(int $startElement = 0, $limit = null)
+    public function getDataSet(int $startElement = 0, $limit = null): array
     {
         global $gCurrentUser, $gPreferences, $gDb;
 
@@ -155,7 +155,7 @@ class ModuleWeblinks extends Modules
      * Function to get total number of links filtered by current conditions.
      * @return int Number of links.
      */
-    public function getDataSetCount()
+    public function getDataSetCount(): int
     {
         global $gCurrentUser, $gDb;
 
@@ -196,7 +196,7 @@ class ModuleWeblinks extends Modules
      * Add several conditions to an SQL string that could later be used as additional conditions in other SQL queries.
      * @return array<string,string|array<int,int>> Returns an array of a SQL string with additional conditions and it's query params.
      */
-    private function getSqlConditions()
+    private function getSqlConditions(): array
     {
         $sqlConditions = '';
         $params = array();

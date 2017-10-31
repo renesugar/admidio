@@ -42,7 +42,7 @@ class TableMessage extends TableAccess
      * @param int $usrId
      * @return int Number of unread messages of this table
      */
-    public function countUnreadMessageRecords(int $usrId)
+    public function countUnreadMessageRecords(int $usrId): int
     {
         $sql = 'SELECT COUNT(*) AS count
                   FROM '.$this->tableName.'
@@ -57,7 +57,7 @@ class TableMessage extends TableAccess
      * Reads the number of all conversations in this table
      * @return int Number of conversations in this table
      */
-    public function countMessageConversations()
+    public function countMessageConversations(): int
     {
         $sql = 'SELECT COUNT(*) AS count FROM ' . TBL_MESSAGES;
         $countStatement = $this->db->queryPrepared($sql);
@@ -69,7 +69,7 @@ class TableMessage extends TableAccess
      * Reads the number of all messages in actual conversation
      * @return int Number of all messages in actual conversation
      */
-    public function countMessageParts()
+    public function countMessageParts(): int
     {
         $sql = 'SELECT COUNT(*) AS count
                   FROM '.TBL_MESSAGES_CONTENT.'
@@ -115,7 +115,7 @@ class TableMessage extends TableAccess
      * @param int $usrId
      * @return int Returns @b ID of the user that is partner in the actual conversation
      */
-    public function getConversationPartner(int $usrId)
+    public function getConversationPartner(int $usrId): int
     {
         $sql = 'SELECT
                   CASE

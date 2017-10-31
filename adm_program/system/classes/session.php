@@ -144,7 +144,7 @@ class Session extends TableAccess
      * user had set the AutoLogin to a different organization.
      * @return int Returns the organization id of this session
      */
-    public function getOrganizationId()
+    public function getOrganizationId(): int
     {
         if ($this->mAutoLogin instanceof AutoLogin)
         {

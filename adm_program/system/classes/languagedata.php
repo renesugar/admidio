@@ -138,7 +138,7 @@ class LanguageData
      * Returns an array with all countries and their ISO codes
      * @return array<string,string> Array with all countries and their ISO codes e.g.: array('DEU' => 'Germany' ...)
      */
-    public function getCountriesArray()
+    public function getCountriesArray(): array
     {
         return $this->countries;
     }
@@ -167,7 +167,7 @@ class LanguageData
      * Returns an array with all language paths that were set.
      * @return array<int,string> with all language paths that were set.
      */
-    public function getLanguagePaths()
+    public function getLanguagePaths(): array
     {
         return $this->languageFilePath;
     }

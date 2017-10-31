@@ -25,7 +25,7 @@ class PhpIni
      * @param int    $multi Factor to multiply. Default: 1024
      * @return int
      */
-    private static function getBytesFromSize(string $data, int $multi = self::BYTES_UNIT_FACTOR_1024)
+    private static function getBytesFromSize(string $data, int $multi = self::BYTES_UNIT_FACTOR_1024): int
     {
         if ($data === '' || $data === '-1')
         {
@@ -64,7 +64,7 @@ class PhpIni
      * Returns the allowed base-dirs
      * @return array<string,string>
      */
-    public static function getBaseDirs()
+    public static function getBaseDirs(): array
     {
         return explode(PATH_SEPARATOR, ini_get('open_basedir'));
     }
@@ -73,7 +73,7 @@ class PhpIni
      * Returns the memory limit
      * @return int
      */
-    public static function getMemoryLimit()
+    public static function getMemoryLimit(): int
     {
         return self::getBytesFromSize(ini_get('memory_limit'));
     }
@@ -82,7 +82,7 @@ class PhpIni
      * Returns the maximum post size
      * @return int
      */
-    public static function getPostMaxSize()
+    public static function getPostMaxSize(): int
     {
         return self::getBytesFromSize(ini_get('post_max_size'));
     }
@@ -109,7 +109,7 @@ class PhpIni
      * Returns the maximum upload filesize
      * @return int
      */
-    public static function getFileUploadMaxFileSize()
+    public static function getFileUploadMaxFileSize(): int
     {
         return self::getBytesFromSize(ini_get('upload_max_filesize'));
     }
@@ -118,7 +118,7 @@ class PhpIni
      * Returns the maximum file upload count
      * @return int
      */
-    public static function getFileUploadMaxFileCount()
+    public static function getFileUploadMaxFileCount(): int
     {
         return (int) ini_get('max_file_uploads');
     }
@@ -127,7 +127,7 @@ class PhpIni
      * Returns the maximum upload size out of memory-limit, max-post-size and max-file-size
      * @return int
      */
-    public static function getUploadMaxSize()
+    public static function getUploadMaxSize(): int
     {
         return min(self::getMemoryLimit(), self::getPostMaxSize(), self::getFileUploadMaxFileSize());
     }

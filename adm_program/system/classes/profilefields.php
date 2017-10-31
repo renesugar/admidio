@@ -88,7 +88,7 @@ class ProfileFields
     /**
      * @return array<string,TableUserField>
      */
-    public function getProfileFields()
+    public function getProfileFields(): array
     {
         return $this->mProfileFields;
     }

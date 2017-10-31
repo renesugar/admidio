@@ -94,7 +94,7 @@ class Participants
      * @param int $rolId
      * @return int Returns the result of count participants as numeric value in current object. Leaders are not counted!
      */
-    public function getCount(int $rolId = 0)
+    public function getCount(int $rolId = 0): int
     {
         if ($rolId !== 0)
         {
@@ -151,7 +151,7 @@ class Participants
      * @param int $rolId
      * @return int Returns the limit of participants as numeric value of the current object. Leaders are not counted!
      */
-    public function getLimit(int $rolId = 0)
+    public function getLimit(int $rolId = 0): int
     {
         // check if class variables $count and $leader are set to default flag.
         if($this->count === -1 && $this->leader === -1)
@@ -168,7 +168,7 @@ class Participants
      * @param int $rolId
      * @return int Returns the number of leaders as numeric value of the current object.
      */
-    public function getNumLeaders(int $rolId = 0)
+    public function getNumLeaders(int $rolId = 0): int
     {
         // check if class variables $count and $leader are set to default flag.
         if($this->count === -1 && $this->leader === -1)

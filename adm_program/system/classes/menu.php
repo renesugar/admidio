@@ -56,7 +56,7 @@ class Menu
      * @param string $desc
      * @return array<string,string|array>
      */
-    private function buildItem(string $id, string $link, string $text, string $icon, string $desc = '')
+    private function buildItem(string $id, string $link, string $text, string $icon, string $desc = ''): array
     {
         // add root path to link unless the full URL is given
         if (preg_match('/^http(s?):\/\//', $link) === 0)

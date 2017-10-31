@@ -61,7 +61,7 @@ class ComponentUpdate extends Component
      * @param string $versionString A version string
      * @return array<int,int> Returns an array with the version parts
      */
-    private static function getVersionArrayFromVersion(string $versionString)
+    private static function getVersionArrayFromVersion(string $versionString): array
     {
         return array_map('intval', explode('.', $versionString));
     }
@@ -163,7 +163,7 @@ class ComponentUpdate extends Component
      * If the last step is found than the id of this step will be returned.
      * @return int Return the number of the last update step that was found in xml file of the current version.
      */
-    public function getMaxUpdateStep()
+    public function getMaxUpdateStep(): int
     {
         $maxUpdateStep = 0;
         $this->currentVersionArray = self::getVersionArrayFromVersion($this->getValue('com_version'));

@@ -189,7 +189,7 @@ class TableAccess
      * Reads the number of all records of this table
      * @return int Number of records of this table
      */
-    public function countAllRecords()
+    public function countAllRecords(): int
     {
         $sql = 'SELECT COUNT(*) AS count FROM '.$this->tableName;
         $countStatement = $this->db->queryPrepared($sql);

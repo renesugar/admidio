@@ -77,7 +77,7 @@ class ModuleMessages
      * @param string $groupString (e.g: "groupID: 4-2")
      * @return array<string,string|int> Returns the groupId and status
      */
-    public function msgGroupSplit(string $groupString)
+    public function msgGroupSplit(string $groupString): array
     {
         $groupSplit = explode(':', $groupString);
         $groupIdAndStatus = explode('-', trim($groupSplit[1]));
@@ -165,7 +165,7 @@ class ModuleMessages
      * return the message ID of the admidio chat.
      * @return int
      */
-    public function msgGetChatId()
+    public function msgGetChatId(): int
     {
         global $gDb;
 

@@ -866,7 +866,7 @@ class User extends TableAccess
      * @param array<int,bool> $rightsList
      * @return array<int,int>
      */
-    private function getAllRolesWithRight(array $rightsList)
+    private function getAllRolesWithRight(array $rightsList): array
     {
         $this->checkRolesRight();
 
@@ -887,7 +887,7 @@ class User extends TableAccess
      * Creates an array with all roles where the user has the right to mail them
      * @return array<int,int> Array with role ids where user has the right to mail them
      */
-    public function getAllMailRoles()
+    public function getAllMailRoles(): array
     {
         return $this->getAllRolesWithRight($this->listMailRights);
     }
@@ -897,7 +897,7 @@ class User extends TableAccess
      * @param string $categoryType The type of the category that should be checked e.g. ANN, USF or DAT
      * @return array<int,int> Array with categories ids where user has the right to view them
      */
-    public function getAllVisibleCategories(string $categoryType)
+    public function getAllVisibleCategories(string $categoryType): array
     {
         $rolIdParams = array_merge(array(0), $this->getRoleMemberships());
 
@@ -947,7 +947,7 @@ class User extends TableAccess
      * Creates an array with all roles where the user has the right to view them
      * @return array<int,int> Array with role ids where user has the right to view them
      */
-    public function getAllVisibleRoles()
+    public function getAllVisibleRoles(): array
     {
         return $this->getAllRolesWithRight($this->listViewRights);
     }
@@ -957,7 +957,7 @@ class User extends TableAccess
      * This is in the default case the default organization of the config file.
      * @return int Returns the id of the organization this user object has been assigned
      */
-    public function getOrganization()
+    public function getOrganization(): int
     {
         return $this->organizationId;
     }
@@ -966,7 +966,7 @@ class User extends TableAccess
      * Returns an array with all role ids where the user is a member.
      * @return array<int,int> Returns an array with all role ids where the user is a member.
      */
-    public function getRoleMemberships()
+    public function getRoleMemberships(): array
     {
         $this->checkRolesRight();
 
@@ -977,7 +977,7 @@ class User extends TableAccess
      * Returns an array with all role ids where the user is a member and not a leader of the role.
      * @return array<int,int> Returns an array with all role ids where the user is a member and not a leader of the role.
      */
-    public function getRoleMembershipsNoLeader()
+    public function getRoleMembershipsNoLeader(): array
     {
         $this->checkRolesRight();
 
@@ -1556,7 +1556,7 @@ class User extends TableAccess
      * Returns data from the user to improve dictionary attack check
      * @return array<int,string>
      */
-    public function getPasswordUserData()
+    public function getPasswordUserData(): array
     {
         $userData = array(
             // Names

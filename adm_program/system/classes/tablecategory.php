@@ -150,7 +150,7 @@ class TableCategory extends TableAccess
      * Read number of child recordsets of this category.
      * @return int Returns the number of child elements of this category
      */
-    public function getNumberElements()
+    public function getNumberElements(): int
     {
         $sql = 'SELECT COUNT(*) AS count
                   FROM '.$this->elementTable.'

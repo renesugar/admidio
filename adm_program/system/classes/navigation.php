@@ -65,7 +65,7 @@ class Navigation
      * Number of urls that a currently in the stack
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         return count($this->urlStack);
     }

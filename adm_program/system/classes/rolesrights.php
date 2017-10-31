@@ -123,7 +123,7 @@ class RolesRights extends TableAccess
      * Get all roles ids that where assigned to the current roles right and the selected object.
      * @return array<int,int> Returns an array with all role ids
      */
-    public function getRolesIds()
+    public function getRolesIds(): array
     {
         return $this->rolesIds;
     }
@@ -132,7 +132,7 @@ class RolesRights extends TableAccess
      * Get all names of the roles that where assigned to the current roles right and the selected object.
      * @return array<int,string> Returns an array with all roles names
      */
-    public function getRolesNames()
+    public function getRolesNames(): array
     {
         $arrRolesNames = array();
 

@@ -52,7 +52,7 @@ class DateTimeExtended extends DateTime
      * @deprecated 3.2.0:4.0.0 Switched to native DateTime method. Use \DateTime::createFromFormat() === false
      * @return bool
      */
-    public function isValid()
+    public function isValid(): bool
     {
         global $gLogger;
 

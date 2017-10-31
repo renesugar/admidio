@@ -57,7 +57,7 @@ class ListConfiguration extends TableLists
      * @param string     $filter
      * @return bool
      */
-    public function addColumn(int $number, $field, string $sort = '', string $filter = '')
+    public function addColumn(int $number, $field, string $sort = '', string $filter = ''): bool
     {
         // can join max. 61 tables
         // Passed parameters must be set carefully
@@ -114,7 +114,7 @@ class ListConfiguration extends TableLists
      * @param bool $all    Define all columns to be deleted
      * @return bool
      */
-    public function deleteColumn(int $number, bool $all = false)
+    public function deleteColumn(int $number, bool $all = false): bool
     {
         if($number > $this->countColumns())
         {
@@ -442,7 +442,7 @@ class ListConfiguration extends TableLists
      * @param bool $updateFingerPrint
      * @return bool
      */
-    public function save(bool $updateFingerPrint = true)
+    public function save(bool $updateFingerPrint = true): bool
     {
         $this->db->startTransaction();
 

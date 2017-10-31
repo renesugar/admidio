@@ -39,7 +39,7 @@ class TableWeblink extends TableAccess
      * Global weblinks could be only edited by the parent organization.
      * @return bool Return true if the current user is allowed to edit this weblink
      */
-    public function editable()
+    public function editable(): bool
     {
         global $gCurrentOrganization, $gCurrentUser;
 
@@ -113,7 +113,7 @@ class TableWeblink extends TableAccess
      * @param bool   $checkValue The value will be checked if it's valid. If set to @b false than the value will not be checked.
      * @return bool Returns @b true if the value is stored in the current object and @b false if a check failed
      */
-    public function setValue(string $columnName, $newValue, bool $checkValue = true)
+    public function setValue(string $columnName, $newValue, bool $checkValue = true): bool
     {
         if ($columnName === 'lnk_description')
         {
@@ -138,7 +138,7 @@ class TableWeblink extends TableAccess
      * the visibility of the category is checked.
      * @return bool Return true if the current user is allowed to view this weblink
      */
-    public function visible()
+    public function visible(): bool
     {
         global $gCurrentUser;
 

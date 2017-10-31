@@ -55,7 +55,7 @@ class PhpIni
      * @deprecated 3.3.0:4.0.0 This function will be removed if PHP 5.3 support gets dropped
      * @return bool
      */
-    public static function isSafeModeEnabled()
+    public static function isSafeModeEnabled(): bool
     {
         return (bool) ini_get('safe_mode');
     }
@@ -91,7 +91,7 @@ class PhpIni
      * Returns if file-upload is enabled
      * @return bool
      */
-    public static function isFileUploadEnabled()
+    public static function isFileUploadEnabled(): bool
     {
         return (bool) ini_get('file_uploads');
     }
@@ -136,7 +136,7 @@ class PhpIni
      * Checks if the size limits have valid values because they depend on each other
      * @return bool
      */
-    public static function checkSizeLimits()
+    public static function checkSizeLimits(): bool
     {
         return (self::getMemoryLimit() === -1 || self::getMemoryLimit() >= self::getPostMaxSize())
             && (self::getPostMaxSize() === -1 || self::getPostMaxSize() >= self::getFileUploadMaxFileSize());
@@ -147,7 +147,7 @@ class PhpIni
      * @param string $dirPath The path to check
      * @return bool
      */
-    private static function isInBaseDirs(string $dirPath)
+    private static function isInBaseDirs(string $dirPath): bool
     {
         $baseDirs = self::getBaseDirs();
 

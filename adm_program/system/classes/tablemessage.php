@@ -137,7 +137,7 @@ class TableMessage extends TableAccess
      * @return bool @b true if message is deleted or message with additional information if it is marked
      *         for other user to delete. On error it is false
      */
-    public function delete()
+    public function delete(): bool
     {
         global $gCurrentUser;
 

@@ -111,7 +111,7 @@ class TablePhotos extends TableAccess
      * After that the class will be initialize.
      * @return bool @b true if no error occurred
      */
-    public function delete()
+    public function delete(): bool
     {
         if ($this->deleteInDatabase((int) $this->getValue('pho_id')))
         {
@@ -126,7 +126,7 @@ class TablePhotos extends TableAccess
      * @param int $photoId
      * @return bool
      */
-    public function deleteInDatabase(int $photoId)
+    public function deleteInDatabase(int $photoId): bool
     {
         $returnValue = true;
 
@@ -179,7 +179,7 @@ class TablePhotos extends TableAccess
      * Check if this album has one or more child albums.
      * @return bool Return @b true if child albums exists.
      */
-    public function hasChildAlbums()
+    public function hasChildAlbums(): bool
     {
         if ($this->hasChildAlbums === null)
         {
@@ -203,7 +203,7 @@ class TablePhotos extends TableAccess
      * @param bool $updateFingerPrint Default @b true. Will update the creator or editor of the recordset if table has columns like @b usr_id_create or @b usr_id_changed
      * @return bool If an update or insert into the database was done then return true, otherwise false.
      */
-    public function save(bool $updateFingerPrint = true)
+    public function save(bool $updateFingerPrint = true): bool
     {
         global $gCurrentOrganization;
 

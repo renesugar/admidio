@@ -95,7 +95,7 @@ class RoleDependency
      * @param int $parentRoleId
      * @return bool
      */
-    public function get(int $childRoleId, int $parentRoleId)
+    public function get(int $childRoleId, int $parentRoleId): bool
     {
         $this->clear();
 
@@ -187,7 +187,7 @@ class RoleDependency
      * Check if roleIdParent and roleIdChild is 0
      * @return bool Returns true if roleIdParent and roleIdChild is 0
      */
-    public function isEmpty()
+    public function isEmpty(): bool
     {
         return $this->roleIdParent === 0 && $this->roleIdChild === 0;
     }
@@ -196,7 +196,7 @@ class RoleDependency
      * @param int $loginUserId
      * @return bool
      */
-    public function insert(int $loginUserId)
+    public function insert(int $loginUserId): bool
     {
         if ($loginUserId > 0 && !$this->isEmpty())
         {
@@ -218,7 +218,7 @@ class RoleDependency
      * @param int      $parentId
      * @return bool
      */
-    public static function removeChildRoles(Database $database, int $parentId)
+    public static function removeChildRoles(Database $database, int $parentId): bool
     {
         if ($parentId > 0)
         {
@@ -236,7 +236,7 @@ class RoleDependency
      * @param int $parentId
      * @return bool
      */
-    public function setParent(int $parentId)
+    public function setParent(int $parentId): bool
     {
         if ($parentId > 0)
         {
@@ -253,7 +253,7 @@ class RoleDependency
      * @param int $childId
      * @return bool
      */
-    public function setChild(int $childId)
+    public function setChild(int $childId): bool
     {
         if ($childId > 0)
         {
@@ -271,7 +271,7 @@ class RoleDependency
      * @param int $loginUserId
      * @return bool
      */
-    public function update(int $loginUserId)
+    public function update(int $loginUserId): bool
     {
         if ($loginUserId > 0 && !$this->isEmpty())
         {
@@ -307,7 +307,7 @@ class RoleDependency
      * the end date will be set to 31.12.9999.
      * @return bool Returns false if no parent or child row exists
      */
-    public function updateMembership()
+    public function updateMembership(): bool
     {
         if ($this->roleIdParent === 0 || $this->roleIdChild === 0)
         {

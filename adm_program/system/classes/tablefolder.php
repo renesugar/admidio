@@ -167,7 +167,7 @@ class TableFolder extends TableAccess
      * @param int $folderId
      * @return bool @b true if no error occurred
      */
-    public function delete(int $folderId = 0)
+    public function delete(int $folderId = 0): bool
     {
         $folId = (int) $this->getValue('fol_id');
         $folderPath = '';
@@ -714,7 +714,7 @@ class TableFolder extends TableAccess
      * Checks if the current user has the right to upload files to the current folder.
      * @return bool Return @b true if the user has the right to upload files
      */
-    public function hasUploadRight()
+    public function hasUploadRight(): bool
     {
         global $gCurrentUser;
 
@@ -725,7 +725,7 @@ class TableFolder extends TableAccess
      * Checks if the current user has the right to view files of the current folder.
      * @return bool Return @b true if the user has the right to view files
      */
-    public function hasViewRight()
+    public function hasViewRight(): bool
     {
         global $gCurrentUser;
 
@@ -742,7 +742,7 @@ class TableFolder extends TableAccess
      * @see TableAccess#readDataById
      * @see TableAccess#readDataByColumns
      */
-    protected function readData(string $sqlWhereCondition, array $queryParams = array())
+    protected function readData(string $sqlWhereCondition, array $queryParams = array()): bool
     {
         if (parent::readData($sqlWhereCondition, $queryParams))
         {
@@ -811,7 +811,7 @@ class TableFolder extends TableAccess
      * @param bool $updateFingerPrint Default @b true. Will update the creator or editor of the recordset if table has columns like @b usr_id_create or @b usr_id_changed
      * @return bool If an update or insert into the database was done then return true, otherwise false.
      */
-    public function save(bool $updateFingerPrint = true)
+    public function save(bool $updateFingerPrint = true): bool
     {
         global $gCurrentOrganization, $gCurrentUser;
 

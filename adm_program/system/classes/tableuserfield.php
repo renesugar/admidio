@@ -356,7 +356,7 @@ class TableUserField extends TableAccess
      * @param bool $updateFingerPrint Default @b true. Will update the creator or editor of the recordset if table has columns like @b usr_id_create or @b usr_id_changed
      * @return bool If an update or insert into the database was done then return true, otherwise false.
      */
-    public function save(bool $updateFingerPrint = true)
+    public function save(bool $updateFingerPrint = true): bool
     {
         global $gCurrentSession;
 
@@ -387,7 +387,7 @@ class TableUserField extends TableAccess
      * @param bool   $checkValue The value will be checked if it's valid. If set to @b false than the value will not be checked.
      * @return bool Returns @b true if the value is stored in the current object and @b false if a check failed
      */
-    public function setValue(string $columnName, $newValue, bool $checkValue = true)
+    public function setValue(string $columnName, $newValue, bool $checkValue = true): bool
     {
         if ($columnName === 'usf_description')
         {
@@ -429,7 +429,7 @@ class TableUserField extends TableAccess
      * the user is allowed to view the field because he has the right to edit the profile.
      * @return bool Return true if the current user is allowed to view this profile field
      */
-    public function visible()
+    public function visible(): bool
     {
         global $gCurrentUser;
 

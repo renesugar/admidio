@@ -48,7 +48,7 @@ class TableRoles extends TableAccess
      * @param User $user UserObject of user who should be checked
      * @return bool
      */
-    public function allowedToAssignMembers(User $user)
+    public function allowedToAssignMembers(User $user): bool
     {
         // you aren't allowed to change membership of not active roles
         if ((int) $this->getValue('rol_valid') === 0)
@@ -84,7 +84,7 @@ class TableRoles extends TableAccess
      * @param User $user UserObject of user who should be checked
      * @return bool
      */
-    public function allowedToEditMembers(User $user)
+    public function allowedToEditMembers(User $user): bool
     {
         // you aren't allowed to edit users of not active roles
         if ((int) $this->getValue('rol_valid') === 0)
@@ -201,7 +201,7 @@ class TableRoles extends TableAccess
      * @throws AdmException
      * @return bool @b true if no error occurred
      */
-    public function delete()
+    public function delete(): bool
     {
         global $gCurrentSession, $gL10n, $gCurrentOrganization;
 
@@ -352,7 +352,7 @@ class TableRoles extends TableAccess
      * Checks if this role has former members
      * @return bool Returns @b true if the role has former memberships
      */
-    public function hasFormerMembers()
+    public function hasFormerMembers(): bool
     {
         $sql = 'SELECT COUNT(*) AS count
                   FROM '.TBL_MEMBERS.'
@@ -372,7 +372,7 @@ class TableRoles extends TableAccess
      * @param bool $updateFingerPrint Default @b true. Will update the creator or editor of the recordset if table has columns like @b usr_id_create or @b usr_id_changed
      * @return bool If an update or insert into the database was done then return true, otherwise false.
      */
-    public function save(bool $updateFingerPrint = true)
+    public function save(bool $updateFingerPrint = true): bool
     {
         global $gCurrentSession;
 
@@ -395,7 +395,7 @@ class TableRoles extends TableAccess
      * @param bool $status
      * @return bool
      */
-    private function toggleValid(bool $status)
+    private function toggleValid(bool $status): bool
     {
         global $gCurrentSession;
 
@@ -421,7 +421,7 @@ class TableRoles extends TableAccess
      * aktuelle Rolle wird auf aktiv gesetzt
      * @return bool
      */
-    public function setActive()
+    public function setActive(): bool
     {
         return $this->toggleValid(true);
     }
@@ -430,7 +430,7 @@ class TableRoles extends TableAccess
      * aktuelle Rolle wird auf inaktiv gesetzt
      * @return bool
      */
-    public function setInactive()
+    public function setInactive(): bool
     {
         return $this->toggleValid(false);
     }
@@ -443,7 +443,7 @@ class TableRoles extends TableAccess
      * @param bool   $checkValue The value will be checked if it's valid. If set to @b false than the value will not be checked.
      * @return bool Returns @b true if the value is stored in the current object and @b false if a check failed
      */
-    public function setValue(string $columnName, $newValue, bool $checkValue = true)
+    public function setValue(string $columnName, $newValue, bool $checkValue = true): bool
     {
         global $gCurrentOrganization;
 
@@ -474,7 +474,7 @@ class TableRoles extends TableAccess
      * we also check if the user is a member of the roles that could participate to the event.
      * @return bool Return true if the current user is allowed to view this role
      */
-    public function visible()
+    public function visible(): bool
     {
         global $gCurrentUser, $gValidLogin;
 

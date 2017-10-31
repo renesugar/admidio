@@ -97,7 +97,7 @@ class Navigation
      *                     together with the text and would be linked with the $url.
      * @return bool Returns true if the navigation-stack got changed and false if not.
      */
-    public function addUrl(string $url, $text = null, $icon = null)
+    public function addUrl(string $url, $text = null, $icon = null): bool
     {
         global $gLogger;
 

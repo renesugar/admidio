@@ -80,7 +80,7 @@ class ProfileFields
      * returns true if a column of user table or profile fields has changed
      * @return bool
      */
-    public function hasColumnsValueChanged()
+    public function hasColumnsValueChanged(): bool
     {
         return $this->columnsValueChanged;
     }
@@ -555,7 +555,7 @@ class ProfileFields
      * @param mixed  $fieldValue
      * @return bool
      */
-    public function setValue(string $fieldNameIntern, $fieldValue)
+    public function setValue(string $fieldNameIntern, $fieldValue): bool
     {
         global $gPreferences;
 
@@ -670,7 +670,7 @@ class ProfileFields
      *                                    set if you are not in a user context.
      * @return bool Return true if the current user is allowed to view this profile field
      */
-    public function visible(string $fieldNameIntern, bool $allowedToEditProfile = false)
+    public function visible(string $fieldNameIntern, bool $allowedToEditProfile = false): bool
     {
         global $gCurrentUser;
 

@@ -460,7 +460,7 @@ class Organization extends TableAccess
      * Method checks if the organization is configured as a child organization in the recordset.
      * @return bool Return @b true if the organization is a child of another organization
      */
-    public function isChildOrganization()
+    public function isChildOrganization(): bool
     {
         return $this->getValue('org_org_id_parent') > 0;
     }
@@ -469,7 +469,7 @@ class Organization extends TableAccess
      * Method checks if the organization is configured as a parent organization in the recordset.
      * @return bool Return @b true if the organization is the parent of a least one other organization
      */
-    public function isParentOrganization()
+    public function isParentOrganization(): bool
     {
         return count($this->getChildOrganizations()) > 0;
     }
@@ -480,7 +480,7 @@ class Organization extends TableAccess
      * @param array<string,string> $preferences Array with all preferences that should be stored in database. array('name_of_preference' => 'value')
      * @param bool                 $update      If set to @b false then no update will be done, only inserts
      */
-    public function setPreferences(array $preferences, bool $update = true)
+    public function setPreferences(array $preferences, bool $update = true): bool
     {
         $this->db->startTransaction();
         $this->getPreferences();

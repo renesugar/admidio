@@ -88,7 +88,7 @@ class Session extends TableAccess
      * @param object $object     The object that should be stored in this class.
      * @return bool Return false if object isn't type object or objectName already exists
      */
-    public function addObject(string $objectName, &$object)
+    public function addObject(string $objectName, &$object): bool
     {
         if (is_object($object) && !array_key_exists($objectName, $this->mObjectArray))
         {
@@ -159,7 +159,7 @@ class Session extends TableAccess
      * @param string $objectName Internal unique name of the object. The name was set with the method @b addObject
      * @return bool Returns @b true if the object exits otherwise @b false
      */
-    public function hasObject(string $objectName)
+    public function hasObject(string $objectName): bool
     {
         return array_key_exists($objectName, $this->mObjectArray);
     }
@@ -170,7 +170,7 @@ class Session extends TableAccess
      * @param int $userId The user id must be stored in this session and will be checked if valid.
      * @return bool Returns @b true if the user has a valid session login otherwise @b false;
      */
-    public function isValidLogin(int $userId)
+    public function isValidLogin(int $userId): bool
     {
         global $gPreferences;
 
@@ -370,7 +370,7 @@ class Session extends TableAccess
      * @param bool $updateFingerPrint Default @b true. Will update the creator or editor of the recordset if table has columns like @b usr_id_create or @b usr_id_changed
      * @return bool If an update or insert into the database was done then return true, otherwise false.
      */
-    public function save(bool $updateFingerPrint = true)
+    public function save(bool $updateFingerPrint = true): bool
     {
         global $gCurrentOrganization;
 
@@ -427,7 +427,7 @@ class Session extends TableAccess
      *                         Set to "false" to allow access for JavaScript. (Possible XSS security leak)
      * @return bool Returns "true" if the cookie is successfully set.
      */
-    public static function setCookie(string $name, string $value = '', int $expire = 0, string $path = '', string $domain = '', $secure = null, $httpOnly = true)
+    public static function setCookie(string $name, string $value = '', int $expire = 0, string $path = '', string $domain = '', $secure = null, $httpOnly = true): bool
     {
         global $gLogger, $gSetCookieForDomain;
 

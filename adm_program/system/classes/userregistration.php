@@ -110,7 +110,7 @@ class UserRegistration extends User
      * If the user is valid than only the registration will be deleted!
      * @return bool @b true if no error occurred
      */
-    public function delete()
+    public function delete(): bool
     {
         global $gMessage, $gL10n, $gPreferences;
 
@@ -168,7 +168,7 @@ class UserRegistration extends User
      *                                if table has columns like @b usr_id_create or @b usr_id_changed
      * @return bool
      */
-    public function save(bool $updateFingerPrint = true)
+    public function save(bool $updateFingerPrint = true): bool
     {
         global $gMessage, $gL10n, $gPreferences;
 

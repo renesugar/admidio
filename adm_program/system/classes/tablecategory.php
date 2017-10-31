@@ -54,7 +54,7 @@ class TableCategory extends TableAccess
      *                      CAT_DONT_DELETE_CATEGORY
      * @return bool @b true if no error occurred
      */
-    public function delete()
+    public function delete(): bool
     {
         global $gCurrentSession;
 
@@ -252,7 +252,7 @@ class TableCategory extends TableAccess
      * @param int $catId Unique cat_id
      * @return bool Returns @b true if one record is found
      */
-    public function readDataById(int $catId)
+    public function readDataById(int $catId): bool
     {
         $returnValue = parent::readDataById($catId);
 
@@ -273,7 +273,7 @@ class TableCategory extends TableAccess
      * @param array<string,mixed> $columnArray An array where every element index is the column name and the value is the column value
      * @return bool Returns @b true if one record is found
      */
-    public function readDataByColumns(array $columnArray)
+    public function readDataByColumns(array $columnArray): bool
     {
         $returnValue = parent::readDataByColumns($columnArray);
 
@@ -294,7 +294,7 @@ class TableCategory extends TableAccess
      * @param bool $updateFingerPrint Default @b true. Will update the creator or editor of the recordset if table has columns like @b usr_id_create or @b usr_id_changed
      * @return bool If an update or insert into the database was done then return true, otherwise false.
      */
-    public function save(bool $updateFingerPrint = true)
+    public function save(bool $updateFingerPrint = true): bool
     {
         global $gCurrentOrganization, $gCurrentSession;
 
@@ -400,7 +400,7 @@ class TableCategory extends TableAccess
      * @param bool   $checkValue The value will be checked if it's valid. If set to @b false than the value will not be checked.
      * @return bool Returns @b true if the value is stored in the current object and @b false if a check failed
      */
-    public function setValue(string $columnName, $newValue, bool $checkValue = true)
+    public function setValue(string $columnName, $newValue, bool $checkValue = true): bool
     {
         global $gCurrentOrganization;
 

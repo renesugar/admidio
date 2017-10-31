@@ -65,7 +65,7 @@ class Participants
      * @param int $roleId
      * @return bool
      */
-    private function checkId(int $roleId)
+    private function checkId(int $roleId): bool
     {
         // check passed parameter and compare to current object
         if($this->rolId === -1 || ($this->rolId === 0 && $this->rolId !== $roleId))
@@ -238,7 +238,7 @@ class Participants
      * @param int    $userId
      * @return bool Returns true if userID is found and approval state is not set to disagreement (value: 3)
      */
-    public function isMemberOfEvent(int $userId)
+    public function isMemberOfEvent(int $userId): bool
     {
         // Read participants of current event role
         $eventMember = $this->getParticipantsArray($this->rolId);

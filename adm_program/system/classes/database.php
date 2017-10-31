@@ -323,7 +323,7 @@ class Database
      * @see Database#endTransaction
      * @see Database#rollback
      */
-    public function startTransaction()
+    public function startTransaction(): bool
     {
         global $gLogger;
 
@@ -358,7 +358,7 @@ class Database
      * @see Database#startTransaction
      * @see Database#rollback
      */
-    public function endTransaction()
+    public function endTransaction(): bool
     {
         global $gLogger;
 
@@ -630,7 +630,7 @@ class Database
      * @see Database#startTransaction
      * @see Database#endTransaction
      */
-    public function rollback()
+    public function rollback(): bool
     {
         global $gLogger;
 

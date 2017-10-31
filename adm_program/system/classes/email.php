@@ -197,7 +197,7 @@ class Email extends PHPMailer
      * @param string $name
      * @return bool
      */
-    public function addBlindCopy(string $address, string $name = '')
+    public function addBlindCopy(string $address, string $name = ''): bool
     {
         $address = admStrToLower($address);
         // Blindcopy must be Ascii-US formated, so encode in MimeHeader
@@ -263,7 +263,7 @@ class Email extends PHPMailer
      * @param string $subject A text that should be the subject of the email
      * @return bool Returns @b false if the parameter has no text
      */
-    public function setSubject(string $subject)
+    public function setSubject(string $subject): bool
     {
         if ($subject !== '')
         {

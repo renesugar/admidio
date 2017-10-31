@@ -103,7 +103,7 @@ class PasswordHashing
      * @param string $hash     The hash string to check
      * @return bool Returns true if the password belongs to the hash and false if not
      */
-    public static function verify(string $password, string $hash)
+    public static function verify(string $password, string $hash): bool
     {
         $hashLength = strlen($hash);
         if ($hashLength === self::HASH_LENGTH_BCRYPT && admStrStartsWith($hash, self::HASH_INDICATOR_BCRYPT))
@@ -137,7 +137,7 @@ class PasswordHashing
      * @param array<string,mixed> $options   The hash-options the hash should match to
      * @return bool Returns false if the hash match the given options and false if not
      */
-    public static function needsRehash(string $hash, string $algorithm = self::HASH_ALGORITHM_DEFAULT, array $options = array())
+    public static function needsRehash(string $hash, string $algorithm = self::HASH_ALGORITHM_DEFAULT, array $options = array()): bool
     {
         $hashLength = strlen($hash);
         if ($algorithm === self::HASH_ALGORITHM_SHA512 && $hashLength >= self::HASH_LENGTH_SHA512 && admStrStartsWith($hash, self::HASH_INDICATOR_SHA512))

@@ -61,7 +61,7 @@ class ConditionParser
      * @param string $sourceCondition The user condition string
      * @return bool Returns true if "mDestCondition" is complete
      */
-    private function startDestCond(string $columnType, string $columnName, string $sourceCondition)
+    private function startDestCond(string $columnType, string $columnName, string $sourceCondition): bool
     {
         $this->destCond = ' AND ';  // Bedingungen fuer das Feld immer mit UND starten
 
@@ -113,7 +113,7 @@ class ConditionParser
      * @param string $sourceCondition
      * @return bool Returns true if date search and false if age search
      */
-    private static function isDateSearch(string $columnType, string $sourceCondition)
+    private static function isDateSearch(string $columnType, string $sourceCondition): bool
     {
         $sourceCondition = admStrToUpper($sourceCondition);
 

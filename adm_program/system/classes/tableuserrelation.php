@@ -60,7 +60,7 @@ class TableUserRelation extends TableAccess
      * @param bool $deleteInverse
      * @return bool Returns @b true if no error occurred
      */
-    public function delete(bool $deleteInverse = true)
+    public function delete(bool $deleteInverse = true): bool
     {
         $this->db->startTransaction();
 

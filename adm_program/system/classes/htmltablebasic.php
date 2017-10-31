@@ -345,7 +345,7 @@ class HtmlTableBasic extends HtmlElement
      * @param string       $col
      * @return bool Returns @b false if tfoot element is already set
      */
-    public function addTableFooter($attribute = null, $value = null, $data = '', string $col = 'td')
+    public function addTableFooter($attribute = null, $value = null, $data = '', string $col = 'td'): bool
     {
         if ($this->thead && in_array('thead', $this->arrParentElements, true))
         {
@@ -374,7 +374,7 @@ class HtmlTableBasic extends HtmlElement
      * @param string       $col
      * @return bool Returns @b false if thead element is already set
      */
-    public function addTableHeader($attribute = null, $value = null, $data = '', string $col = 'td')
+    public function addTableHeader($attribute = null, $value = null, $data = '', string $col = 'td'): bool
     {
         // Check if table head already exists
         if ($this->thead)

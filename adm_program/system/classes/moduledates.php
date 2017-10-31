@@ -278,7 +278,7 @@ class ModuleDates extends Modules
      * @throws AdmException SYS_DATE_END_BEFORE_BEGIN
      * @return bool Returns false if invalid date format is submitted
      */
-    public function setDateRange(string $dateRangeStart = '', string $dateRangeEnd = '')
+    public function setDateRange(string $dateRangeStart = '', string $dateRangeEnd = ''): bool
     {
         global $gPreferences;
 

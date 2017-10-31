@@ -437,7 +437,7 @@ abstract class HtmlElement
      * @param string $parentElement Parent element to be closed
      * @return bool
      */
-    public function closeParentElement(string $parentElement)
+    public function closeParentElement(string $parentElement): bool
     {
         // count entries in array
         $totalCount = count($this->arrParentElements);

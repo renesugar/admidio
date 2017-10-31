@@ -37,7 +37,7 @@ class TableDate extends TableAccess
      * the right event_participation.
      * @return bool Return true if the current user is allowed to participate to the event.
      */
-    public function allowedToParticipate()
+    public function allowedToParticipate(): bool
     {
         global $gCurrentUser;
 
@@ -59,7 +59,7 @@ class TableDate extends TableAccess
      * if the deadline is in the past than return true.
      * @return bool Return true if the deadline is exceeded.
      */
-    public function deadlineExceeded()
+    public function deadlineExceeded(): bool
     {
         return $this->getValidDeadline() < DATETIME_NOW;
     }
@@ -69,7 +69,7 @@ class TableDate extends TableAccess
      * After that the class will be initialize.
      * @return bool @b true if no error occurred
      */
-    public function delete()
+    public function delete(): bool
     {
         $datId     = (int) $this->getValue('dat_id');
         $datRoleId = (int) $this->getValue('dat_rol_id');
@@ -105,7 +105,7 @@ class TableDate extends TableAccess
      * Global events could be only edited by the parent organization.
      * @return bool Return true if the current user is allowed to edit this event
      */
-    public function editable()
+    public function editable(): bool
     {
         global $gCurrentOrganization, $gCurrentUser;
 
@@ -349,7 +349,7 @@ class TableDate extends TableAccess
      * @param bool   $checkValue The value will be checked if it's valid. If set to @b false than the value will not be checked.
      * @return bool Returns @b true if the value is stored in the current object and @b false if a check failed
      */
-    public function setValue(string $columnName, $newValue, bool $checkValue = true)
+    public function setValue(string $columnName, $newValue, bool $checkValue = true): bool
     {
         if ($columnName === 'dat_description')
         {
@@ -373,7 +373,7 @@ class TableDate extends TableAccess
      * the visibility of the category is checked.
      * @return bool Return true if the current user is allowed to view this event
      */
-    public function visible()
+    public function visible(): bool
     {
         global $gCurrentUser;
 

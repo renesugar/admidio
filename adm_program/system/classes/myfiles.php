@@ -84,7 +84,7 @@ class MyFiles extends Folder
      * calls another process already managed to create a directory.
      * @return bool if false than check the parameters $errorText, $errorPath
      */
-    public function checkSettings()
+    public function checkSettings(): bool
     {
         if(!is_writable($this->modulePath))
         {
@@ -177,7 +177,7 @@ class MyFiles extends Folder
      * @param string $folder subfolder name
      * @return bool Returns true if folder is successfully created and writable.
      */
-    public function setSubFolder(string $folder)
+    public function setSubFolder(string $folder): bool
     {
         if(!admStrIsValidFileName($folder))
         {

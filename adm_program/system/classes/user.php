@@ -118,7 +118,7 @@ class User extends TableAccess
      * @param string $fieldNameIntern Expects the @b usf_name_intern of the field that should be checked.
      * @return bool Return true if the current user is allowed to view this profile field of @b $user.
      */
-    public function allowedViewProfileField(User $user, $fieldNameIntern)
+    public function allowedViewProfileField(User $user, $fieldNameIntern): bool
     {
         return $user->mProfileFieldsData->visible($fieldNameIntern, $this->hasRightEditProfile($user));
     }
@@ -164,7 +164,7 @@ class User extends TableAccess
      * for later checks within this class.
      * @return bool Return true if relationships could be checked.
      */
-    private function checkRelationshipsRights()
+    private function checkRelationshipsRights(): bool
     {
         global $gPreferences;
 
@@ -210,7 +210,7 @@ class User extends TableAccess
      *                      is not set then only the arrays are filled.
      * @return bool Return true if a special right should be checked and the user has this right.
      */
-    public function checkRolesRight($right = null)
+    public function checkRolesRight($right = null): bool
     {
         if ((int) $this->getValue('usr_id') === 0)
         {
@@ -363,7 +363,7 @@ class User extends TableAccess
      * Checks if the maximum of invalid logins is reached.
      * @return bool Returns true if the maximum of invalid logins is reached.
      */
-    private function hasMaxInvalidLogins()
+    private function hasMaxInvalidLogins(): bool
     {
         global $gLogger;
 
@@ -453,7 +453,7 @@ class User extends TableAccess
      * @param string $orgLongname The longname of this organization.
      * @return bool Return true if user is member of this organization.
      */
-    private function isMemberOfOrganization(string $orgLongname)
+    private function isMemberOfOrganization(string $orgLongname): bool
     {
         global $gLogger;
 
@@ -492,7 +492,7 @@ class User extends TableAccess
      * @param string $orgLongname The longname of this organization.
      * @return bool Return true if user is admin of this organization.
      */
-    private function isAdminOfOrganization(string $orgLongname)
+    private function isAdminOfOrganization(string $orgLongname): bool
     {
         global $gLogger, $installedDbVersion;
 
@@ -542,7 +542,7 @@ class User extends TableAccess
      * @param string $password The password for the current user. This should not be encoded.
      * @return bool Returns true if password was rehashed.
      */
-    private function rehashIfNecessary(string $password)
+    private function rehashIfNecessary(string $password): bool
     {
         global $gLogger;
 
@@ -681,7 +681,7 @@ class User extends TableAccess
      * returns true if a column of user table or profile fields has changed
      * @return bool
      */
-    public function hasColumnsValueChanged()
+    public function hasColumnsValueChanged(): bool
     {
         return parent::hasColumnsValueChanged() || $this->mProfileFieldsData->hasColumnsValueChanged();
     }
@@ -691,7 +691,7 @@ class User extends TableAccess
      * After that the class will be initialize.
      * @return bool @b true if no error occurred
      */
-    public function delete()
+    public function delete(): bool
     {
         global $gCurrentUser;
 
@@ -1136,7 +1136,7 @@ class User extends TableAccess
      * @param bool  $checkOwnProfile If set to @b false than this method don't check the role right to edit the own profile.
      * @return bool Return @b true if the current user is allowed to edit the profile of the user from @b $user.
      */
-    public function hasRightEditProfile(User $user, bool $checkOwnProfile = true)
+    public function hasRightEditProfile(User $user, bool $checkOwnProfile = true): bool
     {
         if (!$user instanceof self)
         {
@@ -1217,7 +1217,7 @@ class User extends TableAccess
      * @param int             $roleId
      * @return bool
      */
-    private function hasRightRole(array $rightsList, string $rightName, int $roleId)
+    private function hasRightRole(array $rightsList, string $rightName, int $roleId): bool
     {
         // if user has right to view all lists then he could also view this role
         if ($this->checkRolesRight($rightName))
@@ -1239,7 +1239,7 @@ class User extends TableAccess
      * @param int $roleId Id of the role that should be checked.
      * @return bool Return @b true if the user has the right to send an email to the role.
      */
-    public function hasRightSendMailToRole(int $roleId)
+    public function hasRightSendMailToRole(int $roleId): bool
     {
         return $this->hasRightRole($this->listMailRights, 'rol_mail_to_all', $roleId);
     }
@@ -1250,7 +1250,7 @@ class User extends TableAccess
      * @param int $roleId Id of the role that should be checked.
      * @return bool Return @b true if the user has the right to view former roles members
      */
-    public function hasRightViewFormerRolesMembers(int $roleId)
+    public function hasRightViewFormerRolesMembers(int $roleId): bool
     {
         global $gPreferences;
 
@@ -1277,7 +1277,7 @@ class User extends TableAccess
      * @param User $user User object of the user that should be checked if the current user can view his profile.
      * @return bool Return @b true if the current user is allowed to view the profile of the user from @b $user.
      */
-    public function hasRightViewProfile(User $user)
+    public function hasRightViewProfile(User $user): bool
     {
         global $gValidLogin;
 
@@ -1343,7 +1343,7 @@ class User extends TableAccess
      * @param int $roleId The id of the role that should be checked.
      * @return bool Return @b true if the user has the right to view the role otherwise @b false.
      */
-    public function hasRightViewRole(int $roleId)
+    public function hasRightViewRole(int $roleId): bool
     {
         return $this->hasRightRole($this->listViewRights, 'rol_all_lists_view', $roleId);
     }
@@ -1352,7 +1352,7 @@ class User extends TableAccess
      * Checks if the user is assigned to the role @b Administrator
      * @return bool Returns @b true if the user is a member of the role @b Administrator
      */
-    public function isAdministrator()
+    public function isAdministrator(): bool
     {
         $this->checkRolesRight();
 
@@ -1364,7 +1364,7 @@ class User extends TableAccess
      * @param int $roleId
      * @return bool
      */
-    public function isLeaderOfRole(int $roleId)
+    public function isLeaderOfRole(int $roleId): bool
     {
         return array_key_exists($roleId, $this->rolesMembershipLeader);
     }
@@ -1374,7 +1374,7 @@ class User extends TableAccess
      * @param int $roleId
      * @return bool
      */
-    public function isMemberOfRole(int $roleId)
+    public function isMemberOfRole(int $roleId): bool
     {
         return in_array((int) $roleId, $this->rolesMembership, true);
     }
@@ -1395,7 +1395,7 @@ class User extends TableAccess
      * @param int $userId Unique id of the user that should be read
      * @return bool Returns @b true if one record is found
      */
-    public function readDataById(int $userId)
+    public function readDataById(int $userId): bool
     {
         if (parent::readDataById($userId))
         {
@@ -1434,7 +1434,7 @@ class User extends TableAccess
      * @throws AdmException
      * @return bool
      */
-    public function save(bool $updateFingerPrint = true)
+    public function save(bool $updateFingerPrint = true): bool
     {
         global $gCurrentSession, $gCurrentUser;
 
@@ -1519,7 +1519,7 @@ class User extends TableAccess
      * @param bool   $doHashing     Should the password get hashed before inserted. Default is true
      * @return bool Returns @b true if the value is stored in the current object and @b false if a check failed
      */
-    public function setPassword(string $newPassword, bool $isNewPassword = false, bool $doHashing = true)
+    public function setPassword(string $newPassword, bool $isNewPassword = false, bool $doHashing = true): bool
     {
         global $gPreferences, $gPasswordHashAlgorithm;
 
@@ -1582,7 +1582,7 @@ class User extends TableAccess
              * @param string $value
              * @return bool
              */
-            function filterEmptyStrings(string $value)
+            function filterEmptyStrings(string $value): bool
             {
                 return $value !== '';
             }
@@ -1601,7 +1601,7 @@ class User extends TableAccess
      *                          might get more rights for this role.
      * @return bool Return @b true if the membership was successfully added/edited.
      */
-    private function changeRoleMembership(string $mode, int $id, string $startDate, string $endDate, bool $leader)
+    private function changeRoleMembership(string $mode, int $id, string $startDate, string $endDate, bool $leader): bool
     {
         if ($startDate === '' || $endDate === '')
         {
@@ -1769,7 +1769,7 @@ class User extends TableAccess
      *                          might get more rights for this role.
      * @return bool Return @b true if the membership was successfully added.
      */
-    public function setRoleMembership(int $roleId, string $startDate = DATE_NOW, string $endDate = DATE_MAX, $leader = null)
+    public function setRoleMembership(int $roleId, string $startDate = DATE_NOW, string $endDate = DATE_MAX, $leader = null): bool
     {
         return $this->changeRoleMembership('set', $roleId, $startDate, $endDate, $leader);
     }
@@ -1785,7 +1785,7 @@ class User extends TableAccess
      *                          might get more rights for this role.
      * @return bool Return @b true if the membership was successfully edited.
      */
-    public function editRoleMembership(int $memberId, string $startDate = DATE_NOW, string $endDate = DATE_MAX, $leader = null)
+    public function editRoleMembership(int $memberId, string $startDate = DATE_NOW, string $endDate = DATE_MAX, $leader = null): bool
     {
         return $this->changeRoleMembership('edit', $memberId, $startDate, $endDate, $leader);
     }
@@ -1809,7 +1809,7 @@ class User extends TableAccess
      * $gCurrentUser->getValue('EMAIL', 'webmaster@admidio.org');
      * @endcode
      */
-    public function setValue(string $columnName, $newValue, bool $checkValue = true)
+    public function setValue(string $columnName, $newValue, bool $checkValue = true): bool
     {
         global $gCurrentUser, $gPreferences;
 
@@ -1891,7 +1891,7 @@ class User extends TableAccess
      * @param mixed  $fieldValue
      * @return bool
      */
-    public function setProfileFieldsValue(string $fieldNameIntern, $fieldValue)
+    public function setProfileFieldsValue(string $fieldNameIntern, $fieldValue): bool
     {
         return $this->mProfileFieldsData->setValue($fieldNameIntern, $fieldValue);
     }
@@ -1916,7 +1916,7 @@ class User extends TableAccess
      * Funktion prueft, ob der angemeldete User Ankuendigungen anlegen und bearbeiten darf
      * @return bool
      */
-    public function editAnnouncements()
+    public function editAnnouncements(): bool
     {
         return $this->checkRolesRight('rol_announcements');
     }
@@ -1925,7 +1925,7 @@ class User extends TableAccess
      * Funktion prueft, ob der angemeldete User Registrierungen bearbeiten und zuordnen darf
      * @return bool
      */
-    public function approveUsers()
+    public function approveUsers(): bool
     {
         return $this->checkRolesRight('rol_approve_users');
     }
@@ -1934,7 +1934,7 @@ class User extends TableAccess
      * Checks if the user has the right to assign members to at least one role.
      * @return bool Return @b true if the user can assign members to at least one role.
      */
-    public function assignRoles()
+    public function assignRoles(): bool
     {
         $this->checkRolesRight();
 
@@ -1946,7 +1946,7 @@ class User extends TableAccess
      * of a role with the right @b rol_manage_roles.
      * @return bool Return @b true if the user can manage roles.
      */
-    public function manageRoles()
+    public function manageRoles(): bool
     {
         return $this->checkRolesRight('rol_assign_roles');
     }
@@ -1955,7 +1955,7 @@ class User extends TableAccess
      * Funktion prueft, ob der angemeldete User Termine anlegen und bearbeiten darf
      * @return bool
      */
-    public function editDates()
+    public function editDates(): bool
     {
         return $this->checkRolesRight('rol_dates');
     }
@@ -1964,7 +1964,7 @@ class User extends TableAccess
      * Funktion prueft, ob der angemeldete User Downloads hochladen und verwalten darf
      * @return bool
      */
-    public function editDownloadRight()
+    public function editDownloadRight(): bool
     {
         return $this->checkRolesRight('rol_download');
     }
@@ -1973,7 +1973,7 @@ class User extends TableAccess
      * Funktion prueft, ob der angemeldete User fremde Benutzerdaten bearbeiten darf
      * @return bool
      */
-    public function editUsers()
+    public function editUsers(): bool
     {
         return $this->checkRolesRight('rol_edit_user');
     }
@@ -1982,7 +1982,7 @@ class User extends TableAccess
      * Funktion prueft, ob der angemeldete User Gaestebucheintraege loeschen und editieren darf
      * @return bool
      */
-    public function editGuestbookRight()
+    public function editGuestbookRight(): bool
     {
         return $this->checkRolesRight('rol_guestbook');
     }
@@ -1991,7 +1991,7 @@ class User extends TableAccess
      * Funktion prueft, ob der angemeldete User Gaestebucheintraege kommentieren darf
      * @return bool
      */
-    public function commentGuestbookRight()
+    public function commentGuestbookRight(): bool
     {
         return $this->checkRolesRight('rol_guestbook_comments');
     }
@@ -2000,7 +2000,7 @@ class User extends TableAccess
      * Funktion prueft, ob der angemeldete User Fotos hochladen und verwalten darf
      * @return bool
      */
-    public function editPhotoRight()
+    public function editPhotoRight(): bool
     {
         return $this->checkRolesRight('rol_photo');
     }
@@ -2009,7 +2009,7 @@ class User extends TableAccess
      * Funktion prueft, ob der angemeldete User Weblinks anlegen und editieren darf
      * @return bool
      */
-    public function editWeblinksRight()
+    public function editWeblinksRight(): bool
     {
         return $this->checkRolesRight('rol_weblinks');
     }
@@ -2020,7 +2020,7 @@ class User extends TableAccess
      * @return bool Returns @b true if the user is a member of the role @b Administrator
      * @see User#isAdministrator
      */
-    public function isWebmaster()
+    public function isWebmaster(): bool
     {
         global $gLogger;
 
@@ -2034,7 +2034,7 @@ class User extends TableAccess
      * @deprecated 3.3.0:4.0.0 Use Method hasColumnsValueChanged() instead
      * @return bool
      */
-    public function columnsValueChanged()
+    public function columnsValueChanged(): bool
     {
         global $gLogger;
 

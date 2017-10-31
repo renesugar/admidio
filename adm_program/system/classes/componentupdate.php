@@ -73,7 +73,7 @@ class ComponentUpdate extends Component
      * @param int $subVersion  Contains a string with the main version number e.g. 1 or 2 from x.1 or x.2.
      * @return bool
      */
-    private function createXmlObject(int $mainVersion, int $subVersion)
+    private function createXmlObject(int $mainVersion, int $subVersion): bool
     {
         // update of Admidio core has another path for the xml files as plugins
         if($this->getValue('com_type') === 'SYSTEM')
@@ -638,7 +638,7 @@ class ComponentUpdate extends Component
      * @param string $folder
      * @return bool
      */
-    public function updateStepRewriteFolderRights(string $folder = '')
+    public function updateStepRewriteFolderRights(string $folder = ''): bool
     {
         $returnValue = true;
 

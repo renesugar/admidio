@@ -138,7 +138,7 @@ abstract class Modules
      * Return mode
      * @return string Returns mode as string
      */
-    public function getMode()
+    public function getMode(): string
     {
         return $this->mode;
     }
@@ -147,7 +147,7 @@ abstract class Modules
      * Return mode
      * @return string Returns order as string
      */
-    public function getOrder()
+    public function getOrder(): string
     {
         return $this->order;
     }

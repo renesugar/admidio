@@ -53,7 +53,7 @@ class AutoLogin extends TableAccess
      * @param int $userId The id of the current user.
      * @return string Returns the auto login id.
      */
-    public function generateAutoLoginId(int $userId)
+    public function generateAutoLoginId(int $userId): string
     {
         $loginId = '';
 

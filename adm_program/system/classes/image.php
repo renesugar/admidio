@@ -232,7 +232,7 @@ class Image
      * gibt den Mime-Type (image/png) des Bildes zurueck
      * @return string
      */
-    public function getMimeType()
+    public function getMimeType(): string
     {
         return image_type_to_mime_type($this->imageType);
     }

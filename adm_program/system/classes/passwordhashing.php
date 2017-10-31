@@ -190,7 +190,7 @@ class PasswordHashing
      * @return string Returns a cryptographically strong random password string
      * @see https://paragonie.com/b/JvICXzh_jhLyt4y3
      */
-    public static function genRandomPassword(int $length = 16, string $charset = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
+    public static function genRandomPassword(int $length = 16, string $charset = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'): string
     {
         if ($length < 1)
         {

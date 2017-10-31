@@ -100,7 +100,7 @@ class PhpIni
      * Returns the file upload temporary directory
      * @return string
      */
-    public static function getFileUploadTmpDir()
+    public static function getFileUploadTmpDir(): string
     {
         return ini_get('upload_tmp_dir');
     }

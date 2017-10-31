@@ -123,7 +123,7 @@ class TableCategory extends TableAccess
      * @param int    $index
      * @return string
      */
-    private function getNewNameIntern(string $name, int $index)
+    private function getNewNameIntern(string $name, int $index): string
     {
         $newNameIntern = strtoupper(str_replace(' ', '_', $name));
 

@@ -132,7 +132,7 @@ class TableDate extends TableAccess
      * @param string $text
      * @return string
      */
-    private function escapeIcalText(string $text)
+    private function escapeIcalText(string $text): string
     {
         $searchReplace = array(
             '\\'   => '\\\\',
@@ -149,7 +149,7 @@ class TableDate extends TableAccess
      * @param string $domain
      * @return string
      */
-    public function getIcal(string $domain)
+    public function getIcal(string $domain): string
     {
         $iCal = $this->getIcalHeader().
                 $this->getIcalVEvent($domain).
@@ -162,7 +162,7 @@ class TableDate extends TableAccess
      * gibt den Kopf eines iCalCalenders aus
      * @return string
      */
-    public function getIcalHeader()
+    public function getIcalHeader(): string
     {
         $defaultTimezone = date_default_timezone_get();
 
@@ -200,7 +200,7 @@ class TableDate extends TableAccess
      * gibt den Fuß eines iCalCalenders aus
      * @return string
      */
-    public function getIcalFooter()
+    public function getIcalFooter(): string
     {
         return 'END:VCALENDAR';
     }
@@ -210,7 +210,7 @@ class TableDate extends TableAccess
      * @param string $domain
      * @return string
      */
-    public function getIcalVEvent(string $domain)
+    public function getIcalVEvent(string $domain): string
     {
         $dateTimeFormat = 'Ymd\THis';
 

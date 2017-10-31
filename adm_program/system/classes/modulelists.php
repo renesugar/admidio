@@ -195,7 +195,7 @@ class ModuleLists extends Modules
      * Evaluates memberStatus an returns appropriate SQL conditions
      * @return string SQL for member status
      */
-    private function getMemberStatusSql()
+    private function getMemberStatusSql(): string
     {
         switch ($this->memberStatus)
         {
@@ -214,7 +214,7 @@ class ModuleLists extends Modules
      * returns SQL condition
      * @return string SQL condition for category id
      */
-    private function getCategorySql()
+    private function getCategorySql(): string
     {
         if($this->catId > 0)
         {
@@ -227,7 +227,7 @@ class ModuleLists extends Modules
      * assembles SQL roles visible for current user
      * @return string SQL condition visible for current user
      */
-    private function getVisibleRolesSql()
+    private function getVisibleRolesSql(): string
     {
         global $gCurrentUser;
 

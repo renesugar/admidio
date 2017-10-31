@@ -394,7 +394,7 @@ class User extends TableAccess
      * Handles the incorrect given login password.
      * @return string Return string with the reason why the login failed.
      */
-    private function handleIncorrectPasswordLogin()
+    private function handleIncorrectPasswordLogin(): string
     {
         global $gLogger;
 
@@ -438,7 +438,7 @@ class User extends TableAccess
      * Gets the longname of this organization.
      * @return string Returns the longname of the organization.
      */
-    private function getOrgLongname()
+    private function getOrgLongname(): string
     {
         $sql = 'SELECT org_longname
                   FROM '.TBL_ORGANIZATIONS.'
@@ -1025,7 +1025,7 @@ class User extends TableAccess
      * (Windows XP address book can't process utf8, so vcard output is iso-8859-1)
      * @return string Returns the vcard as a string
      */
-    public function getVCard()
+    public function getVCard(): string
     {
         global $gPreferences, $gCurrentUser;
 

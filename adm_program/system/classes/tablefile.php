@@ -57,7 +57,7 @@ class TableFile extends TableAccess
      * Gets the absolute path of the folder (with folder-name)
      * @return string
      */
-    public function getFullFolderPath()
+    public function getFullFolderPath(): string
     {
         return ADMIDIO_PATH . $this->getValue('fol_path') . '/' . $this->getValue('fol_name');
     }
@@ -66,7 +66,7 @@ class TableFile extends TableAccess
      * Gets the absolute path of the file
      * @return string
      */
-    public function getFullFilePath()
+    public function getFullFilePath(): string
     {
         return $this->getFullFolderPath() . '/' . $this->getValue('fil_name');
     }
@@ -169,7 +169,7 @@ class TableFile extends TableAccess
      * @deprecated 3.3.0:4.0.0 Use Method getFullFilePath() instead.
      * @return string Complete filepath
      */
-    public function getCompletePathOfFile()
+    public function getCompletePathOfFile(): string
     {
         global $gLogger;
 

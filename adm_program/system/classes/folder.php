@@ -65,7 +65,7 @@ class Folder
      * Ordner zurueckgeben
      * @return string
      */
-    public function getFolder()
+    public function getFolder(): string
     {
         return $this->folderWithPath;
     }

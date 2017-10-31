@@ -143,7 +143,7 @@ class Menu
      *                      then you will create a menu with submenus and description
      * @return string Return the html code of the form.
      */
-    public function show(bool $complex = false)
+    public function show(bool $complex = false): string
     {
         $html = '';
 

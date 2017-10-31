@@ -113,7 +113,7 @@ class DateTimeExtended extends DateTime
      *                       If no format is set then the format of the class constructor will be used.
      * @return string Return the transformed format that is valid for the datepicker.
      */
-    public static function getDateFormatForDatepicker(string $format = 'Y-m-d')
+    public static function getDateFormatForDatepicker(string $format = 'Y-m-d'): string
     {
         $destFormat  = '';
         $formatArray = str_split($format);

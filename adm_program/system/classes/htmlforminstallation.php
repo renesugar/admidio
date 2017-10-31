@@ -107,7 +107,7 @@ class HtmlFormInstallation extends HtmlForm
      * @param bool $directOutput This is only used for compatibility to show method of parent class HtmlForm
      * @return string Return the html code of the form.
      */
-    public function show(bool $directOutput = true)
+    public function show(bool $directOutput = true): string
     {
         global $gL10n;
 

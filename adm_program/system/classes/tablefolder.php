@@ -356,7 +356,7 @@ class TableFolder extends TableAccess
      * Gets the path of the folder (with folder-name)
      * @return string
      */
-    public function getFolderPath()
+    public function getFolderPath(): string
     {
         return $this->getValue('fol_path') . '/' . $this->getValue('fol_name');
     }
@@ -365,7 +365,7 @@ class TableFolder extends TableAccess
      * Gets the absolute path of the folder (with folder-name)
      * @return string
      */
-    public function getFullFolderPath()
+    public function getFullFolderPath(): string
     {
         return ADMIDIO_PATH . $this->getFolderPath();
     }
@@ -506,7 +506,7 @@ class TableFolder extends TableAccess
      * the shortname of the current organization
      * @return string Returns the root foldername for the download module.
      */
-    public static function getRootFolderName()
+    public static function getRootFolderName(): string
     {
         global $gCurrentOrganization;
 
@@ -530,7 +530,7 @@ class TableFolder extends TableAccess
      * @param string $currentNavigation
      * @return string
      */
-    public function getNavigationForDownload(int $folderId = 0, string $currentNavigation = '')
+    public function getNavigationForDownload(int $folderId = 0, string $currentNavigation = ''): string
     {
         global $gCurrentOrganization, $gL10n;
 
@@ -830,7 +830,7 @@ class TableFolder extends TableAccess
      * @deprecated 3.3.0:4.0.0 Use Method getFullFolderPath() instead.
      * @return string
      */
-    public function getCompletePathOfFolder()
+    public function getCompletePathOfFolder(): string
     {
         global $gLogger;
 

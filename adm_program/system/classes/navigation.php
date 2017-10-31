@@ -186,7 +186,7 @@ class Navigation
      * @param string $id Optional you could set an id for the back link
      * @return string Returns html code of the navigation back link.
      */
-    public function getHtmlBackButton(string $id = 'adm-navigation-back')
+    public function getHtmlBackButton(string $id = 'adm-navigation-back'): string
     {
         global $gL10n;
 
@@ -215,7 +215,7 @@ class Navigation
      * @param string $id Optional you could set an id for the navigation bar
      * @return string Returns html code of the navigation bar.
      */
-    public function getHtmlNavigationBar(string $id = 'adm-navigation-bar')
+    public function getHtmlNavigationBar(string $id = 'adm-navigation-bar'): string
     {
         $links = array();
 

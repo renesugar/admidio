@@ -90,7 +90,7 @@ class Language
      * @param string                          $textId             Unique text id of the text that should be read e.g. SYS_COMMON
      * @return string Returns the text string of the text id or empty string if not found.
      */
-    private function searchTextIdInLangObject(array $xmlLanguageObjects, string $language, string $textId)
+    private function searchTextIdInLangObject(array $xmlLanguageObjects, string $language, string $textId): string
     {
         foreach ($this->languageData->getLanguagePaths() as $languagePath)
         {
@@ -110,7 +110,7 @@ class Language
      * @param string $textId Unique text id of the text that should be read e.g. SYS_COMMON
      * @return string Returns the text string of the text id or empty string if not found.
      */
-    private function getTextFromTextId(string $textId)
+    private function getTextFromTextId(string $textId): string
     {
         global $gLogger;
 
@@ -166,7 +166,7 @@ class Language
      * echo $gL10n->get('MAI_EMAIL_SEND_TO_ROLE_ACTIVE', ['John Doe', 'Demo-Organization', 'Administrator']);
      * @endcode
      */
-    public function get(string $textId, $params = array())
+    public function get(string $textId, $params = array()): string
     {
         global $gLogger;
 
@@ -262,7 +262,7 @@ class Language
      * @param string $isoCode The three digits ISO code of the country where the name should be returned.
      * @return string Return the name of the country in the language of this object.
      */
-    public function getCountryByCode(string $isoCode)
+    public function getCountryByCode(string $isoCode): string
     {
         if($isoCode === '')
         {
@@ -300,7 +300,7 @@ class Language
      * @param bool $referenceLanguage If set to @b true than the ISO code of the reference language will returned.
      * @return string Returns the ISO code of the language of this object or the reference language e.g. @b de or @b en.
      */
-    public function getLanguageIsoCode(bool $referenceLanguage = false)
+    public function getLanguageIsoCode(bool $referenceLanguage = false): string
     {
         global $gLogger;
 
@@ -327,7 +327,7 @@ class Language
      * @param bool $referenceLanguage If set to @b true than the language code of the reference language will returned.
      * @return string Returns the language code of the language of this object or the reference language.
      */
-    public function getLanguage(bool $referenceLanguage = false)
+    public function getLanguage(bool $referenceLanguage = false): string
     {
         global $gLogger;
 
@@ -370,7 +370,7 @@ class Language
      * @param string                          $textId       The id of the text that will be searched in the file.
      * @return string Return the text in the language or nothing if text id wasn't found.
      */
-    public function searchLanguageText(array &$objectArray, string $languagePath, string $language, string $textId)
+    public function searchLanguageText(array &$objectArray, string $languagePath, string $language, string $textId): string
     {
         // if not exists create a \SimpleXMLElement of the language file in the language path
         // and add it to the array of language objects

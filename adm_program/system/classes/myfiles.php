@@ -161,7 +161,7 @@ class MyFiles extends Folder
     /**
      * @return string returns the current path
      */
-    public function getServerPath()
+    public function getServerPath(): string
     {
         return $this->currentPath;
     }

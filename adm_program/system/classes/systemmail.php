@@ -69,7 +69,7 @@ class SystemMail extends Email
      * @param User   $user         Benutzerobjekt, zu dem die Daten dann ausgelesen und in die entsprechenden Platzhalter gesetzt werden
      * @return string
      */
-    public function getMailText(string $systemMailId, User $user)
+    public function getMailText(string $systemMailId, User $user): string
     {
         global $gPreferences;
 

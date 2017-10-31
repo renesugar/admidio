@@ -34,7 +34,7 @@ class TableUserRelationType extends TableAccess
     /**
      * @return string
      */
-    public function getRelationTypeString()
+    public function getRelationTypeString(): string
     {
         if (!$this->isNewRecord())
         {

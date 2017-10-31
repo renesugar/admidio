@@ -178,7 +178,7 @@ class ModuleWeblinks extends Modules
      * @param string $headline The initial headline of the module.
      * @return string Returns the full headline of the module
      */
-    public function getHeadline(string $headline)
+    public function getHeadline(string $headline): string
     {
         global $gDb;
 

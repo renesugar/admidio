@@ -391,7 +391,7 @@ class HtmlTableBasic extends HtmlElement
      * Get the parsed html table
      * @return string Returns the validated html table as string
      */
-    public function getHtmlTable()
+    public function getHtmlTable(): string
     {
         $this->closeParentElement('tr');
         $this->closeParentElement('tbody');

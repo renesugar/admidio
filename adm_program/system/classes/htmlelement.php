@@ -485,7 +485,7 @@ abstract class HtmlElement
      * @param array<string,string> $elementAttributes
      * @return string Returns a string with all attributes and values.
      */
-    private function getElementAttributesString(array $elementAttributes)
+    private function getElementAttributesString(array $elementAttributes): string
     {
         if (count($elementAttributes) === 0)
         {
@@ -505,7 +505,7 @@ abstract class HtmlElement
      * Create a valid html compatible string with all attributes and their values of the last added element.
      * @return string Returns a string with all attributes and values.
      */
-    private function getCurrentElementAttributesString()
+    private function getCurrentElementAttributesString(): string
     {
         return $this->getElementAttributesString($this->currentElementAttributes);
     }
@@ -514,7 +514,7 @@ abstract class HtmlElement
      * Create a valid html compatible string with all attributes and their values of the main element.
      * @return string Returns a string with all attributes and values.
      */
-    private function getMainElementAttributesString()
+    private function getMainElementAttributesString(): string
     {
         return $this->getElementAttributesString($this->mainElementAttributes);
     }
@@ -523,7 +523,7 @@ abstract class HtmlElement
      * Return the element as string
      * @return string Returns the parsed html as string
      */
-    public function getHtmlElement()
+    public function getHtmlElement(): string
     {
         $this->htmlString .= '</' . $this->mainElement . '>';
 

@@ -263,7 +263,7 @@ class Database
      * @param string $property Property name of the in use database config
      * @return string Returns the value of the chosen property
      */
-    protected function getPropertyFromDatabaseConfig(string $property)
+    protected function getPropertyFromDatabaseConfig(string $property): string
     {
         $xmlDatabases = new \SimpleXMLElement(ADMIDIO_PATH . '/adm_program/system/databases.xml', 0, true);
         $node = $xmlDatabases->xpath('/databases/database[@id="' . $this->dbEngine . '"]/' . $property);
@@ -274,7 +274,7 @@ class Database
      * Get the name of the database that is running Admidio.
      * @return string Returns a string with the name of the database e.g. 'MySQL' or 'PostgreSQL'
      */
-    public function getName()
+    public function getName(): string
     {
         if ($this->databaseName === '')
         {
@@ -287,7 +287,7 @@ class Database
      * Get the minimum required version of the database that is necessary to run Admidio.
      * @return string Returns a string with the minimum required database version e.g. '5.0.1'
      */
-    public function getMinimumRequiredVersion()
+    public function getMinimumRequiredVersion(): string
     {
         if ($this->minRequiredVersion === '')
         {
@@ -300,7 +300,7 @@ class Database
      * Get the version of the connected database.
      * @return string Returns a string with the database version e.g. '5.5.8'
      */
-    public function getVersion()
+    public function getVersion(): string
     {
         $versionStatement = $this->queryPrepared('SELECT version()');
         $version = $versionStatement->fetchColumn();
@@ -399,7 +399,7 @@ class Database
      * @return string Returns a quoted string that is theoretically safe to pass into an SQL statement.
      * @see <a href="https://secure.php.net/manual/en/pdo.quote.php">PDO::quote</a>
      */
-    public function escapeString(string $string)
+    public function escapeString(string $string): string
     {
         return trim($this->pdo->quote($string), "'");
     }
@@ -409,7 +409,7 @@ class Database
      * scripts were called than each script with their position will be listed in the backtrace.
      * @return string Returns a string with the backtrace of all called scripts.
      */
-    protected function getBacktrace()
+    protected function getBacktrace(): string
     {
         $output = '<div style="font-family: monospace;">';
         $backtrace = debug_backtrace();
@@ -472,7 +472,7 @@ class Database
      * @return string Return ID value of the last INSERT operation.
      * @see Database#insert_id
      */
-    public function lastInsertId()
+    public function lastInsertId(): string
     {
         if ($this->dbEngine === self::PDO_ENGINE_PGSQL)
         {
@@ -487,7 +487,7 @@ class Database
      * @param string $sql
      * @return string
      */
-    private function preparePgSqlQuery(string $sql)
+    private function preparePgSqlQuery(string $sql): string
     {
         $sqlCompare = strtolower($sql);
 
@@ -924,7 +924,7 @@ class Database
      * @return string Return ID value of the last INSERT operation.
      * @see Database#lastInsertId
      */
-    public function insert_id()
+    public function insert_id(): string
     {
         global $gLogger;
 

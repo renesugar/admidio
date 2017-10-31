@@ -126,7 +126,7 @@ class ConditionParser
      * @param string $operator The actual operator for the @b date parameter
      * @return string String with a SQL valid date format @b YYYY-MM-DD or empty string
      */
-    private function getFormatDate(string $date, string $operator)
+    private function getFormatDate(string $date, string $operator): string
     {
         global $gPreferences;
 
@@ -220,7 +220,7 @@ class ConditionParser
      *                      LST_NOT_NUMERIC
      * @return string Returns a valid SQL string with the condition for that column
      */
-    public function makeSqlStatement(string $sourceCondition, string $columnName, string $columnType, string $fieldName)
+    public function makeSqlStatement(string $sourceCondition, string $columnName, string $columnType, string $fieldName): string
     {
         $conditionComplete = $this->startDestCond($columnType, $columnName, $sourceCondition);
         if ($conditionComplete)
@@ -481,7 +481,7 @@ class ConditionParser
      * @param string $sourceCondition The user condition string
      * @return string String with the predefined chars for conditions
      */
-    public function makeStandardCondition(string $sourceCondition)
+    public function makeStandardCondition(string $sourceCondition): string
     {
         global $gL10n;
 

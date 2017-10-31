@@ -429,7 +429,7 @@ class HtmlTable extends HtmlTableBasic
      * have finished your form layout. If table has no rows then a message will be shown.
      * @return string Return the html code of the table.
      */
-    public function show()
+    public function show(): string
     {
         if ($this->rowCount === 0 && !$this->serverSideProcessing)
         {

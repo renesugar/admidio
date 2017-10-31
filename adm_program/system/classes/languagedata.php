@@ -98,7 +98,7 @@ class LanguageData
      * @param string $defaultLanguage This language will be set if no browser language could be determined
      * @return string Return the preferred language code of the client browser
      */
-    public static function determineBrowserLanguage(string $defaultLanguage)
+    public static function determineBrowserLanguage(string $defaultLanguage): string
     {
         if (!isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) || empty($_SERVER['HTTP_ACCEPT_LANGUAGE']))
         {
@@ -149,7 +149,7 @@ class LanguageData
      * @param bool $referenceLanguage If set to @b true than the language code of the reference language will returned.
      * @return string Returns the language code of the language of this object or the reference language.
      */
-    public function getLanguage(bool $referenceLanguage = false)
+    public function getLanguage(bool $referenceLanguage = false): string
     {
         global $gLogger;
 
@@ -176,7 +176,7 @@ class LanguageData
      * @param string $textId Unique text id of the text that should be read e.g. SYS_COMMON
      * @return string Returns the cached text or empty string if text id isn't found
      */
-    public function getTextCache(string $textId)
+    public function getTextCache(string $textId): string
     {
         if (array_key_exists($textId, $this->textCache))
         {

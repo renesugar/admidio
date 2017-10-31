@@ -341,7 +341,7 @@ class Organization extends TableAccess
      * @return string Returns a string with a comma separated list of all organization
      *                ids that are parents or children and the own id
      */
-    public function getFamilySQL(bool $shortname = false)
+    public function getFamilySQL(bool $shortname = false): string
     {
         $organizations = $this->getOrganizationsInRelationship();
 
@@ -351,7 +351,7 @@ class Organization extends TableAccess
              * @param string $value
              * @return string
              */
-            function addQuotationMarks(string $value)
+            function addQuotationMarks(string $value): string
             {
                 return '\''.$value.'\'';
             }

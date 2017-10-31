@@ -114,7 +114,7 @@ class ModuleMenu
      * @param array<string,string|bool|array> $menuEntry menu entry element which was added with addItem
      * @return string HTML of created item
      */
-    private function createIconTextLink(array &$menuEntry)
+    private function createIconTextLink(array &$menuEntry): string
     {
         $html = '';
 

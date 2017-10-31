@@ -186,7 +186,7 @@ class HtmlDiv extends HtmlElement
      *
      * @return string Returns the validated html div as string
      */
-    public function getHtmlDiv()
+    public function getHtmlDiv(): string
     {
         // first check if open div elements exists and set all endtags if needed
         for ($this->level; $this->level > 2; --$this->level)

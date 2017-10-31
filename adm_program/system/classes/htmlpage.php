@@ -112,7 +112,7 @@ class HtmlPage
      * @param string $filepath Filename of the NOT minified file.
      * @return string Returns the filename in dependence of the debug mode.
      */
-    private function getDebugOrMinFilepath(string $filepath)
+    private function getDebugOrMinFilepath(string $filepath): string
     {
         global $gDebug;
 
@@ -444,7 +444,7 @@ class HtmlPage
      * Returns the headline of the current Admidio page. This is the text of the <h1> tag of the page.
      * @return string Returns the headline of the current Admidio page.
      */
-    public function getHeadline()
+    public function getHeadline(): string
     {
         return $this->headline;
     }
@@ -453,7 +453,7 @@ class HtmlPage
      * Returns the title of the html page.
      * @return string Returns the title of the html page.
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -555,7 +555,7 @@ class HtmlPage
      * @param string $filename Filename to load out of the theme directory
      * @return string
      */
-    private function getFileContent(string $filename)
+    private function getFileContent(string $filename): string
     {
         global $gL10n, $gDb, $gCurrentSession, $gCurrentOrganization, $gCurrentUser, $gPreferences;
         global $gValidLogin, $gProfileFields, $gHomepage, $gDbType;
@@ -573,7 +573,7 @@ class HtmlPage
      * Builds the HTML-Header content
      * @return string
      */
-    private function getHtmlHeader()
+    private function getHtmlHeader(): string
     {
         $headerContent = '';
         $htmlMyHeader  = '';
@@ -659,7 +659,7 @@ class HtmlPage
      * Builds the HTML-Body content
      * @return string
      */
-    private function getHtmlBody()
+    private function getHtmlBody(): string
     {
         $htmlMyBodyTop    = '';
         $htmlMyBodyBottom = '';

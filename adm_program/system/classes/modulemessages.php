@@ -43,7 +43,7 @@ class ModuleMessages
      * @param string $roleIdsString A string with several role ids. (e.g: "groupID: 4-2")
      * @return string Returns the rolename and the status if former members were selected.
      */
-    public function msgGroupNameSplit(string $roleIdsString)
+    public function msgGroupNameSplit(string $roleIdsString): string
     {
         global $gCurrentOrganization, $gL10n, $gDb;
 

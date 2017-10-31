@@ -122,7 +122,7 @@ class ProfileFields
      * @param string $format  Optional the format (is necessary for timestamps)
      * @return string
      */
-    public function getPropertyById(int $fieldId, string $column, string $format = '')
+    public function getPropertyById(int $fieldId, string $column, string $format = ''): string
     {
         foreach ($this->mProfileFields as $field)
         {
@@ -143,7 +143,7 @@ class ProfileFields
      * @param int        $value2          An optional parameter that is necessary for some special fields like email to commit the user id
      * @return string Returns an html formated string that considered the profile field settings
      */
-    public function getHtmlValue(string $fieldNameIntern, $value, $value2 = null)
+    public function getHtmlValue(string $fieldNameIntern, $value, $value2 = null): string
     {
         global $gPreferences, $gL10n;
 

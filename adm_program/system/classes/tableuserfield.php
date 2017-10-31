@@ -58,9 +58,9 @@ class TableUserField extends TableAccess
     /**
      * Deletes the selected field and all references in other tables.
      * Also the gap in sequence will be closed. After that the class will be initialize.
-     * @return void|true true if no error occurred
+     * @return true true if no error occurred
      */
-    public function delete()
+    public function delete(): bool
     {
         global $gCurrentSession;
 

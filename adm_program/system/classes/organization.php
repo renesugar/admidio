@@ -480,7 +480,7 @@ class Organization extends TableAccess
      * @param array<string,string> $preferences Array with all preferences that should be stored in database. array('name_of_preference' => 'value')
      * @param bool                 $update      If set to @b false then no update will be done, only inserts
      */
-    public function setPreferences(array $preferences, bool $update = true): bool
+    public function setPreferences(array $preferences, bool $update = true)
     {
         $this->db->startTransaction();
         $this->getPreferences();
@@ -523,7 +523,7 @@ class Organization extends TableAccess
      * @param bool   $checkValue The value will be checked if it's valid. If set to @b false than the value will not be checked.
      * @return bool Returns @b true if the value is stored in the current object and @b false if a check failed
      */
-    public function setValue(string $columnName, $newValue, bool $checkValue = true)
+    public function setValue(string $columnName, $newValue, bool $checkValue = true): bool
     {
         // org_shortname shouldn't be edited
         if($columnName === 'org_shortname' && !$this->newRecord)

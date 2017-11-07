@@ -323,7 +323,7 @@ class TableDate extends TableAccess
      * This function reads the deadline for participation. If no deadline is set as default the the startdate of the event will be set.
      * return string $dateDeadline Returns a string with formated date and time
      */
-    public function getValidDeadline()
+    public function getValidDeadline(): string
     {
         global $gPreferences;
 

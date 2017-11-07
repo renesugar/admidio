@@ -131,7 +131,7 @@ class ModuleAnnouncements extends Modules
      * Get number of available announcements
      * @Return int Returns the total count and push it in the array
      */
-    public function getDataSetCount()
+    public function getDataSetCount(): int
     {
         global $gCurrentUser, $gDb;
 

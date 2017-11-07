@@ -19,7 +19,7 @@ if (basename($_SERVER['SCRIPT_FILENAME']) === 'roles_functions.php')
  * @param int $userId
  * @return \PDOStatement
  */
-function getRolesFromDatabase(int $userId)
+function getRolesFromDatabase(int $userId): \PDOStatement
 {
     global $gDb, $gCurrentOrganization;
 
@@ -45,7 +45,7 @@ function getRolesFromDatabase(int $userId)
  * @param int $userId
  * @return \PDOStatement
  */
-function getFutureRolesFromDatabase(int $userId)
+function getFutureRolesFromDatabase(int $userId): \PDOStatement
 {
     global $gDb, $gCurrentOrganization;
 
@@ -70,7 +70,7 @@ function getFutureRolesFromDatabase(int $userId)
  * @param int $userId
  * @return \PDOStatement
  */
-function getFormerRolesFromDatabase(int $userId)
+function getFormerRolesFromDatabase(int $userId): \PDOStatement
 {
     global $gDb, $gCurrentOrganization;
 

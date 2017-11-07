@@ -110,7 +110,7 @@ class ModuleMessages
      * @param int $userId
      * @return \PDOStatement
      */
-    public function msgGetUserEmails(int $userId)
+    public function msgGetUserEmails(int $userId): \PDOStatement
     {
         global $gDb;
 
@@ -128,7 +128,7 @@ class ModuleMessages
      * @param int $userId
      * @return \PDOStatement
      */
-    public function msgGetUserUnread(int $userId)
+    public function msgGetUserUnread(int $userId): \PDOStatement
     {
         global $gDb;
 
@@ -147,7 +147,7 @@ class ModuleMessages
      * @param int $userId
      * @return \PDOStatement
      */
-    public function msgGetUser(int $userId)
+    public function msgGetUser(int $userId): \PDOStatement
     {
         global $gDb;
 

@@ -37,7 +37,7 @@ class UploadHandlerDownload extends UploadHandler
      * @param        $contentRange
      * @return \stdClass
      */
-    protected function handle_file_upload(string $uploadedFile, string $name, int $size, $type, $error, $index = null, $contentRange = null)
+    protected function handle_file_upload(string $uploadedFile, string $name, int $size, $type, $error, $index = null, $contentRange = null): \stdClass
     {
         global $gPreferences, $gL10n, $gDb, $getId, $gCurrentOrganization, $gCurrentUser;
 

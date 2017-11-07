@@ -60,7 +60,7 @@ if (!function_exists('http_response_code')) {
      * @param int|null $code
      * @return int
      */
-    function http_response_code($code = null)
+    function http_response_code($code = null): int
     {
         static $defaultCode = 200;
 

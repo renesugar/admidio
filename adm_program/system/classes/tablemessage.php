@@ -84,7 +84,7 @@ class TableMessage extends TableAccess
      * @param int $usrId of the receiver - just for security reasons.
      * @return \PDOStatement Returns @b answer of the SQL execution
      */
-    public function setReadValue(int $usrId)
+    public function setReadValue(int $usrId): \PDOStatement
     {
         $sql = 'UPDATE '.TBL_MESSAGES.'
                    SET msg_read = \'0\'
@@ -99,7 +99,7 @@ class TableMessage extends TableAccess
      * @param int $msgId of the conversation - just for security reasons.
      * @return \PDOStatement Returns @b answer of the SQL execution
      */
-    public function getConversation(int $msgId)
+    public function getConversation(int $msgId): \PDOStatement
     {
         $sql = 'SELECT msc_usr_id, msc_message, msc_timestamp
                   FROM '. TBL_MESSAGES_CONTENT. '

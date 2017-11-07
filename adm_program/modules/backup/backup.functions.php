@@ -173,7 +173,7 @@ function bzip2Version()
  * @param int   $precision
  * @return string
  */
-function FormattedTimeRemaining(int $seconds, int $precision = 1): string
+function FormattedTimeRemaining(float $seconds, int $precision = 1): string
 {
     global $gL10n;
 

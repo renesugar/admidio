@@ -79,7 +79,7 @@ class HtmlFormInstallation extends HtmlForm
         global $gL10n;
 
         $this->title = $gL10n->get('INS_INSTALLATION');
-        $this->headline = $gL10n->get('INS_INSTALLATION_VERSION', ADMIDIO_VERSION_TEXT);
+        $this->headline = $gL10n->get('INS_INSTALLATION_VERSION', array(ADMIDIO_VERSION_TEXT));
     }
 
     /**
@@ -90,7 +90,7 @@ class HtmlFormInstallation extends HtmlForm
         global $gL10n;
 
         $this->title = $gL10n->get('INS_UPDATE');
-        $this->headline = $gL10n->get('INS_UPDATE_VERSION', ADMIDIO_VERSION_TEXT);
+        $this->headline = $gL10n->get('INS_UPDATE_VERSION', array(ADMIDIO_VERSION_TEXT));
     }
 
     /**

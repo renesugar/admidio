@@ -65,7 +65,7 @@ $page->enableModal();
 // add rss feed to announcements
 if($gPreferences['enable_rss'] == 1)
 {
-    $page->addRssFile(ADMIDIO_URL.FOLDER_MODULES.'/announcements/rss_announcements.php?headline='.$getHeadline, $gL10n->get('SYS_RSS_FEED_FOR_VAR', $gCurrentOrganization->getValue('org_longname').' - '.$getHeadline));
+    $page->addRssFile(ADMIDIO_URL.FOLDER_MODULES.'/announcements/rss_announcements.php?headline='.$getHeadline, $gL10n->get('SYS_RSS_FEED_FOR_VAR', array($gCurrentOrganization->getValue('org_longname').' - '.$getHeadline)));
 }
 
 // number of announcements per page
@@ -108,7 +108,7 @@ if($gCurrentUser->editAnnouncements())
 {
     // if no calendar selectbox is shown, then show link to edit calendars
     $announcementsMenu->addItem(
-        'admMenuItemCategories', FOLDER_MODULES.'/categories/categories.php?type=ANN',
+        'admMenuItemCategories', ADMIDIO_URL.FOLDER_MODULES.'/categories/categories.php?type=ANN',
         $gL10n->get('SYS_MAINTAIN_CATEGORIES'), 'application_view_tile.png'
     );
 }

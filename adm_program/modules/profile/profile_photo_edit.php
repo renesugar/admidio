@@ -55,7 +55,7 @@ if($gPreferences['profile_photo_storage'] == 1)
     $myFilesProfilePhotos = new MyFiles('USER_PROFILE_PHOTOS');
     if(!$myFilesProfilePhotos->checkSettings())
     {
-        $gMessage->show($gL10n->get($myFilesProfilePhotos->errorText, $myFilesProfilePhotos->errorPath, '<a href="mailto:'.$gPreferences['email_administrator'].'">', '</a>'));
+        $gMessage->show($gL10n->get($myFilesProfilePhotos->errorText, array($myFilesProfilePhotos->errorPath, '<a href="mailto:'.$gPreferences['email_administrator'].'">', '</a>')));
         // => EXIT
     }
 }
@@ -164,7 +164,7 @@ if($getMode === 'choose')
     }
     else
     {
-        $headline = $gL10n->get('PRO_EDIT_PROFILE_PIC_FROM', $user->getValue('FIRST_NAME'), $user->getValue('LAST_NAME'));
+        $headline = $gL10n->get('PRO_EDIT_PROFILE_PIC_FROM', array($user->getValue('FIRST_NAME'), $user->getValue('LAST_NAME')));
     }
 
     $gNavigation->addUrl(CURRENT_URL, $headline);
@@ -199,7 +199,7 @@ elseif($getMode === 'upload')
     // File size
     if ($_FILES['userfile']['error'][0] === UPLOAD_ERR_INI_SIZE)
     {
-        $gMessage->show($gL10n->get('PRO_PHOTO_FILE_TO_LARGE', round(PhpIni::getUploadMaxSize()/pow(1024, 2))));
+        $gMessage->show($gL10n->get('PRO_PHOTO_FILE_TO_LARGE', array(round(PhpIni::getUploadMaxSize()/pow(1024, 2)))));
         // => EXIT
     }
 
@@ -222,7 +222,7 @@ elseif($getMode === 'upload')
     $imageDimensions = $imageProperties[0] * $imageProperties[1];
     if($imageDimensions > admFuncProcessableImageSize())
     {
-        $gMessage->show($gL10n->get('PRO_PHOTO_RESOLUTION_TO_LARGE', round(admFuncProcessableImageSize()/1000000, 2)));
+        $gMessage->show($gL10n->get('PRO_PHOTO_RESOLUTION_TO_LARGE', array(round(admFuncProcessableImageSize()/1000000, 2))));
         // => EXIT
     }
 
@@ -258,7 +258,7 @@ elseif($getMode === 'upload')
     }
     else
     {
-        $headline = $gL10n->get('PRO_EDIT_PROFILE_PIC_FROM', $user->getValue('FIRST_NAME'), $user->getValue('LAST_NAME'));
+        $headline = $gL10n->get('PRO_EDIT_PROFILE_PIC_FROM', array($user->getValue('FIRST_NAME'), $user->getValue('LAST_NAME')));
     }
 
     // create html page object

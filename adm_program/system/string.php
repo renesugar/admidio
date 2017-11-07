@@ -9,6 +9,10 @@ declare(strict_types=1);
  * @license https://www.gnu.org/licenses/gpl-2.0.html GNU General Public License v2.0 only
  ***********************************************************************************************
  */
+if (basename($_SERVER['SCRIPT_FILENAME']) === 'string.php')
+{
+    exit('This page may not be called directly!');
+}
 
 /**
  * In case the multibyte functions are not supported, we fallback to a no-multibyte function
@@ -270,7 +274,7 @@ function admStrEndsWith(string $string, string $end): bool
  */
 function admIsTranslationStrId(string $string): bool
 {
-    return (bool) preg_match('/^[A-Z]{3}_[A-Z_]*[A-Z]$/', $string);
+    return (bool) preg_match('/^[A-Z]{3}_([A-Z]_?)*[A-Z]$/', $string);
 }
 
 /**

@@ -59,17 +59,17 @@ if ($getMode === 1 || ($getMode === 3 && $getLinkId > 0))
 {
     if(strlen(strStripTags($_POST['lnk_name'])) === 0)
     {
-        $gMessage->show($gL10n->get('SYS_FIELD_EMPTY', $gL10n->get('LNK_LINK_NAME')));
+        $gMessage->show($gL10n->get('SYS_FIELD_EMPTY', array($gL10n->get('LNK_LINK_NAME'))));
         // => EXIT
     }
     if(strlen(strStripTags($_POST['lnk_url'])) === 0)
     {
-        $gMessage->show($gL10n->get('SYS_FIELD_EMPTY', $gL10n->get('LNK_LINK_ADDRESS')));
+        $gMessage->show($gL10n->get('SYS_FIELD_EMPTY', array($gL10n->get('LNK_LINK_ADDRESS'))));
         // => EXIT
     }
     if(strlen($_POST['lnk_cat_id']) === 0)
     {
-        $gMessage->show($gL10n->get('SYS_FIELD_EMPTY', $gL10n->get('SYS_CATEGORY')));
+        $gMessage->show($gL10n->get('SYS_FIELD_EMPTY', array($gL10n->get('SYS_CATEGORY'))));
         // => EXIT
     }
 
@@ -86,7 +86,7 @@ if ($getMode === 1 || ($getMode === 3 && $getLinkId > 0))
                 // Daten wurden nicht uebernommen, Hinweis ausgeben
                 if($key === 'lnk_url')
                 {
-                    $gMessage->show($gL10n->get('SYS_URL_INVALID_CHAR', $gL10n->get('SYS_WEBSITE')));
+                    $gMessage->show($gL10n->get('SYS_URL_INVALID_CHAR', array($gL10n->get('SYS_WEBSITE'))));
                     // => EXIT
                 }
             }
@@ -111,7 +111,7 @@ if ($getMode === 1 || ($getMode === 3 && $getLinkId > 0))
     if($returnCode === true && $getMode === 1)
     {
         // Benachrichtigungs-Email für neue Einträge
-        $message = $gL10n->get('LNK_EMAIL_NOTIFICATION_MESSAGE', $gCurrentOrganization->getValue('org_longname'), $_POST['lnk_url']. ' ('.$_POST['lnk_name'].')', $gCurrentUser->getValue('FIRST_NAME').' '.$gCurrentUser->getValue('LAST_NAME'), date($gPreferences['system_date']));
+        $message = $gL10n->get('LNK_EMAIL_NOTIFICATION_MESSAGE', array($gCurrentOrganization->getValue('org_longname'), $_POST['lnk_url']. ' ('.$_POST['lnk_name'].')', $gCurrentUser->getValue('FIRST_NAME').' '.$gCurrentUser->getValue('LAST_NAME'), date($gPreferences['system_date'])));
         try
         {
             $notification = new Email();

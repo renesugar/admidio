@@ -93,7 +93,7 @@ $orgLongname = $gCurrentOrganization->getValue('org_longname');
 $rss = new RSSfeed(
     $orgLongname . ' - ' . $getHeadline,
     $gCurrentOrganization->getValue('org_homepage'),
-    $gL10n->get('PHO_RECENT_ALBUMS_OF_ORGA', $orgLongname),
+    $gL10n->get('PHO_RECENT_ALBUMS_OF_ORGA', array($orgLongname)),
     $orgLongname
 );
 
@@ -132,7 +132,7 @@ while ($row = $statement->fetch())
     // Enddatum nur wenn anders als startdatum
     if ($photoAlbum->getValue('pho_end') !== $photoAlbum->getValue('pho_begin'))
     {
-        $description = $gL10n->get('SYS_DATE_FROM_TO', $description, $photoAlbum->getValue('pho_end', $gPreferences['system_date']));
+        $description = $gL10n->get('SYS_DATE_FROM_TO', array($description, $photoAlbum->getValue('pho_end', $gPreferences['system_date'])));
     }
     $description .= '<br />'.$gL10n->get('PHO_PHOTOS').': '.$photoAlbum->countImages();
     $description .= '<br />'.$gL10n->get('PHO_PHOTOGRAPHER').': '.$photoAlbum->getValue('pho_photographers');

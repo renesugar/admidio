@@ -33,10 +33,6 @@ catch(AdmException $e)
     // => EXIT
 }
 
-// create an installation unique cookie prefix and remove special characters
-$gCookiePraefix = 'ADMIDIO_' . $g_organization . '_' . $g_adm_db . '_' . $g_tbl_praefix;
-$gCookiePraefix = str_replace(array(' ', '.', ',', ';', ':', '[', ']'), '_', $gCookiePraefix);
-
 /*********************************************************************************
  Create and validate sessions, check auto login, read session variables
 /********************************************************************************/
@@ -44,13 +40,13 @@ $gCookiePraefix = str_replace(array(' ', '.', ',', ';', ':', '[', ']'), '_', $gC
 // start PHP session
 if(!headers_sent())
 {
-    Session::start($gCookiePraefix);
+    Session::start(COOKIE_PREFIX);
 }
 
 // determine session id
-if(array_key_exists($gCookiePraefix . '_ID', $_COOKIE))
+if(array_key_exists(COOKIE_PREFIX . '_ID', $_COOKIE))
 {
-    $gSessionId = $_COOKIE[$gCookiePraefix . '_ID'];
+    $gSessionId = $_COOKIE[COOKIE_PREFIX . '_ID'];
 }
 else
 {
@@ -65,7 +61,6 @@ if(array_key_exists('gCurrentSession', $_SESSION) && $_SESSION['gCurrentSession'
      * @var Session $gCurrentSession
      */
     $gCurrentSession = $_SESSION['gCurrentSession'];
-    $gCurrentSession->setDatabase($gDb);
     // reload session data and if necessary the organization object
     $gCurrentSession->refreshSession();
     // read system component
@@ -88,7 +83,7 @@ if(array_key_exists('gCurrentSession', $_SESSION) && $_SESSION['gCurrentSession'
 else
 {
     // create new session object and store it in PHP session
-    $gCurrentSession = new Session($gDb, $gSessionId, $gCookiePraefix);
+    $gCurrentSession = new Session($gDb, $gSessionId, COOKIE_PREFIX);
     $_SESSION['gCurrentSession'] = $gCurrentSession;
 
     // create system component
@@ -142,7 +137,6 @@ if($gCurrentSession->hasObject('gCurrentUser'))
      * @var User $gCurrentUser
      */
     $gCurrentUser =& $gCurrentSession->getObject('gCurrentUser');
-    $gCurrentUser->setProfileFieldsDataDatabase($gDb);
 
     // checks if user in database session is the same as in php session
     if((int) $gCurrentUser->getValue('usr_id') !== $sesUsrId)

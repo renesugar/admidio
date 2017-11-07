@@ -24,12 +24,12 @@ if (!$gCurrentUser->editUsers())
 
 if(strlen($_POST['lastname']) === 0)
 {
-    $gMessage->show($gL10n->get('SYS_FIELD_EMPTY', $gL10n->get('SYS_LASTNAME')));
+    $gMessage->show($gL10n->get('SYS_FIELD_EMPTY', array($gL10n->get('SYS_LASTNAME'))));
     // => EXIT
 }
 if(strlen($_POST['firstname']) === 0)
 {
-    $gMessage->show($gL10n->get('SYS_FIELD_EMPTY', $gL10n->get('SYS_FIRSTNAME')));
+    $gMessage->show($gL10n->get('SYS_FIELD_EMPTY', array($gL10n->get('SYS_FIRSTNAME'))));
     // => EXIT
 }
 
@@ -49,10 +49,10 @@ if($gPreferences['system_search_similar'] == 1 && $gDbType === Database::PDO_ENG
 else
 {
     $sqlSimilarName = '
-        (  (   last_name.usd_value  = ?    -- $gDb->escapeString($getLastname)
-           AND first_name.usd_value = ?)   -- $gDb->escapeString($getFirstname)
-        OR (   last_name.usd_value  = ?    -- $gDb->escapeString($getFirstname)
-           AND first_name.usd_value = ?) ) -- $gDb->escapeString($getLastname)';
+        (  (   last_name.usd_value  = ?    -- $getLastname
+           AND first_name.usd_value = ?)   -- $getFirstname
+        OR (   last_name.usd_value  = ?    -- $getFirstname
+           AND first_name.usd_value = ?) ) -- $getLastname';
 }
 
 // alle User aus der DB selektieren, die denselben Vor- und Nachnamen haben
@@ -88,10 +88,10 @@ $queryParams = array(
     $gProfileFields->getProperty('POSTCODE', 'usf_id'),
     $gProfileFields->getProperty('CITY', 'usf_id'),
     $gProfileFields->getProperty('EMAIL', 'usf_id'),
-    $gDb->escapeString($getLastname),
-    $gDb->escapeString($getFirstname),
-    $gDb->escapeString($getFirstname),
-    $gDb->escapeString($getLastname)
+    $getLastname,
+    $getFirstname,
+    $getFirstname,
+    $getLastname
 );
 $usrStatement = $gDb->queryPrepared($sql, $queryParams);
 $memberCount = $usrStatement->rowCount();
@@ -105,7 +105,7 @@ if($memberCount === 0)
 
 // html output
 echo '
-<p class="lead">'.$gL10n->get('SYS_SIMILAR_USERS_FOUND', $getFirstname. ' '. $getLastname).'</p>
+<p class="lead">'.$gL10n->get('SYS_SIMILAR_USERS_FOUND', array($getFirstname. ' '. $getLastname)).'</p>
 
 <div class="panel panel-default">
     <div class="panel-heading">'.$gL10n->get('SYS_USERS_FOUND').'</div>
@@ -158,7 +158,7 @@ echo '
                 $link = ADMIDIO_URL.FOLDER_MODULES.'/profile/roles.php?usr_id='.$row['usr_id'];
 
                 // KEINE Logindaten vorhanden
-                echo '<p>'.$gL10n->get('MEM_NO_MEMBERSHIP', $gCurrentOrganization->getValue('org_shortname')).'</p>
+                echo '<p>'.$gL10n->get('MEM_NO_MEMBERSHIP', array($gCurrentOrganization->getValue('org_shortname'))).'</p>
 
                 <button class="btn btn-default btn-primary" onclick="window.location.href=\''.$link.'\'"><img src="'. THEME_URL. '/icons/new_registrations.png"
                     alt="'.$gL10n->get('MEM_ASSIGN_ROLES').'" />'.$gL10n->get('MEM_ASSIGN_ROLES').'</button>';

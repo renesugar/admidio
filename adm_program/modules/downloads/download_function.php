@@ -42,7 +42,7 @@ $_SESSION['download_request'] = $_POST;
 $myFilesDownload = new MyFiles('DOWNLOAD');
 if(!$myFilesDownload->checkSettings())
 {
-    $gMessage->show($gL10n->get($myFilesDownload->errorText, $myFilesDownload->errorPath, '<a href="mailto:'.$gPreferences['email_administrator'].'">', '</a>'));
+    $gMessage->show($gL10n->get($myFilesDownload->errorText, array($myFilesDownload->errorPath, '<a href="mailto:'.$gPreferences['email_administrator'].'">', '</a>')));
     // => EXIT
 }
 
@@ -110,7 +110,7 @@ elseif ($getMode === 3)
         // Test ob der Ordner schon existiert im Filesystem
         if (is_dir($folder->getFullFolderPath() . '/' . $newFolderName))
         {
-            $gMessage->show($gL10n->get('DOW_FOLDER_EXISTS', $newFolderName));
+            $gMessage->show($gL10n->get('DOW_FOLDER_EXISTS', array($newFolderName)));
             // => EXIT
         }
         else
@@ -144,12 +144,12 @@ elseif ($getMode === 3)
             {
                 // der entsprechende Ordner konnte nicht angelegt werden
                 $gMessage->setForwardUrl(ADMIDIO_URL.FOLDER_MODULES.'/downloads/downloads.php');
-                $gMessage->show($gL10n->get($error['text'], $error['path'], '<a href="mailto:'.$gPreferences['email_administrator'].'">', '</a>'));
+                $gMessage->show($gL10n->get($error['text'], array($error['path'], '<a href="mailto:'.$gPreferences['email_administrator'].'">', '</a>')));
                 // => EXIT
             }
 
             $gMessage->setForwardUrl(ADMIDIO_URL.'/adm_program/system/back.php');
-            $gMessage->show($gL10n->get('DOW_FOLDER_CREATED', $newFolderName));
+            $gMessage->show($gL10n->get('DOW_FOLDER_CREATED', array($newFolderName)));
             // => EXIT
         }
     }
@@ -196,7 +196,7 @@ elseif ($getMode === 4)
             // Test ob die Datei schon existiert im Filesystem
             if ($newFile !== $file->getValue('fil_name') && is_file($newPath . $newFile))
             {
-                $gMessage->show($gL10n->get('DOW_FILE_EXIST', $newFile));
+                $gMessage->show($gL10n->get('DOW_FILE_EXIST', array($newFile)));
                 // => EXIT
             }
             else
@@ -211,13 +211,13 @@ elseif ($getMode === 4)
                     $file->save();
 
                     $gMessage->setForwardUrl(ADMIDIO_URL.'/adm_program/system/back.php');
-                    $gMessage->show($gL10n->get('DOW_FILE_RENAME', $oldName));
+                    $gMessage->show($gL10n->get('DOW_FILE_RENAME', array($oldName)));
                     // => EXIT
                 }
                 else
                 {
                     $gMessage->setForwardUrl(ADMIDIO_URL.'/adm_program/system/back.php');
-                    $gMessage->show($gL10n->get('DOW_FILE_RENAME_ERROR', $oldName));
+                    $gMessage->show($gL10n->get('DOW_FILE_RENAME_ERROR', array($oldName)));
                     // => EXIT
                 }
             }
@@ -234,7 +234,7 @@ elseif ($getMode === 4)
             if ($newFolder !== $folder->getValue('fol_name')
             && is_dir(ADMIDIO_PATH. $folder->getValue('fol_path'). '/'.$newFolder))
             {
-                $gMessage->show($gL10n->get('DOW_FOLDER_EXISTS', $newFolder));
+                $gMessage->show($gL10n->get('DOW_FOLDER_EXISTS', array($newFolder)));
                 // => EXIT
             }
             else
@@ -248,13 +248,13 @@ elseif ($getMode === 4)
                     $folder->rename($newFolder, $folder->getValue('fol_path'));
 
                     $gMessage->setForwardUrl(ADMIDIO_URL.'/adm_program/system/back.php');
-                    $gMessage->show($gL10n->get('DOW_FOLDER_RENAME', $oldName));
+                    $gMessage->show($gL10n->get('DOW_FOLDER_RENAME', array($oldName)));
                     // => EXIT
                 }
                 else
                 {
                     $gMessage->setForwardUrl(ADMIDIO_URL.'/adm_program/system/back.php');
-                    $gMessage->show($gL10n->get('DOW_FOLDER_RENAME_ERROR', $oldName));
+                    $gMessage->show($gL10n->get('DOW_FOLDER_RENAME_ERROR', array($oldName)));
                     // => EXIT
                 }
             }
@@ -391,7 +391,7 @@ elseif ($getMode === 7)
 {
     if(!isset($_POST['adm_roles_view_right']))
     {
-        $gMessage->show($gL10n->get('SYS_FIELD_EMPTY', $gL10n->get('SYS_VISIBLE_FOR')));
+        $gMessage->show($gL10n->get('SYS_FIELD_EMPTY', array($gL10n->get('SYS_VISIBLE_FOR'))));
         // => EXIT
     }
     if(!isset($_POST['adm_roles_upload_right']))

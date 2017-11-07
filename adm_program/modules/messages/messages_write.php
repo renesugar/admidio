@@ -62,7 +62,7 @@ if (!$gValidLogin && $getUserId === 0 && $getMsgType === TableMessage::MESSAGE_T
 // check if user has email address for sending a email
 if ($gValidLogin && $getMsgType !== TableMessage::MESSAGE_TYPE_PM && $gCurrentUser->getValue('EMAIL') === '')
 {
-    $gMessage->show($gL10n->get('SYS_CURRENT_USER_NO_EMAIL', '<a href="'.ADMIDIO_URL.FOLDER_MODULES.'/profile/profile.php">', '</a>'));
+    $gMessage->show($gL10n->get('SYS_CURRENT_USER_NO_EMAIL', array('<a href="'.ADMIDIO_URL.FOLDER_MODULES.'/profile/profile.php">', '</a>')));
     // => EXIT
 }
 
@@ -277,7 +277,7 @@ elseif (!isset($messageStatement))
         // besitzt der User eine gueltige E-Mail-Adresse
         if (!strValidCharacters($user->getValue('EMAIL'), 'email'))
         {
-            $gMessage->show($gL10n->get('SYS_USER_NO_EMAIL', $user->getValue('FIRST_NAME').' '.$user->getValue('LAST_NAME')));
+            $gMessage->show($gL10n->get('SYS_USER_NO_EMAIL', array($user->getValue('FIRST_NAME').' '.$user->getValue('LAST_NAME'))));
             // => EXIT
         }
     }

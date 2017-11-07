@@ -219,8 +219,8 @@ foreach($listsResult['recordset'] as $row)
                 {
                     $page->addHtml('<a class="admidio-icon-link" href="'.ADMIDIO_URL.FOLDER_MODULES.'/profile/profile_function.php?mode=8&amp;rol_id='. $rolId.'"><img
                                     src="'. THEME_URL. '/icons/vcard.png"
-                                    alt="'.$gL10n->get('PRO_EXPORT_VCARD_FROM_VAR', $role->getValue('rol_name')).'"
-                                    title="'.$gL10n->get('PRO_EXPORT_VCARD_FROM_VAR', $role->getValue('rol_name')).'" /></a>');
+                                    alt="'.$gL10n->get('PRO_EXPORT_VCARD_FROM_VAR', array($role->getValue('rol_name'))).'"
+                                    title="'.$gL10n->get('PRO_EXPORT_VCARD_FROM_VAR', array($role->getValue('rol_name'))).'" /></a>');
                 }
 
                 // link to assign or remove members if you are allowed to do it
@@ -261,7 +261,7 @@ foreach($listsResult['recordset'] as $row)
 
                 if(strlen($role->getValue('rol_start_date')) > 0)
                 {
-                    $form->addStaticControl('list_date_from_to', $gL10n->get('SYS_PERIOD'), $gL10n->get('SYS_DATE_FROM_TO', $role->getValue('rol_start_date', $gPreferences['system_date']), $role->getValue('rol_end_date', $gPreferences['system_date'])));
+                    $form->addStaticControl('list_date_from_to', $gL10n->get('SYS_PERIOD'), $gL10n->get('SYS_DATE_FROM_TO', array($role->getValue('rol_start_date', $gPreferences['system_date']), $role->getValue('rol_end_date', $gPreferences['system_date']))));
                 }
 
                 if($role->getValue('rol_weekday') > 0 || strlen($role->getValue('rol_start_time')) > 0)
@@ -272,7 +272,7 @@ foreach($listsResult['recordset'] as $row)
                     }
                     if(strlen($role->getValue('rol_start_time')) > 0)
                     {
-                        $html = $gL10n->get('LST_FROM_TO', $role->getValue('rol_start_time', $gPreferences['system_time']), $role->getValue('rol_end_time', $gPreferences['system_time']));
+                        $html = $gL10n->get('LST_FROM_TO', array($role->getValue('rol_start_time', $gPreferences['system_time']), $role->getValue('rol_end_time', $gPreferences['system_time'])));
                     }
                     $form->addStaticControl('list_date', $gL10n->get('DAT_DATE'), $html);
                 }
@@ -288,7 +288,7 @@ foreach($listsResult['recordset'] as $row)
 
                 if($role->getValue('rol_max_members') > 0)
                 {
-                    $html .= '&nbsp;'.$gL10n->get('LST_MAX', $role->getValue('rol_max_members'));
+                    $html .= '&nbsp;'.$gL10n->get('LST_MAX', array($role->getValue('rol_max_members')));
                 }
                 if($gCurrentUser->hasRightViewFormerRolesMembers($rolId) && $getActiveRole && $row['num_former'] > 0)
                 {

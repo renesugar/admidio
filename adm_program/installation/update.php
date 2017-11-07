@@ -59,7 +59,7 @@ try
 catch (AdmException $e)
 {
     showNotice(
-        $gL10n->get('SYS_DATABASE_NO_LOGIN', $e->getText()),
+        $gL10n->get('SYS_DATABASE_NO_LOGIN', array($e->getText())),
         'installation.php?step=connect_database',
         $gL10n->get('SYS_BACK'),
         'layout/back.png'
@@ -108,7 +108,7 @@ if (is_file(ADMIDIO_PATH . '/config.php') && is_file(ADMIDIO_PATH . FOLDER_DATA 
     if (!@unlink(ADMIDIO_PATH . '/config.php'))
     {
         showNotice(
-            $gL10n->get('INS_DELETE_CONFIG_FILE', ADMIDIO_URL),
+            $gL10n->get('INS_DELETE_CONFIG_FILE', array(ADMIDIO_URL)),
             ADMIDIO_URL . '/adm_program/installation/index.php',
             $gL10n->get('SYS_OVERVIEW'),
             'layout/application_view_list.png'
@@ -176,7 +176,7 @@ if ($installedDbVersion === '')
             <span class="glyphicon glyphicon-exclamation-sign"></span>
             <strong>' . $gL10n->get('INS_UPDATE_NOT_POSSIBLE') . '</strong>
         </div>
-        <p>' . $gL10n->get('INS_NO_INSTALLED_VERSION_FOUND', ADMIDIO_VERSION_TEXT) . '</p>';
+        <p>' . $gL10n->get('INS_NO_INSTALLED_VERSION_FOUND', array(ADMIDIO_VERSION_TEXT)) . '</p>';
 
     showNotice(
         $message,
@@ -200,7 +200,7 @@ if ($getMode === 1)
         // create a page with the notice that the installation must be configured on the next pages
         $form = new HtmlFormInstallation('update_login_form', 'update.php?mode=2');
         $form->setUpdateModus();
-        $form->setFormDescription('<h3>' . $gL10n->get('INS_DATABASE_NEEDS_UPDATED_VERSION', $installedDbVersion, ADMIDIO_VERSION_TEXT) . '</h3>');
+        $form->setFormDescription('<h3>' . $gL10n->get('INS_DATABASE_NEEDS_UPDATED_VERSION', array($installedDbVersion, ADMIDIO_VERSION_TEXT)) . '</h3>');
 
         if (!isset($gLoginForUpdate) || $gLoginForUpdate == 1)
         {
@@ -261,8 +261,8 @@ if ($getMode === 1)
                 <strong>' . $gL10n->get('SYS_ERROR') . '</strong>
                 <p>' .
                     $gL10n->get(
-                        'SYS_FILESYSTEM_VERSION_INVALID', $installedDbVersion,
-                        ADMIDIO_VERSION_TEXT, '<a href="' . ADMIDIO_HOMEPAGE . 'download.php">', '</a>'
+                        'SYS_FILESYSTEM_VERSION_INVALID', array($installedDbVersion,
+                        ADMIDIO_VERSION_TEXT, '<a href="' . ADMIDIO_HOMEPAGE . 'download.php">', '</a>')
                     ) . '
                 </p>
             </div>';
@@ -480,20 +480,16 @@ elseif ($getMode === 2)
     $sql = 'UPDATE ' . TBL_SESSIONS . ' SET ses_renew = 1';
     $gDb->queryPrepared($sql);
 
-    // create an installation unique cookie prefix and remove special characters
-    $gCookiePraefix = 'ADMIDIO_' . $g_organization . '_' . $g_adm_db . '_' . $g_tbl_praefix;
-    $gCookiePraefix = str_replace(array(' ', '.', ',', ';', ':', '[', ']'), '_', $gCookiePraefix);
-
     // start php session and remove session object with all data, so that
     // all data will be read after the update
-    Session::start($gCookiePraefix);
+    Session::start(COOKIE_PREFIX);
     unset($_SESSION['gCurrentSession']);
 
     // show notice that update was successful
     $form = new HtmlFormInstallation('installation-form', ADMIDIO_HOMEPAGE . 'donate.php');
     $form->setUpdateModus();
     $form->setFormDescription(
-        $gL10n->get('INS_UPDATE_TO_VERSION_SUCCESSFUL', ADMIDIO_VERSION_TEXT) . '<br /><br />' . $gL10n->get('INS_SUPPORT_FURTHER_DEVELOPMENT'),
+        $gL10n->get('INS_UPDATE_TO_VERSION_SUCCESSFUL', array(ADMIDIO_VERSION_TEXT)) . '<br /><br />' . $gL10n->get('INS_SUPPORT_FURTHER_DEVELOPMENT'),
         '<div class="alert alert-success form-alert">
             <span class="glyphicon glyphicon-ok"></span>
             <strong>'.$gL10n->get('INS_UPDATING_WAS_SUCCESSFUL').'</strong>

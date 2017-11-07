@@ -77,7 +77,7 @@ if ($getMode === 'new' || $getMode === 'change')
     // Album
     if (strlen($_POST['pho_name']) === 0)
     {
-        $gMessage->show($gL10n->get('SYS_FIELD_EMPTY', $gL10n->get('PHO_ALBUM')));
+        $gMessage->show($gL10n->get('SYS_FIELD_EMPTY', array($gL10n->get('PHO_ALBUM'))));
         // => EXIT
     }
 
@@ -87,7 +87,7 @@ if ($getMode === 'new' || $getMode === 'change')
         $startDate = \DateTime::createFromFormat($gPreferences['system_date'], $phoBegin);
         if ($startDate === false)
         {
-            $gMessage->show($gL10n->get('SYS_DATE_INVALID', $gL10n->get('SYS_START'), $gPreferences['system_date']));
+            $gMessage->show($gL10n->get('SYS_DATE_INVALID', array($gL10n->get('SYS_START'), $gPreferences['system_date'])));
             // => EXIT
         }
         else
@@ -97,7 +97,7 @@ if ($getMode === 'new' || $getMode === 'change')
     }
     else
     {
-        $gMessage->show($gL10n->get('SYS_FIELD_EMPTY', $gL10n->get('SYS_START')));
+        $gMessage->show($gL10n->get('SYS_FIELD_EMPTY', array($gL10n->get('SYS_START'))));
         // => EXIT
     }
 
@@ -107,7 +107,7 @@ if ($getMode === 'new' || $getMode === 'change')
         $endDate = \DateTime::createFromFormat($gPreferences['system_date'], $phoEnd);
         if ($endDate === false)
         {
-            $gMessage->show($gL10n->get('SYS_DATE_INVALID', $gL10n->get('SYS_END'), $gPreferences['system_date']));
+            $gMessage->show($gL10n->get('SYS_DATE_INVALID', array($gL10n->get('SYS_END'), $gPreferences['system_date'])));
             // => EXIT
         }
         else
@@ -155,7 +155,7 @@ if ($getMode === 'new' || $getMode === 'change')
 
             // der entsprechende Ordner konnte nicht angelegt werden
             $gMessage->setForwardUrl(ADMIDIO_URL.FOLDER_MODULES.'/photos/photos.php');
-            $gMessage->show($gL10n->get($error['text'], $error['path'], '<a href="mailto:'.$gPreferences['email_administrator'].'">', '</a>'));
+            $gMessage->show($gL10n->get($error['text'], array($error['path'], '<a href="mailto:'.$gPreferences['email_administrator'].'">', '</a>')));
             // => EXIT
         }
 
@@ -165,7 +165,7 @@ if ($getMode === 'new' || $getMode === 'change')
             $notification = new Email();
             try
             {
-                $message = $gL10n->get('PHO_EMAIL_NOTIFICATION_MESSAGE', $gCurrentOrganization->getValue('org_longname'), $_POST['pho_name'], $gCurrentUser->getValue('FIRST_NAME').' '.$gCurrentUser->getValue('LAST_NAME'), date($gPreferences['system_date']));
+                $message = $gL10n->get('PHO_EMAIL_NOTIFICATION_MESSAGE', array($gCurrentOrganization->getValue('org_longname'), $_POST['pho_name'], $gCurrentUser->getValue('FIRST_NAME').' '.$gCurrentUser->getValue('LAST_NAME'), date($gPreferences['system_date'])));
                 $notification->adminNotification($gL10n->get('PHO_EMAIL_NOTIFICATION_TITLE'), $message, $gCurrentUser->getValue('FIRST_NAME').' '.$gCurrentUser->getValue('LAST_NAME'), $gCurrentUser->getValue('EMAIL'));
             }
             catch (AdmException $e)
@@ -191,7 +191,7 @@ if ($getMode === 'new' || $getMode === 'change')
             if (!$returnValue)
             {
                 $gMessage->setForwardUrl(ADMIDIO_URL.FOLDER_MODULES.'/photos/photos.php');
-                $gMessage->show($gL10n->get('SYS_FOLDER_WRITE_ACCESS', $newFolder, '<a href="mailto:'.$gPreferences['email_administrator'].'">', '</a>'));
+                $gMessage->show($gL10n->get('SYS_FOLDER_WRITE_ACCESS', array($newFolder, '<a href="mailto:'.$gPreferences['email_administrator'].'">', '</a>')));
                 // => EXIT
             }
         }

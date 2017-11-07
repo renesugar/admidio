@@ -92,21 +92,11 @@ class User extends TableAccess
         if ($userFields !== null)
         {
             $this->mProfileFieldsData = clone $userFields; // create explicit a copy of the object (param is in PHP5 a reference)
-            $this->mProfileFieldsData->setDatabase($database);
         }
 
         $this->organizationId = (int) $gCurrentOrganization->getValue('org_id');
 
         parent::__construct($database, TBL_USERS, 'usr', $userId);
-    }
-
-    /**
-     * Set the database object for communication with the database of this class.
-     * @param Database $database An object of the class Database. This should be the global $gDb object.
-     */
-    public function setProfileFieldsDataDatabase(Database $database)
-    {
-        $this->mProfileFieldsData->setDatabase($database);
     }
 
     /**
@@ -582,7 +572,7 @@ class User extends TableAccess
      */
     public function checkLogin(string $password, bool $setAutoLogin = false, bool $updateSessionCookies = true, bool $updateHash = true, bool $isAdministrator = false)
     {
-        global $gLogger, $gPreferences, $gCookiePraefix, $gCurrentSession, $gSessionId, $installedDbVersion, $gL10n;
+        global $gLogger, $gPreferences, $gCurrentSession, $gSessionId, $installedDbVersion, $gL10n;
 
         if ($this->hasMaxInvalidLogins())
         {
@@ -607,12 +597,12 @@ class User extends TableAccess
 
         if (!$this->isMemberOfOrganization($orgLongname))
         {
-            return $gL10n->get('SYS_LOGIN_USER_NO_MEMBER_IN_ORGANISATION', $orgLongname);
+            return $gL10n->get('SYS_LOGIN_USER_NO_MEMBER_IN_ORGANISATION', array($orgLongname));
         }
 
         if ($isAdministrator && version_compare($installedDbVersion, '2.4', '>=') && !$this->isAdminOfOrganization($orgLongname))
         {
-            return $gL10n->get('SYS_LOGIN_USER_NO_ADMINISTRATOR', $orgLongname);
+            return $gL10n->get('SYS_LOGIN_USER_NO_ADMINISTRATOR', array($orgLongname));
         }
 
         if ($updateHash)
@@ -639,7 +629,7 @@ class User extends TableAccess
         if ($updateSessionCookies)
         {
             // set cookie for session id
-            Session::setCookie($gCookiePraefix . '_ID', $gSessionId);
+            Session::setCookie(COOKIE_PREFIX . '_ID', $gSessionId);
 
             // count logins and update login dates
             $this->saveChangesWithoutRights();

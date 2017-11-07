@@ -9,6 +9,10 @@ declare(strict_types=1);
  * @license https://www.gnu.org/licenses/gpl-2.0.html GNU General Public License v2.0 only
  ***********************************************************************************************
  */
+if (basename($_SERVER['SCRIPT_FILENAME']) === 'bootstrap.php')
+{
+    exit('This page may not be called directly!');
+}
 
 // embed config and constants file
 $rootPath = substr(__FILE__, 0, strpos(__FILE__, DIRECTORY_SEPARATOR . 'adm_program'));
@@ -41,16 +45,21 @@ if (version_compare(PHP_VERSION, MIN_PHP_VERSION, '<'))
         the minimum requirements for this Admidio version. You need at least PHP ' . MIN_PHP_VERSION . ' or higher.</div>');
 }
 
-// includes WITHOUT database connections
+/**
+ * includes WITHOUT database connections
+ */
+// Add polyfills for backwards compatibility with older PHP versions
 require_once(ADMIDIO_PATH . '/adm_program/system/polyfill.php');
+// Add Class autoloader
 require_once(ADMIDIO_PATH . '/adm_program/system/autoload.php');
+// Enable Logging
+require_once(ADMIDIO_PATH . '/adm_program/system/logging.php');
+// Add shutdown function
+require_once(ADMIDIO_PATH . '/adm_program/system/shutdown.php');
+// Add some common functions
 require_once(ADMIDIO_PATH . FOLDER_LIBS_SERVER . '/htmlawed/htmlawed.php');
 require_once(ADMIDIO_PATH . '/adm_program/system/function.php');
 require_once(ADMIDIO_PATH . '/adm_program/system/string.php');
-
-// LOGGING
-require_once(ADMIDIO_PATH . '/adm_program/system/logging.php');
-
 // Remove HTML & PHP-Code and escape all quotes from all request parameters
 // If debug is on and change is made, log it
 require_once(ADMIDIO_PATH . '/adm_program/system/global_request_params.php');

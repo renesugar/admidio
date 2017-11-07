@@ -242,7 +242,7 @@ else
             header('Content-Disposition: attachment; filename="'.$getPhotoNr.'.jpg"');
             $fp = fopen($path.'.jpg', 'rb');
             fpassthru($fp);
-            exit;
+            exit();
         }
         elseif (is_file($path.'.png'))
         {
@@ -251,7 +251,7 @@ else
             header('Content-Disposition: attachment; filename="'.$getPhotoNr.'.png"');
             $fp = fopen($path.'.png', 'rb');
             fpassthru($fp);
-            exit;
+            exit();
         }
     }
 

@@ -50,7 +50,6 @@ unset($_SESSION['photo_album_request'], $_SESSION['ecard_request']);
 if (isset($_SESSION['photo_album']) && (int) $_SESSION['photo_album']->getValue('pho_id') === $getPhotoId)
 {
     $photoAlbum =& $_SESSION['photo_album'];
-    $photoAlbum->setDatabase($gDb);
 }
 else
 {
@@ -120,7 +119,7 @@ if ($gPreferences['enable_rss'] == 1)
 {
     $page->addRssFile(
         ADMIDIO_URL.FOLDER_MODULES.'/photos/rss_photos.php?headline='.$getHeadline,
-        $gL10n->get('SYS_RSS_FEED_FOR_VAR', $gCurrentOrganization->getValue('org_longname'). ' - '.$getHeadline)
+        $gL10n->get('SYS_RSS_FEED_FOR_VAR', array($gCurrentOrganization->getValue('org_longname'). ' - '.$getHeadline))
     );
 }
 

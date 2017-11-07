@@ -57,7 +57,6 @@ if($getModule === 'photos')
     if (isset($_SESSION['photo_album']) && (int) $_SESSION['photo_album']->getValue('pho_id') === $getId)
     {
         $photoAlbum =& $_SESSION['photo_album'];
-        $photoAlbum->setDatabase($gDb);
     }
     else
     {
@@ -79,7 +78,7 @@ if($getModule === 'photos')
     $textFileUploaded = $gL10n->get('PHO_FILE_UPLOADED');
     $textUploadSuccessful = $gL10n->get('PHO_PHOTO_UPLOAD_SUCCESSFUL');
     $textUploadNotSuccessful = $gL10n->get('PHO_PHOTO_UPLOAD_NOT_SUCCESSFUL');
-    $textUploadDescription = $gL10n->get('PHO_PHOTO_UPLOAD_DESC', $photoAlbum->getValue('pho_name'));
+    $textUploadDescription = $gL10n->get('PHO_PHOTO_UPLOAD_DESC', array($photoAlbum->getValue('pho_name')));
     $textSelectFiles = $gL10n->get('PHO_SELECT_FOTOS');
     $iconUploadPath = THEME_URL. '/icons/photo_upload.png';
 }
@@ -125,7 +124,7 @@ elseif($getModule === 'downloads')
     $textFileUploaded = $gL10n->get('DOW_FILE_UPLOADED');
     $textUploadSuccessful = $gL10n->get('DOW_FILES_UPLOAD_SUCCESSFUL');
     $textUploadNotSuccessful = $gL10n->get('DOW_FILES_UPLOAD_NOT_SUCCESSFUL');
-    $textUploadDescription = $gL10n->get('DOW_FILES_UPLOAD_DESC', $folder->getValue('fol_name'));
+    $textUploadDescription = $gL10n->get('DOW_FILES_UPLOAD_DESC', array($folder->getValue('fol_name')));
     $textSelectFiles = $gL10n->get('DOW_SELECT_FILES');
     $iconUploadPath = THEME_URL. '/icons/page_white_upload.png';
 }

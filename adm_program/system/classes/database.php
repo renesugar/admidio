@@ -63,38 +63,38 @@ class Database
     const PDO_ENGINE_PGSQL = 'pgsql';
 
     /**
-     * @var string
+     * @var string The database engine ("mysql", "pgsql")
+     */
+    protected $engine;
+    /**
+     * @var string The host of the database server ("localhost", "127.0.0.1")
      */
     protected $host;
     /**
-     * @var int|null
+     * @var int|null The port of the database server. Set to "null" to use default. (Default: mysql=3306 , pgsql=5432)
      */
     protected $port;
     /**
-     * @var string
+     * @var string The name of the database
      */
     protected $dbName;
     /**
-     * @var string|null
+     * @var string|null The username to access the database
      */
     protected $username;
     /**
-     * @var string|null
+     * @var string|null The password to access the database
      */
     protected $password;
     /**
-     * @var array
+     * @var array Driver specific connection options
      */
     protected $options;
 
     /**
-     * @var string
+     * @var string The Data-Source-Name for the database connection
      */
     protected $dsn;
-    /**
-     * @var string
-     */
-    protected $dbEngine;
     /**
      * @var \PDO The PDO object that handles the communication with the database.
      */
@@ -139,9 +139,12 @@ class Database
         // for compatibility to old versions accept the string postgresql
         if ($engine === 'postgresql')
         {
+            $gLogger->warning('DEPRECATED: Deprecated database engine type used!', array('engine' => $engine));
+
             $engine = self::PDO_ENGINE_PGSQL;
         }
 
+        $this->engine   = $engine;
         $this->host     = $host;
         $this->port     = $port;
         $this->dbName   = $dbName;
@@ -149,32 +152,54 @@ class Database
         $this->password = $password;
         $this->options  = $options;
 
+        $this->connect();
+
+        $gLogger->debug('DATABASE: connected!');
+    }
+
+    /**
+     * @return array<int,string>
+     */
+    public function __sleep()
+    {
+        global $gLogger;
+
+        $gLogger->debug('DATABASE: sleep/serialize!');
+
+        return array('engine', 'host', 'port', 'dbName', 'username', 'password', 'options');
+    }
+
+    public function __wakeup()
+    {
+        global $gLogger;
+
+        $gLogger->debug('DATABASE: wakeup/unserialize!');
+
+        $this->connect();
+
+        $gLogger->debug('DATABASE: reconnected!');
+    }
+
+    /**
+     * @throws AdmException
+     */
+    protected function connect()
+    {
+        global $gLogger;
+
         try
         {
-            $availableDrivers = \PDO::getAvailableDrivers();
-
-            if (count($availableDrivers) === 0)
-            {
-                throw new \PDOException('PDO does not support any drivers');
-            }
-            if (!in_array($engine, $availableDrivers, true))
-            {
-                throw new \PDOException('The requested PDO driver ' . $engine . ' is not supported');
-            }
-
-            $this->setDSNString($engine);
+            $this->setDSNString();
 
             // needed to avoid leaking username, password, ... if a PDOException is thrown
             $this->pdo = new \PDO($this->dsn, $this->username, $this->password, $this->options);
-
-            $this->dbEngine = $this->pdo->getAttribute(\PDO::ATTR_DRIVER_NAME);
 
             $this->setConnectionOptions();
         }
         catch (\PDOException $e)
         {
             $logContext = array(
-                'engine'   => $engine,
+                'engine'   => $this->engine,
                 'host'     => $this->host,
                 'port'     => $this->port,
                 'dbName'   => $this->dbName,
@@ -182,7 +207,7 @@ class Database
                 'password' => '******',
                 'options'  => $this->options
             );
-            $gLogger->alert('Could not connect to Database! EXCEPTION MSG: ' . $e->getMessage(), $logContext);
+            $gLogger->alert('DATABASE: Could not connect to Database! EXCEPTION MSG: ' . $e->getMessage(), $logContext);
 
             throw new AdmException($e->getMessage());
         }
@@ -191,12 +216,24 @@ class Database
     /**
      * Create a valid DSN string for the engine that was set through the constructor.
      * If no valid engine is set than an exception is thrown.
-     * @param string $engine The database type that is supported from Admidio. @b mysql and @b pgsql are valid values.
      * @throws \PDOException
      */
-    private function setDSNString(string $engine)
+    private function setDSNString()
     {
-        switch ($engine)
+        global $gLogger;
+
+        $availableDrivers = \PDO::getAvailableDrivers();
+
+        if (count($availableDrivers) === 0)
+        {
+            throw new \PDOException('PDO does not support any drivers'); // TODO: change exception class
+        }
+        if (!in_array($this->engine, $availableDrivers, true))
+        {
+            throw new \PDOException('The requested PDO driver ' . $this->engine . ' is not supported'); // TODO: change exception class
+        }
+
+        switch ($this->engine)
         {
             case self::PDO_ENGINE_MYSQL:
                 $port = '';
@@ -218,8 +255,10 @@ class Database
                 break;
 
             default:
-                throw new \PDOException('Engine is not supported by Admidio');
+                throw new \PDOException('Engine is not supported by Admidio'); // TODO: change exception class
         }
+
+        $gLogger->debug('DATABASE: DSN-String: "' . $this->dsn . '"!');
     }
 
     /**
@@ -244,7 +283,7 @@ class Database
         $this->pdo->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC); // maybe change in future to \PDO::FETCH_OBJ
         $this->pdo->setAttribute(\PDO::ATTR_CASE, \PDO::CASE_NATURAL);
 
-        switch ($this->dbEngine)
+        switch ($this->engine)
         {
             case self::PDO_ENGINE_MYSQL:
                 // MySQL charset UTF-8 is set in DSN-string
@@ -266,7 +305,8 @@ class Database
     protected function getPropertyFromDatabaseConfig(string $property): string
     {
         $xmlDatabases = new \SimpleXMLElement(ADMIDIO_PATH . '/adm_program/system/databases.xml', 0, true);
-        $node = $xmlDatabases->xpath('/databases/database[@id="' . $this->dbEngine . '"]/' . $property);
+        $node = $xmlDatabases->xpath('/databases/database[@id="' . $this->engine . '"]/' . $property);
+
         return (string) $node[0];
     }
 
@@ -280,6 +320,7 @@ class Database
         {
             $this->databaseName = $this->getPropertyFromDatabaseConfig('name');
         }
+
         return $this->databaseName;
     }
 
@@ -293,6 +334,7 @@ class Database
         {
             $this->minRequiredVersion = $this->getPropertyFromDatabaseConfig('minversion');
         }
+
         return $this->minRequiredVersion;
     }
 
@@ -305,7 +347,7 @@ class Database
         $versionStatement = $this->queryPrepared('SELECT version()');
         $version = $versionStatement->fetchColumn();
 
-        if ($this->dbEngine === self::PDO_ENGINE_PGSQL)
+        if ($this->engine === self::PDO_ENGINE_PGSQL)
         {
             // the string (PostgreSQL 9.0.4, compiled by Visual C++ build 1500, 64-bit) must be separated
             $versionArray  = explode(',', $version);
@@ -328,7 +370,7 @@ class Database
         global $gLogger;
 
         // If we are within a transaction we will not open another one,
-        // but enclose the current one to not loose data (prevening auto commit)
+        // but enclose the current one to not loose data (preventing auto commit)
         if ($this->transactions > 0)
         {
             ++$this->transactions;
@@ -347,6 +389,7 @@ class Database
         }
 
         $this->transactions = 1;
+
         return $result;
     }
 
@@ -373,6 +416,7 @@ class Database
         if ($this->transactions > 1)
         {
             --$this->transactions;
+
             return true;
         }
 
@@ -388,20 +432,20 @@ class Database
         }
 
         $this->transactions = 0;
+
         return $result;
     }
 
     /**
      * Escapes special characters within the input string.
-     * In contrast to the <a href="https://secure.php.net/manual/en/pdo.quote.php">quote</a> method,
-     * the returned string has no quotes around the input string!
+     * Note: This method will add a high comma at the beginning and the end of the $string.
      * @param string $string The string to be quoted.
      * @return string Returns a quoted string that is theoretically safe to pass into an SQL statement.
      * @see <a href="https://secure.php.net/manual/en/pdo.quote.php">PDO::quote</a>
      */
     public function escapeString(string $string): string
     {
-        return trim($this->pdo->quote($string), "'");
+        return $this->pdo->quote($string);
     }
 
     /**
@@ -474,9 +518,10 @@ class Database
      */
     public function lastInsertId(): string
     {
-        if ($this->dbEngine === self::PDO_ENGINE_PGSQL)
+        if ($this->engine === self::PDO_ENGINE_PGSQL)
         {
             $lastValStatement = $this->queryPrepared('SELECT lastval()');
+
             return $lastValStatement->fetchColumn();
         }
 
@@ -522,6 +567,16 @@ class Database
     }
 
     /**
+     * Prepares SQL statements in a log-able format
+     * @param string $sql
+     * @return string
+     */
+    private static function prepareSqlForLog($sql)
+    {
+        return preg_replace('/\s+/', ' ', trim($sql));
+    }
+
+    /**
      * Send a sql statement to the database that will be executed. If debug mode is set
      * then this statement will be written to the error log. If it's a @b SELECT statement
      * then also the number of rows will be logged. If an error occurred the script will
@@ -537,13 +592,13 @@ class Database
     {
         global $gLogger;
 
-        if ($this->dbEngine === self::PDO_ENGINE_PGSQL)
+        if ($this->engine === self::PDO_ENGINE_PGSQL)
         {
             $sql = $this->preparePgSqlQuery($sql);
         }
 
         // if debug mode then log all sql statements
-        $gLogger->info('SQL: ' . preg_replace('/\s+/', ' ', $sql));
+        $gLogger->info('SQL: ' . self::prepareSqlForLog($sql));
 
         try
         {
@@ -586,13 +641,13 @@ class Database
     {
         global $gLogger;
 
-        if ($this->dbEngine === self::PDO_ENGINE_PGSQL)
+        if ($this->engine === self::PDO_ENGINE_PGSQL)
         {
             $sql = $this->preparePgSqlQuery($sql);
         }
 
         // if debug mode then log all sql statements
-        $gLogger->info('SQL: ' . preg_replace('/\s+/', ' ', $sql), $params);
+        $gLogger->info('SQL: ' . self::prepareSqlForLog($sql), $params);
 
         try
         {
@@ -684,7 +739,7 @@ class Database
     {
         $tableColumnsProperties = array();
 
-        if ($this->dbEngine === self::PDO_ENGINE_MYSQL)
+        if ($this->engine === self::PDO_ENGINE_MYSQL)
         {
             $sql = 'SHOW COLUMNS FROM ' . $table;
             $columnsStatement = $this->query($sql); // TODO add more params
@@ -720,7 +775,7 @@ class Database
                 $tableColumnsProperties[$properties['Field']] = $props;
             }
         }
-        elseif ($this->dbEngine === self::PDO_ENGINE_PGSQL)
+        elseif ($this->engine === self::PDO_ENGINE_PGSQL)
         {
             $sql = 'SELECT column_name, column_default, is_nullable, data_type
                       FROM information_schema.columns

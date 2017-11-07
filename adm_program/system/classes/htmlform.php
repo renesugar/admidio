@@ -1070,7 +1070,7 @@ class HtmlForm extends HtmlFormBasic
             // if max field length is set and field is not hidden then show a counter how many characters still available
             $this->addHtml('
                 <small class="characters-count">('
-                    .$gL10n->get('SYS_STILL_X_CHARACTERS', '<span id="' . $id . '_counter" class="">255</span>').
+                    .$gL10n->get('SYS_STILL_X_CHARACTERS', array('<span id="' . $id . '_counter" class="">255</span>')).
                 ')</small>'
             );
         }
@@ -1510,7 +1510,7 @@ class HtmlForm extends HtmlFormBasic
         }
 
         // create array from sql result
-        while ($row = $pdoStatement->fetch(\PDO::FETCH_BOTH))
+        while ($row = $pdoStatement->fetch(\PDO::FETCH_NUM))
         {
             // if result has 3 columns then create a array in array
             if(array_key_exists(2, $row))
@@ -1518,7 +1518,7 @@ class HtmlForm extends HtmlFormBasic
                 // translate category name
                 if (admIsTranslationStrId($row[2]))
                 {
-                    $selectBoxEntries[] = array($row[0], $row[1], $gL10n->get(admStrToUpper($row[2])));
+                    $selectBoxEntries[] = array($row[0], $row[1], $gL10n->get($row[2]));
                 }
                 else
                 {
@@ -1664,7 +1664,7 @@ class HtmlForm extends HtmlFormBasic
 
         if($gCurrentOrganization->countAllRecords() > 1 && $selectBoxModus === 'EDIT_CATEGORIES')
         {
-            $optionsAll['infoAlert'] = $gL10n->get('SYS_ALL_ORGANIZATIONS_DESC', implode(', ', $gCurrentOrganization->getOrganizationsInRelationship(true, true, true)));
+            $optionsAll['infoAlert'] = $gL10n->get('SYS_ALL_ORGANIZATIONS_DESC', array(implode(', ', $gCurrentOrganization->getOrganizationsInRelationship(true, true, true))));
 
             $this->addJavascriptCode('
                 $("#'.$id.'").change(function() {
@@ -1756,7 +1756,7 @@ class HtmlForm extends HtmlFormBasic
             // if text is a translation-id then translate it
             if (admIsTranslationStrId($row['cat_name']))
             {
-                $categoriesArray[$row['cat_id']] = $gL10n->get(admStrToUpper($row['cat_name']));
+                $categoriesArray[$row['cat_id']] = $gL10n->get($row['cat_name']);
             }
             else
             {
@@ -1843,19 +1843,35 @@ class HtmlForm extends HtmlFormBasic
 
     /**
      * Closes a field structure that was added with the method openControlStructure.
-     * @param string|string[]   $helpTextId A unique text id from the translation xml files that should be shown e.g. SYS_DATA_CATEGORY_GLOBAL.
-     *                                      If set the complete text will be shown after the form element.
-     * @param array<int,string> $parameters If you need an additional parameter for the text you can set this array.
+     * @param string|array $helpTextId A unique text id from the translation xml files that should be shown e.g. SYS_DATA_CATEGORY_GLOBAL.
+     *                                 If set the complete text will be shown after the form element.
      */
-    protected function closeControlStructure($helpTextId = '', array $parameters = array())
+    protected function closeControlStructure($helpTextId = '')
     {
-        global $gL10n;
+        global $gL10n, $gLogger;
 
-        // backwards compatibility
+        $parameters = array();
         if (is_array($helpTextId))
         {
-            $parameters = $helpTextId;
-            $helpTextId = array_shift($parameters);
+            if (is_array($helpTextId[1]))
+            {
+                $parameters = $helpTextId[1];
+                $helpTextId = $helpTextId[0];
+            }
+            // backwards compatibility
+            else
+            {
+                // TODO deprecated: Remove in Admidio 4.0
+                $helpTextIds = '\'' . implode('\', \'', $helpTextId) . '\'';
+                $parameters = $helpTextId;
+                $helpTextId = array_shift($parameters);
+                $paramsString = '\'' . implode('\', \'', $parameters) . '\'';
+
+                $gLogger->warning(
+                    'DEPRECATED: "$htmlForm->closeControlStructure(' . $helpTextIds . ')" is deprecated, use "$htmlForm->closeControlStructure(\'' . $helpTextId . '\', array(' . $paramsString . ')" instead!',
+                    array('helpTextId' => $helpTextId, 'parameters' => $parameters)
+                );
+            }
         }
 
         if ($helpTextId !== '')
@@ -2041,7 +2057,7 @@ class HtmlForm extends HtmlFormBasic
             }
             else
             {
-                $text = $gL10n->get($textId, $parameter);
+                $text = $gL10n->get($textId, array($parameter));
             }
         }
 

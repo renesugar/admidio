@@ -119,7 +119,7 @@ if($getViewMode === 'html')
     {
         $page->addRssFile(
             ADMIDIO_URL.FOLDER_MODULES.'/dates/rss_dates.php?headline=' . $getHeadline,
-            $gL10n->get('SYS_RSS_FEED_FOR_VAR', $gCurrentOrganization->getValue('org_longname') . ' - ' . $getHeadline)
+            $gL10n->get('SYS_RSS_FEED_FOR_VAR', array($gCurrentOrganization->getValue('org_longname') . ' - ' . $getHeadline))
         );
     }
 
@@ -149,7 +149,7 @@ if($getViewMode === 'html')
     {
         $datesMenu->addItem(
             'admMenuItemAdd', ADMIDIO_URL.FOLDER_MODULES.'/dates/dates_new.php?headline=' . $getHeadline,
-            $gL10n->get('SYS_CREATE_VAR', $getHeadline), 'add.png'
+            $gL10n->get('SYS_CREATE_VAR', array($getHeadline)), 'add.png'
         );
     }
 
@@ -202,7 +202,7 @@ if($getViewMode === 'html')
         {
             // if no calendar selectbox is shown, then show link to edit calendars
             $datesMenu->addItem(
-                'admMenuItemCategories', FOLDER_MODULES.'/categories/categories.php?type=DAT&title=' . $gL10n->get('DAT_CALENDAR'),
+                'admMenuItemCategories', ADMIDIO_URL.FOLDER_MODULES.'/categories/categories.php?type=DAT&title=' . $gL10n->get('DAT_CALENDAR'),
                 $gL10n->get('DAT_MANAGE_CALENDARS'), 'application_view_tile.png', 'right', 'menu_item_extras'
             );
         }
@@ -250,7 +250,7 @@ else // $getViewMode = 'print'
 
     if($getId === 0)
     {
-        $page->addHtml('<h3>' . $gL10n->get('DAT_PERIOD_FROM_TO', $dates->getParameter('dateStartFormatAdmidio'), $dates->getParameter('dateEndFormatAdmidio')) . '</h3>');
+        $page->addHtml('<h3>' . $gL10n->get('DAT_PERIOD_FROM_TO', array($dates->getParameter('dateStartFormatAdmidio'), $dates->getParameter('dateEndFormatAdmidio'))) . '</h3>');
     }
 }
 

@@ -224,11 +224,11 @@ if($numberBirthdays > 0)
                 {
                     if ($row['gender'] > 1)
                     {
-                        $plgShowName = $gL10n->get('PLG_BIRTHDAY_WOMAN_VAR', $row['last_name']);
+                        $plgShowName = $gL10n->get('PLG_BIRTHDAY_WOMAN_VAR', array($row['last_name']));
                     }
                     else
                     {
-                        $plgShowName = $gL10n->get('PLG_BIRTHDAY_MAN_VAR', $row['last_name']);
+                        $plgShowName = $gL10n->get('PLG_BIRTHDAY_MAN_VAR', array($row['last_name']));
                     }
                 }
 
@@ -260,7 +260,7 @@ if($numberBirthdays > 0)
                     if((int) $row['days_to_bdate'] === 0)
                     {
                         // Die Anzeige der Geburtstage folgt nicht mehr als Liste, sondern mittels div-Tag
-                        echo '<li><span id="plgBirthdayNameHighlight">'.$gL10n->get('PLG_BIRTHDAY_TODAY', $plgShowName, $row['age']).'</span></li>';
+                        echo '<li><span id="plgBirthdayNameHighlight">'.$gL10n->get('PLG_BIRTHDAY_TODAY', array($plgShowName, $row['age'])).'</span></li>';
                     }
                     else
                     {
@@ -297,7 +297,7 @@ if($numberBirthdays > 0)
                         }
                         // Die Anzeige der Geburtstage folgt nicht mehr als Liste, sondern mittels div-Tag
                         echo '<li><span id="'.$plgCssClass.'">'.
-                            $gL10n->get($birthdayText, $plgShowName, $plgDays, $row['age'], $birthayDate->format($gPreferences['system_date'])).
+                            $gL10n->get($birthdayText, array($plgShowName, $plgDays, $row['age'], $birthayDate->format($gPreferences['system_date']))).
                         '</span></li>';
                     }
                 }
@@ -312,7 +312,7 @@ if($numberBirthdays > 0)
         }
         else
         {
-            echo '<p>'.$gL10n->get('PLG_BIRTHDAY_MORE_USERS', $numberBirthdays).'</p>';
+            echo '<p>'.$gL10n->get('PLG_BIRTHDAY_MORE_USERS', array($numberBirthdays)).'</p>';
         }
     }
 }

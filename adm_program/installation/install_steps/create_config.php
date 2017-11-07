@@ -43,7 +43,7 @@ if (isset($_POST['user_last_name']))
     if (!strValidCharacters($_SESSION['user_login'], 'noSpecialChar'))
     {
         showNotice(
-            $gL10n->get('SYS_FIELD_INVALID_CHAR', $gL10n->get('SYS_USERNAME')),
+            $gL10n->get('SYS_FIELD_INVALID_CHAR', array($gL10n->get('SYS_USERNAME'))),
             'installation.php?step=create_administrator',
             $gL10n->get('SYS_BACK'),
             'layout/back.png'
@@ -57,7 +57,7 @@ if (isset($_POST['user_last_name']))
     if (!strValidCharacters($_SESSION['user_email'], 'email'))
     {
         showNotice(
-            $gL10n->get('SYS_EMAIL_INVALID', $gL10n->get('SYS_EMAIL')),
+            $gL10n->get('SYS_EMAIL_INVALID', array($gL10n->get('SYS_EMAIL'))),
             'installation.php?step=create_administrator',
             $gL10n->get('SYS_BACK'),
             'layout/back.png'
@@ -182,7 +182,7 @@ else
 {
     // if user doesn't has write access then create a page with a download link for the config file
     $form = new HtmlFormInstallation('installation-form', 'installation.php?step=start_installation');
-    $form->setFormDescription($gL10n->get('INS_DOWNLOAD_CONFIGURATION_FILE_DESC', 'config.php', ADMIDIO_PATH . FOLDER_DATA, 'adm_my_files'), $gL10n->get('INS_CREATE_CONFIGURATION_FILE'));
+    $form->setFormDescription($gL10n->get('INS_DOWNLOAD_CONFIGURATION_FILE_DESC', array('config.php', ADMIDIO_PATH . FOLDER_DATA, 'adm_my_files'), $gL10n->get('INS_CREATE_CONFIGURATION_FILE')));
     $form->addButton(
         'previous_page', $gL10n->get('SYS_BACK'),
         array('icon' => 'layout/back.png', 'link' => 'installation.php?step=create_administrator')

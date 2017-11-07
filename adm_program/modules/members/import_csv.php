@@ -34,12 +34,12 @@ if(!$gCurrentUser->editUsers())
 // Lastname und firstname are mandatory fields
 if(strlen($_POST['usf-'.$gProfileFields->getProperty('LAST_NAME', 'usf_id')]) === 0)
 {
-    $gMessage->show($gL10n->get('SYS_FIELD_EMPTY', $gProfileFields->getProperty('LAST_NAME', 'usf_name')));
+    $gMessage->show($gL10n->get('SYS_FIELD_EMPTY', array($gProfileFields->getProperty('LAST_NAME', 'usf_name'))));
     // => EXIT
 }
 if(strlen($_POST['usf-'.$gProfileFields->getProperty('FIRST_NAME', 'usf_id')]) === 0)
 {
-    $gMessage->show($gL10n->get('SYS_FIELD_EMPTY', $gProfileFields->getProperty('FIRST_NAME', 'usf_name')));
+    $gMessage->show($gL10n->get('SYS_FIELD_EMPTY', array($gProfileFields->getProperty('FIRST_NAME', 'usf_name'))));
     // => EXIT
 }
 
@@ -279,5 +279,5 @@ $_SESSION['file_lines']       = '';
 $_SESSION['value_separator']  = '';
 
 $gMessage->setForwardUrl(ADMIDIO_URL.FOLDER_MODULES.'/members/members.php');
-$gMessage->show($gL10n->get('MEM_IMPORT_SUCCESSFUL', $countImportNewUser, $countImportEditUser, $countImportEditRole));
+$gMessage->show($gL10n->get('MEM_IMPORT_SUCCESSFUL', array($countImportNewUser, $countImportEditUser, $countImportEditRole)));
 // => EXIT

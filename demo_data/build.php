@@ -108,13 +108,9 @@ $getLanguage = admFuncVariableIsValid($_GET, 'lang', 'string', array('defaultVal
 // but no output of error message because of safe mode
 @set_time_limit(1000);
 
-// create an installation unique cookie prefix and remove special characters
-$gCookiePraefix = 'ADMIDIO_' . $g_organization . '_' . $g_adm_db . '_' . $g_tbl_praefix;
-$gCookiePraefix = str_replace(array(' ', '.', ',', ';', ':', '[', ']'), '_', $gCookiePraefix);
-
 // start php session and remove session object with all data, so that
 // all data will be read after the update
-Session::start($gCookiePraefix);
+Session::start(COOKIE_PREFIX);
 unset($_SESSION['gCurrentSession']);
 
 echo 'Start with installation ...<br />';
@@ -148,7 +144,7 @@ try
 }
 catch(AdmException $e)
 {
-    exit('<br />'.$gL10n->get('SYS_DATABASE_NO_LOGIN', $e->getText()));
+    exit('<br />'.$gL10n->get('SYS_DATABASE_NO_LOGIN', array($e->getText())));
 }
 
 if($gDbType === Database::PDO_ENGINE_MYSQL)
@@ -203,7 +199,8 @@ function readAndExecuteSQLFromFile(string $filename, Database $database)
 
                     // search for the exact value as a separate word and replace it with the translation
                     // in l10n the single quote is transformed in html entity, but we need the original sql escaped
-                    $sql = preg_replace('/\b'.$value.'\b/', $database->escapeString(str_replace('&rsquo;', '\'', $convertedText)), $sql);
+                    $escapedText = $database->escapeString(str_replace('&rsquo;', '\'', $convertedText));
+                    $sql = preg_replace('/\b'.$value.'\b/', substr($escapedText, 1, strlen($escapedText) - 2), $sql);
                 }
             }
 

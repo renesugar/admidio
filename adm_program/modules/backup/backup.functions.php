@@ -33,6 +33,10 @@ if (!function_exists('getmicrotime'))
 }
 
 // begin: (from phpthumb.functions.php)
+/**
+ * @param string $function
+ * @return bool
+ */
 function FunctionIsDisabled(string $function): bool
 {
     global $gLogger;
@@ -60,6 +64,10 @@ function FunctionIsDisabled(string $function): bool
     return isset($DisabledFunctions[$function]);
 }
 
+/**
+ * @param string $command
+ * @return bool|string
+ */
 function SafeExec(string $command)
 {
     static $AllowedExecFunctions = array();
@@ -101,6 +109,9 @@ function SafeExec(string $command)
 }
 // end: (from phpthumb.functions.php)
 
+/**
+ * @return bool|null|string
+ */
 function MySQLdumpVersion()
 {
     static $version = null;
@@ -116,6 +127,9 @@ function MySQLdumpVersion()
     return $version;
 }
 
+/**
+ * @return bool|null|string
+ */
 function gzipVersion()
 {
     static $version = null;
@@ -131,6 +145,9 @@ function gzipVersion()
     return $version;
 }
 
+/**
+ * @return bool|null|string
+ */
 function bzip2Version()
 {
     static $version = null;
@@ -152,8 +169,8 @@ function bzip2Version()
 
 // MFA Anpassungen
 /**
- * @param int $seconds
- * @param int $precision
+ * @param float $seconds
+ * @param int   $precision
  * @return string
  */
 function FormattedTimeRemaining(int $seconds, int $precision = 1): string

@@ -1366,7 +1366,7 @@ class User extends TableAccess
      */
     public function isMemberOfRole(int $roleId): bool
     {
-        return in_array((int) $roleId, $this->rolesMembership, true);
+        return in_array($roleId, $this->rolesMembership, true);
     }
 
     /**
@@ -1497,7 +1497,7 @@ class User extends TableAccess
      */
     public function setOrganization(int $organizationId)
     {
-        $this->organizationId = (int) $organizationId;
+        $this->organizationId = $organizationId;
         $this->rolesRights    = array();
     }
 

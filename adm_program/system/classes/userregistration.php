@@ -76,7 +76,7 @@ class UserRegistration extends User
      */
     public function acceptRegistration(): bool
     {
-        global $gMessage, $gL10n, $gPreferences;
+        global $gPreferences;
 
         $this->db->startTransaction();
 
@@ -112,7 +112,7 @@ class UserRegistration extends User
      */
     public function delete(): bool
     {
-        global $gMessage, $gL10n, $gPreferences;
+        global $gPreferences;
 
         $userEmail     = $this->getValue('EMAIL');
         $userFirstName = $this->getValue('FIRST_NAME');
@@ -170,7 +170,7 @@ class UserRegistration extends User
      */
     public function save(bool $updateFingerPrint = true): bool
     {
-        global $gMessage, $gL10n, $gPreferences;
+        global $gPreferences;
 
         // if new registration is saved then set user not valid
         if($this->tableRegistration->isNewRecord())

@@ -81,7 +81,7 @@ class HtmlDiv extends HtmlElement
      * @param string $id    Id Attribute
      * @param string $class Class Attribute
      */
-    public function addDivElement($id = null, $class = null)
+    public function addDivElement(string $id = null, string $class = null)
     {
         // Div elements do not need having child elements an can be nested straight forward.
         // For this exception in html we have to take care that the flag of the parent class is always reseted, otherwise the
@@ -112,7 +112,7 @@ class HtmlDiv extends HtmlElement
      * @param string $class   Class Attribute
      * @param string $data    Data of the element (optional)
      */
-    public function addInline(string $element, $id = null, $class = null, $data = null)
+    public function addInline(string $element, string $id = null, string $class = null, string $data = null)
     {
         $this->addElement($element);
 

@@ -80,7 +80,7 @@ class Navigation
      *                     together with the text and would be linked with the $url.
      * @return void
      */
-    public function addStartUrl(string $url, $text = null, $icon = null)
+    public function addStartUrl(string $url, string $text = null, string $icon = null)
     {
         $this->clear();
         $this->addUrl($url, $text, $icon);
@@ -97,7 +97,7 @@ class Navigation
      *                     together with the text and would be linked with the $url.
      * @return bool Returns true if the navigation-stack got changed and false if not.
      */
-    public function addUrl(string $url, $text = null, $icon = null): bool
+    public function addUrl(string $url, string $text = null, string $icon = null): bool
     {
         global $gLogger;
 

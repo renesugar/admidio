@@ -107,7 +107,7 @@ class TableMembers extends TableAccess
      * @param int  $approvalState Option for User to confirm and adjust the membership ( @b 1 = User confirmed membership but maybe disagreed, @b 2 = user accepted membership
      * @return bool Return @b true if the assignment was successful.
      */
-    public function startMembership(int $roleId = 0, int $userId = 0, $leader = null, $approvalState = null): bool
+    public function startMembership(int $roleId = 0, int $userId = 0, bool $leader = null, int $approvalState = null): bool
     {
         global $gCurrentUser;
 

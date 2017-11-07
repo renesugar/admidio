@@ -143,7 +143,7 @@ class TableRoles extends TableAccess
      * @param int $exceptUserId UserId witch shouldn't be counted
      * @return int Returns the number of members of this role
      */
-    public function countMembers($exceptUserId = null): int
+    public function countMembers(int $exceptUserId = null): int
     {
         if ($this->countMembers === -1)
         {
@@ -275,7 +275,7 @@ class TableRoles extends TableAccess
      *                        (-1 = unique, 1 = annually, 2 = semiyearly, 4 = quarterly, 12 = monthly)
      * @return array<int,string>|string Array with all cost or if param costPeriod is set than the full name of that cost period
      */
-    public static function getCostPeriods($costPeriod = null)
+    public static function getCostPeriods(int $costPeriod = null)
     {
         global $gL10n;
 

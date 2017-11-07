@@ -108,7 +108,7 @@ class User extends TableAccess
      * @param string $fieldNameIntern Expects the @b usf_name_intern of the field that should be checked.
      * @return bool Return true if the current user is allowed to view this profile field of @b $user.
      */
-    public function allowedViewProfileField(User $user, $fieldNameIntern): bool
+    public function allowedViewProfileField(User $user, string $fieldNameIntern): bool
     {
         return $user->mProfileFieldsData->visible($fieldNameIntern, $this->hasRightEditProfile($user));
     }
@@ -200,7 +200,7 @@ class User extends TableAccess
      *                      is not set then only the arrays are filled.
      * @return bool Return true if a special right should be checked and the user has this right.
      */
-    public function checkRolesRight($right = null): bool
+    public function checkRolesRight(string $right = null): bool
     {
         if ((int) $this->getValue('usr_id') === 0)
         {
@@ -1759,7 +1759,7 @@ class User extends TableAccess
      *                          might get more rights for this role.
      * @return bool Return @b true if the membership was successfully added.
      */
-    public function setRoleMembership(int $roleId, string $startDate = DATE_NOW, string $endDate = DATE_MAX, $leader = null): bool
+    public function setRoleMembership(int $roleId, string $startDate = DATE_NOW, string $endDate = DATE_MAX, bool $leader = null): bool
     {
         return $this->changeRoleMembership('set', $roleId, $startDate, $endDate, $leader);
     }
@@ -1775,7 +1775,7 @@ class User extends TableAccess
      *                          might get more rights for this role.
      * @return bool Return @b true if the membership was successfully edited.
      */
-    public function editRoleMembership(int $memberId, string $startDate = DATE_NOW, string $endDate = DATE_MAX, $leader = null): bool
+    public function editRoleMembership(int $memberId, string $startDate = DATE_NOW, string $endDate = DATE_MAX, bool $leader = null): bool
     {
         return $this->changeRoleMembership('edit', $memberId, $startDate, $endDate, $leader);
     }

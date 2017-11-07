@@ -134,7 +134,7 @@ class ProfileFields
      * @param int        $value2          An optional parameter that is necessary for some special fields like email to commit the user id
      * @return string Returns an html formated string that considered the profile field settings
      */
-    public function getHtmlValue(string $fieldNameIntern, $value, $value2 = null): string
+    public function getHtmlValue(string $fieldNameIntern, $value, int $value2 = null): string
     {
         global $gPreferences, $gL10n;
 

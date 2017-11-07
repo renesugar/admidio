@@ -571,7 +571,7 @@ class Database
      * @param string $sql
      * @return string
      */
-    private static function prepareSqlForLog($sql): string
+    private static function prepareSqlForLog(string $sql): string
     {
         return preg_replace('/\s+/', ' ', trim($sql));
     }

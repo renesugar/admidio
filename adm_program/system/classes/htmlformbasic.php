@@ -105,7 +105,7 @@ class HtmlFormBasic extends HtmlElement
      * @param string $legend Description for optional legend element as string
      * @param string $id     Optional ID
      */
-    public function addFieldSet($legend = null, $id = null)
+    public function addFieldSet(string $legend = null, string $id = null)
     {
         if ($id !== null)
         {
@@ -189,7 +189,7 @@ class HtmlFormBasic extends HtmlElement
      * @param bool                 $disable       Disable option (optional)
      * @param array<string,string> $arrAttributes Further attributes as array with key/value pairs
      */
-    public function addOption(string $value, string $label, $id = null, bool $selected = false, bool $disable = false, array $arrAttributes = null)
+    public function addOption(string $value, string $label, string $id = null, bool $selected = false, bool $disable = false, array $arrAttributes = null)
     {
         $this->addElement('option');
         // set attributes
@@ -227,7 +227,7 @@ class HtmlFormBasic extends HtmlElement
      * @param bool                 $disable       Disable option group (Default: false)
      * @param array<string,string> $arrAttributes Further attributes as array with key/value pairs
      */
-    public function addOptionGroup(string $label, $id = null, bool $disable = false, array $arrAttributes = null)
+    public function addOptionGroup(string $label, string $id = null, bool $disable = false, array $arrAttributes = null)
     {
         $this->addParentElement('optgroup');
 
@@ -258,7 +258,7 @@ class HtmlFormBasic extends HtmlElement
      * @param array<string,string> $arrAttributes Further attributes as array with key/value pairs
      * @param bool                 $disable       Disable select (Default: false)
      */
-    public function addSelect(string $name, $id = null, array $arrAttributes = null, bool $disable = false)
+    public function addSelect(string $name, string $id = null, array $arrAttributes = null, bool $disable = false)
     {
         $this->addParentElement('select', 'name', $name);
 

@@ -108,7 +108,7 @@ class ModuleWeblinks extends Modules
      * @param int $limit        Number of elements returned max. Default NULL will take number from preferences.
      * @return array<string,mixed> with links and corresponding information
      */
-    public function getDataSet(int $startElement = 0, $limit = null): array
+    public function getDataSet(int $startElement = 0, int $limit = null): array
     {
         global $gCurrentUser, $gPreferences, $gDb;
 

@@ -185,7 +185,7 @@ class ListConfiguration extends TableLists
      * @param array<int,int> $relationtypeIds
      * @return string
      */
-    public function getSQL(array $roleIds, int $showFormerMembers = 0, $startDate = null, $endDate = null, array $relationtypeIds = array()): string
+    public function getSQL(array $roleIds, int $showFormerMembers = 0, string $startDate = null, string $endDate = null, array $relationtypeIds = array()): string
     {
         global $gL10n, $gProfileFields, $gCurrentOrganization, $gDbType;
 

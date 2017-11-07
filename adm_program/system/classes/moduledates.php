@@ -147,7 +147,7 @@ class ModuleDates extends Modules
      * @param int $limit        Limit of query rows (default: 0)
      * @return array<string,mixed> Array with all results, dates and parameters.
      */
-    public function getDataSet(int $startElement = 0, $limit = null): array
+    public function getDataSet(int $startElement = 0, int $limit = null): array
     {
         global $gDb, $gPreferences, $gCurrentUser;
 

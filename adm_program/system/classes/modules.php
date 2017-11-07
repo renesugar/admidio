@@ -94,7 +94,7 @@ abstract class Modules
      * @param int $limit
      * @return array
      */
-    abstract public function getDataSet(int $startElement = 0, $limit = null): array;
+    abstract public function getDataSet(int $startElement = 0, int $limit = null): array;
 
     /**
      * @return mixed

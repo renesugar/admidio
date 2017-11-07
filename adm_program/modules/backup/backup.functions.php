@@ -25,7 +25,7 @@ if (!function_exists('getmicrotime'))
     /**
      * @return float
      */
-    function getmicrotime()
+    function getmicrotime(): float
     {
         list($usec, $sec) = explode(' ', microtime());
         return (float) $usec + (float) $sec;
@@ -33,7 +33,7 @@ if (!function_exists('getmicrotime'))
 }
 
 // begin: (from phpthumb.functions.php)
-function FunctionIsDisabled($function)
+function FunctionIsDisabled(string $function): bool
 {
     global $gLogger;
 
@@ -60,7 +60,7 @@ function FunctionIsDisabled($function)
     return isset($DisabledFunctions[$function]);
 }
 
-function SafeExec($command)
+function SafeExec(string $command)
 {
     static $AllowedExecFunctions = array();
     if (count($AllowedExecFunctions) === 0)
@@ -156,7 +156,7 @@ function bzip2Version()
  * @param int $precision
  * @return string
  */
-function FormattedTimeRemaining($seconds, $precision = 1)
+function FormattedTimeRemaining(int $seconds, int $precision = 1): string
 {
     global $gL10n;
 
@@ -181,7 +181,7 @@ function FormattedTimeRemaining($seconds, $precision = 1)
  * @param int $precision
  * @return string
  */
-function FileSizeNiceDisplay($filesize, $precision = 2)
+function FileSizeNiceDisplay(int $filesize, int $precision = 2): string
 {
     if ($filesize < 1000)
     {
@@ -212,7 +212,7 @@ function FileSizeNiceDisplay($filesize, $precision = 2)
  * @param string $text
  * @return true
  */
-function OutputInformation($id, $dhtml, $text = '')
+function OutputInformation(string $id, string $dhtml, string $text = ''): bool
 {
     global $DHTMLenabled;
     if ($DHTMLenabled)
@@ -255,7 +255,7 @@ function OutputInformation($id, $dhtml, $text = '')
  * @param string $attachmentfilename
  * @return bool
  */
-function EmailAttachment($from, $to, $subject, $textbody, &$attachmentdata, $attachmentfilename)
+function EmailAttachment(string $from, string $to, string $subject, string $textbody, string &$attachmentdata, string $attachmentfilename): bool
 {
     $boundary = '_NextPart_'.time().'_'.md5($attachmentdata).'_';
 

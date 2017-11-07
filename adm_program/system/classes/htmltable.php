@@ -170,7 +170,7 @@ class HtmlTable extends HtmlTableBasic
      * @param int                  $colspan         (optional) Number of columns that should be join together.
      * @param int                  $colspanOffset   (optional) Number of the column where the colspan should start. The first column of a table will be 1.
      */
-    public function addRowHeadingByArray(array $arrColumnValues, $id = null, array $arrAttributes = null, int $colspan = 1, int $colspanOffset = 1)
+    public function addRowHeadingByArray(array $arrColumnValues, string $id = null, array $arrAttributes = null, int $colspan = 1, int $colspanOffset = 1)
     {
         $this->addTableHeader();
         $this->addRowTypeByArray('th', $arrColumnValues, $id, $arrAttributes, $colspan, $colspanOffset);
@@ -188,7 +188,7 @@ class HtmlTable extends HtmlTableBasic
      * @param int                  $colspanOffset   (optional) Number of the column where the colspan should start.
      *                                              The first column of a table will be 1.
      */
-    public function addRowByArray(array $arrColumnValues, $id = null, array $arrAttributes = null, int $colspan = 1, int $colspanOffset = 1)
+    public function addRowByArray(array $arrColumnValues, string $id = null, array $arrAttributes = null, int $colspan = 1, int $colspanOffset = 1)
     {
         // if body area wasn't defined until now then do it
         if (!$this->tbody)

@@ -86,7 +86,7 @@ class ModuleAnnouncements extends Modules
      * @param int $limit
      * @return array<string,mixed> Returns the Array with results, recordsets and validated parameters from $_GET Array
      */
-    public function getDataSet(int $startElement = 0, $limit = null): array
+    public function getDataSet(int $startElement = 0, int $limit = null): array
     {
         global $gCurrentUser, $gDb;
 

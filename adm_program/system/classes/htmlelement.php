@@ -186,7 +186,7 @@ abstract class HtmlElement
      * @param string $element   Optional the element for which the attribute should be set,
      *                          if this is not the current element
      */
-    public function addAttribute(string $attrKey, string $attrValue, $element = null)
+    public function addAttribute(string $attrKey, string $attrValue, string $element = null)
     {
         if ($element === null)
         {

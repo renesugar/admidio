@@ -30,13 +30,6 @@ if ($gPreferences['enable_photo_module'] == 0)
     // => EXIT
 }
 
-// erst pruefen, ob der User Fotoberarbeitungsrechte hat
-if (!$gCurrentUser->editPhotoRight())
-{
-    $gMessage->show($gL10n->get('PHO_NO_RIGHTS'));
-    // => EXIT
-}
-
 $headline = '';
 if ($getMode === 'new')
 {
@@ -49,20 +42,19 @@ elseif ($getMode === 'change')
 
 $gNavigation->addUrl(CURRENT_URL, $headline);
 
-// Fotoalbumobjekt anlegen
+// create photo album object
 $photoAlbum = new TablePhotos($gDb);
 
-// nur Daten holen, wenn Album editiert werden soll
 if ($getMode === 'change')
 {
     $photoAlbum->readDataById($getPhotoId);
+}
 
-    // Pruefung, ob das Fotoalbum zur aktuellen Organisation gehoert
-    if ((int) $photoAlbum->getValue('pho_org_id') !== (int) $gCurrentOrganization->getValue('org_id'))
-    {
-        $gMessage->show($gL10n->get('SYS_NO_RIGHTS'));
-        // => EXIT
-    }
+// check if the user is allowed to edit this photo album
+if (!$photoAlbum->editable())
+{
+    $gMessage->show($gL10n->get('PHO_NO_RIGHTS'));
+    // => EXIT
 }
 
 if (isset($_SESSION['photo_album_request']))

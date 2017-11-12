@@ -580,7 +580,7 @@ class TableAccess
             $this->columnsInfos[$field]['changed'] = false;
         }
 
-        $this->newRecord = false;
+        $this->newRecord = empty($this->dbColumns[$this->keyColumnName]);
     }
 
     /**

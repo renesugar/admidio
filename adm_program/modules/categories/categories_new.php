@@ -7,7 +7,7 @@ declare(strict_types=1);
  * @copyright 2004-2017 The Admidio Team
  * @see https://www.admidio.org/
  * @license https://www.gnu.org/licenses/gpl-2.0.html GNU General Public License v2.0 only
-/******************************************************************************
+ ******************************************************************************
  * Parameters:
  *
  * cat_id: Id of the category that should be edited
@@ -24,7 +24,7 @@ require(__DIR__ . '/../../system/login_valid.php');
 
 // Initialize and check the parameters
 $getCatId = admFuncVariableIsValid($_GET, 'cat_id', 'int');
-$getType  = admFuncVariableIsValid($_GET, 'type',   'string', array('requireValue' => true, 'validValues' => array('ROL', 'LNK', 'ANN', 'USF', 'DAT', 'INF', 'AWA')));
+$getType  = admFuncVariableIsValid($_GET, 'type',   'string', array('requireValue' => true, 'validValues' => array('ROL', 'LNK', 'ANN', 'USF', 'DAT', 'AWA')));
 $getTitle = admFuncVariableIsValid($_GET, 'title',  'string');
 
 $roleViewSet = array(0);
@@ -33,35 +33,35 @@ $roleEditSet = array(0);
 // set text strings for the different modules
 switch ($getType)
 {
+    case 'ROL':
+        $headline = $gL10n->get('SYS_CATEGORY_VAR', array($gL10n->get('SYS_ROLES')));
+        break;
+
+    case 'LNK':
+        $headline = $gL10n->get('SYS_CATEGORY_VAR', array($gL10n->get('LNK_WEBLINKS')));
+        $rolesRightEditName = 'LNK_EDIT_WEBLINKS';
+        $rolesRightsColumn  = 'rol_weblinks';
+        $rolesRightsName    = 'ROL_RIGHT_WEBLINKS';
+        break;
+
     case 'ANN':
         $headline = $gL10n->get('SYS_CATEGORY_VAR', array($gL10n->get('ANN_ANNOUNCEMENTS')));
         $rolesRightEditName = 'ANN_EDIT_ANNOUNCEMENTS';
-        $rolesRightsColumn = 'rol_announcements';
-        $rolesRightsName   = 'ROL_RIGHT_ANNOUNCEMENTS';
+        $rolesRightsColumn  = 'rol_announcements';
+        $rolesRightsName    = 'ROL_RIGHT_ANNOUNCEMENTS';
         break;
 
-    case 'ANN':
-        $rolesRightEditName = 'DAT_EDIT_EVENTS';
-        $rolesRightsColumn = 'rol_dates';
-        $rolesRightsName   = 'ROL_RIGHT_DATES';
-        break;
-
-    case 'ANN':
-        $headline = $gL10n->get('SYS_CATEGORY_VAR', array($gL10n->get('LNK_WEBLINKS')));
-        $rolesRightEditName = 'LNK_EDIT_WEBLINKS';
-        $rolesRightsColumn = 'rol_weblinks';
-        $rolesRightsName   = 'ROL_RIGHT_WEBLINKS';
-        break;
-
-    case 'ANN':
+    case 'USF':
         $headline = $gL10n->get('SYS_CATEGORY_VAR', array($gL10n->get('ORG_PROFILE_FIELDS')));
         $rolesRightEditName = 'PRO_EDIT_PROFILE_FIELDS';
-        $rolesRightsColumn = 'rol_edit_user';
-        $rolesRightsName   = 'ROL_RIGHT_EDIT_USER';
+        $rolesRightsColumn  = 'rol_edit_user';
+        $rolesRightsName    = 'ROL_RIGHT_EDIT_USER';
         break;
 
-    case 'ANN':
-        $headline = $gL10n->get('SYS_CATEGORY_VAR', array($gL10n->get('SYS_ROLES')));
+    case 'DAT':
+        $rolesRightEditName = 'DAT_EDIT_EVENTS';
+        $rolesRightsColumn  = 'rol_dates';
+        $rolesRightsName    = 'ROL_RIGHT_DATES';
         break;
 
     default:
@@ -76,7 +76,7 @@ if($getTitle === '')
 }
 else
 {
-    $headline = $getTitle;
+    $headline      = $getTitle;
     $addButtonText = $getTitle;
 }
 

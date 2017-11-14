@@ -17,7 +17,7 @@ declare(strict_types=1);
  * @param string $title
  * @return string
  */
-function getMessageIcon($msgId, $icon, $title)
+function getMessageIcon(int $msgId, string $icon, string $title): string
 {
     return '
         <a class="admidio-icon-link" href="' . ADMIDIO_URL . FOLDER_MODULES . '/messages/messages_write.php?msg_id=' . $msgId . '">
@@ -30,7 +30,7 @@ function getMessageIcon($msgId, $icon, $title)
  * @param string $msgSubject
  * @return string
  */
-function getMessageLink($msgId, $msgSubject)
+function getMessageLink(int $msgId, string $msgSubject): string
 {
     return '<a href="' . ADMIDIO_URL . FOLDER_MODULES . '/messages/messages_write.php?msg_id=' . $msgId . '">' . $msgSubject . '</a>';
 }
@@ -71,7 +71,7 @@ function prepareReceivers(string $receiversString): string
  * @param int                 $usrId
  * @return string
  */
-function getReceiverName($row, $usrId)
+function getReceiverName(array $row, int $usrId): string
 {
     global $gDb, $gProfileFields;
 
@@ -93,7 +93,7 @@ function getReceiverName($row, $usrId)
  * @param string $msgSubject
  * @return string
  */
-function getAdministrationLink($rowIndex, $msgId, $msgSubject)
+function getAdministrationLink(int $rowIndex, int $msgId, string $msgSubject): string
 {
     global $gL10n;
 

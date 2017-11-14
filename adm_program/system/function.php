@@ -702,7 +702,7 @@ function admFuncGetDirectoryEntries(string $directory, string $searchType = 'fil
  * @param string $path Path of the filesystem
  * @return array<string,int> Return format: array("total" => $total, "free" => $free, "used" => $used)
  */
-function admGetDiskSpace($path = '/')
+function admGetDiskSpace(string $path = '/'): array
 {
     $total = disk_total_space($path);
     $free = disk_free_space($path);
@@ -717,7 +717,7 @@ function admGetDiskSpace($path = '/')
  * @param bool $si   Use SI or binary unit. Set true for SI units
  * @return string Return format: "[value] [unit]" (e.g: 34.5 MiB)
  */
-function admGetHumanReadableSize($size, $si = false)
+function admGetHumanReadableSize(int $size, bool $si = false): string
 {
     $divider = 1024;
     $units = array('B', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'YiB');

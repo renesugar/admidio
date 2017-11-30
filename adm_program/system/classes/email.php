@@ -39,7 +39,7 @@ declare(strict_types=1);
  * Parameters: $subject - Der Text des Betreffs
  *
  * Der Email einen Text geben:
- * function setText($text. )
+ * setText($text)
  * Parameters: $text - Der Text der Mail
  *
  * Bei Bedarf kann man sich eine Kopie der Mail zuschicken lassen (optional):

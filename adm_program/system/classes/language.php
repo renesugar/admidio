@@ -227,7 +227,7 @@ class Language
      * @param string $countryName The name of the country in the language of this object.
      * @throws \UnexpectedValueException
      * @throws \OutOfBoundsException
-     * @return string|false Return the three digits ISO code (ISO 3166 ALPHA-3) of the country or false if country not found.
+     * @return string Return the three digits ISO code (ISO 3166 ALPHA-3) of the country.
      */
     public function getCountryIsoCode(string $countryName): string
     {
@@ -357,7 +357,7 @@ class Language
             }
         }
 
-        $text = self::prepareXmlText($xmlNodes[0]);
+        $text = self::prepareXmlText((string) $xmlNodes[0]);
 
         $this->languageData->setTextCache($textId, $text);
 

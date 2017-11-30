@@ -858,7 +858,7 @@ class User extends TableAccess
      * @param string $categoryType The type of the category that should be checked e.g. ANN, USF or DAT
      * @return array<int,int> Array with categories ids where user has the right to edit them
      */
-    public function getAllEditableCategories($categoryType)
+    public function getAllEditableCategories(string $categoryType): array
     {
         $queryParams = array($categoryType, $this->organizationId);
 

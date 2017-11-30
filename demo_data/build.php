@@ -106,7 +106,7 @@ function getBacktrace(): string
 /**
  * @return bool
  */
-function prepareAdmidioDataFolder()
+function prepareAdmidioDataFolder(): bool
 {
     $srcFolder = ADMIDIO_PATH . '/demo_data/adm_my_files';
     $myFilesFolder = new Folder($srcFolder);
@@ -122,7 +122,7 @@ function prepareAdmidioDataFolder()
 /**
  * @param bool $enable
  */
-function toggleForeignKeyChecks($enable)
+function toggleForeignKeyChecks(bool $enable)
 {
     global $gDbType, $gDb;
 
@@ -140,7 +140,7 @@ function toggleForeignKeyChecks($enable)
  * @throws \UnexpectedValueException
  * @return string
  */
-function readFileContent($filePath)
+function readFileContent(string $filePath): string
 {
     if (!is_file($filePath))
     {
@@ -175,7 +175,7 @@ function readFileContent($filePath)
  * @param string $fileContent
  * @return array<int,string>
  */
-function prepareFileContent($fileContent)
+function prepareFileContent(string $fileContent): array
 {
     global $g_tbl_praefix;
 
@@ -199,7 +199,7 @@ function prepareFileContent($fileContent)
  * @param array<int,string> $sqlStatements
  * @param string $filename
  */
-function executeSqlStatements(array $sqlStatements, $filename)
+function executeSqlStatements(array $sqlStatements, string $filename)
 {
     global $gDb, $gL10n;
 
@@ -237,7 +237,7 @@ function executeSqlStatements(array $sqlStatements, $filename)
 /**
  * @param string $filename The SQL filename (db.sql, data.sql)
  */
-function readAndExecuteSQLFromFile($filename)
+function readAndExecuteSQLFromFile(string $filename)
 {
     $filePath = __DIR__ . '/' . $filename;
 
@@ -284,7 +284,7 @@ function resetPostgresSequences()
 /**
  * @param string $language
  */
-function setInstallationLanguage($language)
+function setInstallationLanguage(string $language)
 {
     global $gDb;
 
@@ -297,7 +297,7 @@ function setInstallationLanguage($language)
 /**
  * @return string
  */
-function getInstalledDbVersion()
+function getInstalledDbVersion(): string
 {
     global $gDb;
 
@@ -325,7 +325,7 @@ function getInstalledDbVersion()
 /**
  * @param string $language
  */
-function doInstallation($language)
+function doInstallation(string $language)
 {
     global $gDb, $gL10n; // necessary for "data_edit.php"
 

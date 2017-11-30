@@ -77,7 +77,7 @@ class Language
      * @param bool $referenceLanguage If set to @b true than the language code of the reference language will returned.
      * @return string Returns the language code of the language of this object or the reference language.
      */
-    public function getLanguage($referenceLanguage = false)
+    public function getLanguage(bool $referenceLanguage = false): string
     {
         global $gLogger;
 
@@ -96,7 +96,7 @@ class Language
      * @param string $language ISO code of the language that should be set to this object.
      * @return bool Returns true if language changed.
      */
-    public function setLanguage($language)
+    public function setLanguage(string $language): bool
     {
         if ($language === $this->languageData->getLanguage())
         {
@@ -117,7 +117,7 @@ class Language
      * @param bool $referenceLanguage If set to @b true than the ISO code of the reference language will returned.
      * @return string Returns the ISO code of the language of this object or the reference language e.g. @b de or @b en.
      */
-    public function getLanguageIsoCode($referenceLanguage = false)
+    public function getLanguageIsoCode(bool $referenceLanguage = false): string
     {
         $language = $this->getLanguage($referenceLanguage);
 
@@ -134,7 +134,7 @@ class Language
      * @throws \UnexpectedValueException
      * @return string
      */
-    private function getCountryFile()
+    private function getCountryFile(): string
     {
         $langFile    = ADMIDIO_PATH . FOLDER_LANGUAGES . '/countries_' . $this->languageData->getLanguage() . '.xml';
         $langFileRef = ADMIDIO_PATH . FOLDER_LANGUAGES . '/countries_' . LanguageData::REFERENCE_LANGUAGE   . '.xml';
@@ -156,7 +156,7 @@ class Language
      * @throws \UnexpectedValueException
      * @return array<string,string> Array with all countries and their ISO codes e.g.: array('DEU' => 'Germany' ...)
      */
-    private function loadCountries()
+    private function loadCountries(): array
     {
         $countryFile = $this->getCountryFile();
 
@@ -204,7 +204,7 @@ class Language
      * @throws \OutOfBoundsException
      * @return string Return the name of the country in the language of this object.
      */
-    public function getCountryName($countryIsoCode)
+    public function getCountryName(string $countryIsoCode): string
     {
         if (!preg_match('/^[A-Z]{3}$/', $countryIsoCode))
         {
@@ -229,7 +229,7 @@ class Language
      * @throws \OutOfBoundsException
      * @return string|false Return the three digits ISO code (ISO 3166 ALPHA-3) of the country or false if country not found.
      */
-    public function getCountryIsoCode($countryName)
+    public function getCountryIsoCode(string $countryName): string
     {
         if ($countryName === '')
         {
@@ -254,7 +254,7 @@ class Language
      * @throws \UnexpectedValueException
      * @return bool Returns true if language path is added.
      */
-    public function addLanguageFolderPath($languageFolderPath)
+    public function addLanguageFolderPath(string $languageFolderPath): bool
     {
         return $this->languageData->addLanguageFolderPath($languageFolderPath);
     }
@@ -264,7 +264,7 @@ class Language
      * The array will have the following syntax e.g.: array('DE' => 'deutsch' ...)
      * @return array<string,string>
      */
-    private static function loadAvailableLanguages()
+    private static function loadAvailableLanguages(): array
     {
         $languagesXml = new \SimpleXMLElement(ADMIDIO_PATH . FOLDER_LANGUAGES . '/languages.xml', 0, true);
 
@@ -287,7 +287,7 @@ class Language
      * The array will have the following syntax e.g.: array('DE' => 'deutsch' ...)
      * @return array<string,string> Return an array with all available languages.
      */
-    public function getAvailableLanguages()
+    public function getAvailableLanguages(): array
     {
         if (count($this->languages) === 0)
         {
@@ -301,7 +301,7 @@ class Language
      * @param string $text
      * @return string
      */
-    private static function prepareXmlText($text)
+    private static function prepareXmlText(string $text): string
     {
         // set line break with html
         // Within Android string resource all apostrophe are escaped so we must remove the escape char
@@ -324,7 +324,7 @@ class Language
      * @throws \OutOfBoundsException
      * @return string Return the text in the language or nothing if text id wasn't found.
      */
-    public function searchLanguageText(array &$xmlLanguageObjects, $languageFolderPath, $language, $textId)
+    public function searchLanguageText(array &$xmlLanguageObjects, string $languageFolderPath, string $language, string $textId): string
     {
         global $gLogger;
 
@@ -372,7 +372,7 @@ class Language
      * @throws \UnexpectedValueException
      * @return string Returns the text string of the text id.
      */
-    private function searchTextIdInLangObject(array $xmlLanguageObjects, $language, $textId)
+    private function searchTextIdInLangObject(array $xmlLanguageObjects, string $language, string $textId): string
     {
         global $gLogger;
 
@@ -403,7 +403,7 @@ class Language
      * @throws \UnexpectedValueException
      * @return string Returns the text string of the text id.
      */
-    private function getTextFromTextId($textId)
+    private function getTextFromTextId(string $textId): string
     {
         // first search text id in text-cache
         try
@@ -439,7 +439,7 @@ class Language
      * @param array<int,string> $params
      * @return string
      */
-    private static function prepareTextPlaceholders($text, array $params)
+    private static function prepareTextPlaceholders(string $text, array $params): string
     {
         // replace placeholder with value of parameters
         foreach ($params as $index => $param)
@@ -474,7 +474,7 @@ class Language
      * echo $gL10n->get('MAI_EMAIL_SEND_TO_ROLE_ACTIVE', array('John Doe', 'Demo-Organization', 'Administrator'));
      * @endcode
      */
-    public function get($textId, $params = array())
+    public function get(string $textId, $params = array()): string
     {
         global $gLogger;
 
@@ -533,7 +533,7 @@ class Language
      * @param string $languageFolderPath Server path where Admidio should search for language files.
      * @return bool Returns true if language path is added.
      */
-    public function addLanguagePath($languageFolderPath)
+    public function addLanguagePath(string $languageFolderPath): bool
     {
         global $gLogger;
 
@@ -556,7 +556,7 @@ class Language
      * @deprecated 3.3.0:4.0.0 "$gL10n->getCountryByCode()" is deprecated, use "$gL10n->getCountryName()" instead.
      * @return string|false Return the name of the country in the language of this object.
      */
-    public function getCountryByCode($countryIsoCode)
+    public function getCountryByCode(string $countryIsoCode)
     {
         global $gLogger;
 
@@ -579,7 +579,7 @@ class Language
      * @deprecated 3.3.0:4.0.0 "$gL10n->getCountryByName()" is deprecated, use "$gL10n->getCountryIsoCode()" instead.
      * @return string|false Return the three digits ISO code (ISO 3166 ALPHA-3) of the country or false if country not found.
      */
-    public function getCountryByName($countryName)
+    public function getCountryByName(string $countryName)
     {
         global $gLogger;
 

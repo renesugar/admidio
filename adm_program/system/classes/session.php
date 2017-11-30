@@ -420,7 +420,7 @@ class Session extends TableAccess
      *                         Set to "false" to allow access for JavaScript. (Possible XSS security leak)
      * @return bool Returns "true" if the cookie is successfully set.
      */
-    public static function setCookie(string $name, string $value = '', int $expire = 0, string $path = '', string $domain = '', $secure = null, $httpOnly = true): bool
+    public static function setCookie(string $name, string $value = '', int $expire = 0, string $path = '', string $domain = '', $secure = null, bool $httpOnly = true): bool
     {
         global $gLogger, $gSetCookieForDomain;
 
@@ -464,7 +464,7 @@ class Session extends TableAccess
      * @param bool   $httpOnly     If "true" cookie is accessible only via HTTP.
      *                             Set to "false" to allow access for JavaScript. (Possible XSS security leak)
      */
-    public static function start(string $cookiePrefix, int $limit = 0, string $path = '', string $domain = '', $secure = null, $httpOnly = true)
+    public static function start(string $cookiePrefix, int $limit = 0, string $path = '', string $domain = '', $secure = null, bool $httpOnly = true)
     {
         global $gLogger, $gSetCookieForDomain;
 

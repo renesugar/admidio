@@ -504,7 +504,7 @@ class Organization extends TableAccess
      * @return array<string,string> Returns an array with all preferences of this organization.
      *                              Array key is the column @b prf_name and array value is the column @b prf_value.
      */
-    public function getPreferences($update = false)
+    public function getPreferences(bool $update = false): array
     {
         return $this->settingsManager->getAll($update);
     }
@@ -517,7 +517,7 @@ class Organization extends TableAccess
      * @param bool                 $update   If set to @b false then no update will be done, only inserts
      * @throws \UnexpectedValueException
      */
-    public function setPreferences(array $settings, $update = true)
+    public function setPreferences(array $settings, bool $update = true)
     {
         $this->settingsManager->setMulti($settings, $update);
     }

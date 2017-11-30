@@ -28,7 +28,7 @@ require_once(PLUGIN_PATH. '/../adm_program/system/common.php');
 require_once(PLUGIN_PATH. '/'.$pluginFolder.'/config.php');
 
 // Sprachdatei des Plugins einbinden
-$gL10n->addLanguagePath(PLUGIN_PATH. '/'.$pluginFolder.'/languages');
+$gL10n->addLanguageFolderPath(PLUGIN_PATH. '/'.$pluginFolder.'/languages');
 
 // pruefen, ob alle Einstellungen in config.php gesetzt wurden
 // falls nicht, hier noch mal die Default-Werte setzen
@@ -118,7 +118,7 @@ if($onlineUsersStatement->rowCount() > 0)
             if((int) $row->ses_usr_id !== $usrIdMerker)
             {
                 echo '<strong><a class="'. $plg_link_class. '" target="'. $plg_link_target. '" title="'.$gL10n->get('SYS_SHOW_PROFILE').'"
-                    href="'. ADMIDIO_URL. FOLDER_MODULES. '/profile/profile.php?user_id='. $row->ses_usr_id. '">'. $row->usr_login_name. '</a></strong>';
+                    href="'. safeUrl(ADMIDIO_URL. FOLDER_MODULES. '/profile/profile.php', array('user_id' => $row->ses_usr_id)). '">'. $row->usr_login_name. '</a></strong>';
 
                 // User neben-/untereinander anzeigen
                 if($plg_show_users_side_by_side)

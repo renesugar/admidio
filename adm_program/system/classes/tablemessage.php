@@ -82,12 +82,12 @@ class TableMessage extends TableAccess
     /**
      * Set a new value for a column of the database table.
      * @param int $usrId of the receiver - just for security reasons.
-     * @return \PDOStatement Returns @b answer of the SQL execution
+     * @return false|\PDOStatement Returns @b answer of the SQL execution
      */
     public function setReadValue(int $usrId): \PDOStatement
     {
         $sql = 'UPDATE '.TBL_MESSAGES.'
-                   SET msg_read = \'0\'
+                   SET msg_read = 0
                  WHERE msg_id   = ? -- $this->msgId
                    AND msg_usr_id_receiver = ? -- $usrId';
 
@@ -97,7 +97,7 @@ class TableMessage extends TableAccess
     /**
      * get a list with all messages of an conversation.
      * @param int $msgId of the conversation - just for security reasons.
-     * @return \PDOStatement Returns @b answer of the SQL execution
+     * @return false|\PDOStatement Returns @b answer of the SQL execution
      */
     public function getConversation(int $msgId): \PDOStatement
     {
@@ -164,10 +164,10 @@ class TableMessage extends TableAccess
             }
 
             $sql = 'UPDATE '.TBL_MESSAGES.'
-                       SET msg_read = 2,
-                           msg_usr_id_sender   = ?, -- $currUsrId
-                           msg_usr_id_receiver = ?, -- $other
-                           msg_timestamp = CURRENT_TIMESTAMP
+                       SET msg_read = 2
+                         , msg_usr_id_sender   = ? -- $currUsrId
+                         , msg_usr_id_receiver = ? -- $other
+                         , msg_timestamp = CURRENT_TIMESTAMP
                      WHERE msg_id = ? -- $msgId';
             $this->db->queryPrepared($sql, array($currUsrId, $other, $msgId));
         }

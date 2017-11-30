@@ -39,7 +39,7 @@ if ($gCurrentUser->hasRightViewProfile($user))
     if ($getNewPhoto)
     {
         // show temporary saved new photo from upload in database
-        if ($gPreferences['profile_photo_storage'] == 0)
+        if ((int) $gSettingsManager->get('profile_photo_storage') === 0)
         {
             $image = new Image();
             $image->setImageFromData($gCurrentSession->getValue('ses_binary'));
@@ -54,7 +54,7 @@ if ($gCurrentUser->hasRightViewProfile($user))
     else
     {
         // show photo from database
-        if ($gPreferences['profile_photo_storage'] == 0)
+        if ((int) $gSettingsManager->get('profile_photo_storage') === 0)
         {
             if (strlen($user->getValue('usr_photo')) != null)
             {

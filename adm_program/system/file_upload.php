@@ -40,7 +40,7 @@ $iconUploadPath          = '';
 if($getModule === 'photos')
 {
     // check if the module is activated
-    if ($gPreferences['enable_photo_module'] == 0)
+    if ((int) $gSettingsManager->get('enable_photo_module') === 0)
     {
         $gMessage->show($gL10n->get('SYS_MODULE_DISABLED'));
         // => EXIT
@@ -84,7 +84,7 @@ if($getModule === 'photos')
 }
 elseif($getModule === 'downloads')
 {
-    if ($gPreferences['enable_download_module'] != 1)
+    if (!$gSettingsManager->getBool('enable_download_module'))
     {
         $gMessage->show($gL10n->get('SYS_MODULE_DISABLED'));
         // => EXIT
@@ -100,7 +100,7 @@ elseif($getModule === 'downloads')
     }
 
     // upload only possible if upload filesize > 0
-    if ($gPreferences['max_file_upload_size'] == 0)
+    if ($gSettingsManager->getInt('max_file_upload_size') === 0)
     {
         $gMessage->show($gL10n->get('SYS_INVALID_PAGE_VIEW'));
         // => EXIT
@@ -130,7 +130,7 @@ elseif($getModule === 'downloads')
 }
 
 // check if the server allow file uploads
-if (!PhpIni::isFileUploadEnabled())
+if (!PhpIniUtils::isFileUploadEnabled())
 {
     $gMessage->show($gL10n->get('SYS_SERVER_NO_UPLOAD'));
     // => EXIT
@@ -159,7 +159,7 @@ if($getMode === 'choose_files')
         $(function() {
             "use strict";
             $("#fileupload").fileupload({
-                url: "'.ADMIDIO_URL.'/adm_program/system/file_upload.php?module='.$getModule.'&mode=upload_files&id='.$getId.'",
+                url: "'.safeUrl(ADMIDIO_URL.'/adm_program/system/file_upload.php', array('module' => $getModule, 'mode' => 'upload_files', 'id' => $getId)).'",
                 sequentialUploads: true,
                 dataType: "json",
                 add: function(e, data) {

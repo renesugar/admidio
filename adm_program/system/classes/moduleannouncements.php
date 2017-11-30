@@ -156,9 +156,9 @@ class ModuleAnnouncements extends Modules
      */
     private function sqlGetAdditional(): array
     {
-        global $gPreferences, $gProfileFields;
+        global $gSettingsManager, $gProfileFields;
 
-        if ($gPreferences['system_show_create_edit'] == 1)
+        if ((int) $gSettingsManager->get('system_show_create_edit') === 1)
         {
             $lastNameUsfId  = (int) $gProfileFields->getProperty('LAST_NAME', 'usf_id');
             $firstNameUsfId = (int) $gProfileFields->getProperty('FIRST_NAME', 'usf_id');
@@ -206,7 +206,7 @@ class ModuleAnnouncements extends Modules
     /**
      * Add several conditions to an SQL string that could later be used
      * as additional conditions in other SQL queries.
-     * @return array<string,mixed> Returns an array of a SQL string with additional conditions and it's query params.
+     * @return array<string,string|array<int,mixed>> Returns an array of a SQL string with additional conditions and it's query params.
      */
     private function getSqlConditions(): array
     {
@@ -258,11 +258,11 @@ class ModuleAnnouncements extends Modules
      */
     public function setDateRange(string $dateRangeStart = '1970-01-01', string $dateRangeEnd = DATE_NOW): bool
     {
-        global $gPreferences;
+        global $gSettingsManager;
 
         if (!$this->setDateRangeParams($dateRangeStart, 'Start', 'Y-m-d'))
         {
-            if (!$this->setDateRangeParams($dateRangeStart, 'Start', $gPreferences['system_date']))
+            if (!$this->setDateRangeParams($dateRangeStart, 'Start', $gSettingsManager->getString('system_date')))
             {
                 return false;
             }
@@ -270,7 +270,7 @@ class ModuleAnnouncements extends Modules
 
         if (!$this->setDateRangeParams($dateRangeEnd, 'End', 'Y-m-d'))
         {
-            if (!$this->setDateRangeParams($dateRangeEnd, 'End', $gPreferences['system_date']))
+            if (!$this->setDateRangeParams($dateRangeEnd, 'End', $gSettingsManager->getString('system_date')))
             {
                 return false;
             }
@@ -287,7 +287,7 @@ class ModuleAnnouncements extends Modules
      */
     private function setDateRangeParams(string $dateRange, string $dateRangePoint, string $dateFormat): bool
     {
-        global $gPreferences;
+        global $gSettingsManager;
 
         $objDate = \DateTime::createFromFormat($dateFormat, $dateRange);
 
@@ -297,7 +297,7 @@ class ModuleAnnouncements extends Modules
         }
 
         $this->setParameter('date' . $dateRangePoint . 'FormatEnglish', $objDate->format('Y-m-d'));
-        $this->setParameter('date' . $dateRangePoint . 'FormatAdmidio', $objDate->format($gPreferences['system_date']));
+        $this->setParameter('date' . $dateRangePoint . 'FormatAdmidio', $objDate->format($gSettingsManager->getString('system_date')));
 
         return true;
     }

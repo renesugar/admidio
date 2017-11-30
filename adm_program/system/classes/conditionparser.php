@@ -128,7 +128,7 @@ class ConditionParser
      */
     private function getFormatDate(string $date, string $operator): string
     {
-        global $gPreferences;
+        global $gSettingsManager;
 
         // if last char is Y or J then user searches for age
         $lastDateChar = admStrToUpper(substr($date, -1));
@@ -187,7 +187,7 @@ class ConditionParser
         // validate date and return it in database format
         if ($date !== '')
         {
-            $dateObject = \DateTime::createFromFormat($gPreferences['system_date'], $date);
+            $dateObject = \DateTime::createFromFormat($gSettingsManager->getString('system_date'), $date);
             if ($dateObject !== false)
             {
                 return $dateObject->format('Y-m-d');

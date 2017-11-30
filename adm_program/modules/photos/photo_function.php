@@ -27,7 +27,7 @@ $getJob       = admFuncVariableIsValid($_GET, 'job',       'string', array('requ
 $getPhotoNr   = admFuncVariableIsValid($_GET, 'photo_nr',  'int',    array('requireValue' => true));
 $getDirection = admFuncVariableIsValid($_GET, 'direction', 'string', array('validValues' => array('left', 'right')));
 
-if ($gPreferences['enable_photo_module'] == 0)
+if ((int) $gSettingsManager->get('enable_photo_module') === 0)
 {
     // check if the module is activated
     $gMessage->show($gL10n->get('SYS_MODULE_DISABLED'));
@@ -87,10 +87,9 @@ function tryRename(string $path, string $newPath)
 /**
  * Delete the photo from the filesystem and update number of photos in database.
  * @param TablePhotos $photoAlbum
- * @param int $phoId
  * @param int $picNr
  */
-function deletePhoto(TablePhotos $photoAlbum, int $phoId, int $picNr)
+function deletePhoto(TablePhotos $photoAlbum, int $picNr)
 {
     // Speicherort
     $albumPath = ADMIDIO_PATH . FOLDER_DATA . '/photos/' . $photoAlbum->getValue('pho_begin', 'Y-m-d') . '_' . $photoAlbum->getValue('pho_id');
@@ -164,7 +163,7 @@ if ($getJob === 'rotate')
 // delete photo from filesystem and update photo album
 elseif ($getJob === 'delete')
 {
-    deletePhoto($photoAlbum, $getPhotoId, $getPhotoNr);
+    deletePhoto($photoAlbum, $getPhotoNr);
 
     $_SESSION['photo_album'] = $photoAlbum;
 

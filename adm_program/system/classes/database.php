@@ -154,7 +154,10 @@ class Database
 
         $this->connect();
 
-        $gLogger->debug('DATABASE: connected!');
+        if ($gLogger instanceof \Psr\Log\LoggerInterface) // fix for non-object error in PHP 5.3
+        {
+            $gLogger->debug('DATABASE: connected!');
+        }
     }
 
     /**
@@ -164,7 +167,10 @@ class Database
     {
         global $gLogger;
 
-        $gLogger->debug('DATABASE: sleep/serialize!');
+        if ($gLogger instanceof \Psr\Log\LoggerInterface) // fix for non-object error in PHP 5.3
+        {
+            $gLogger->debug('DATABASE: sleep/serialize!');
+        }
 
         return array('engine', 'host', 'port', 'dbName', 'username', 'password', 'options');
     }
@@ -173,11 +179,17 @@ class Database
     {
         global $gLogger;
 
-        $gLogger->debug('DATABASE: wakeup/unserialize!');
+        if ($gLogger instanceof \Psr\Log\LoggerInterface) // fix for non-object error in PHP 5.3
+        {
+            $gLogger->debug('DATABASE: wakeup/unserialize!');
+        }
 
         $this->connect();
 
-        $gLogger->debug('DATABASE: reconnected!');
+        if ($gLogger instanceof \Psr\Log\LoggerInterface) // fix for non-object error in PHP 5.3
+        {
+            $gLogger->debug('DATABASE: reconnected!');
+        }
     }
 
     /**
@@ -852,7 +864,7 @@ class Database
      */
     public function showError()
     {
-        global $gLogger, $gPreferences, $gL10n;
+        global $gLogger, $gSettingsManager, $gL10n;
 
         $backtrace = $this->getBacktrace();
 
@@ -879,7 +891,7 @@ class Database
              </div>';
 
         // display database error to user
-        if (isset($gPreferences) && defined('THEME_ADMIDIO_PATH') && !headers_sent())
+        if (isset($gSettingsManager) && defined('THEME_ADMIDIO_PATH') && !headers_sent())
         {
             // create html page object
             $page = new HtmlPage($gL10n->get('SYS_DATABASE_ERROR'));

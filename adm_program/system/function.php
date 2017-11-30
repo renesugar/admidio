@@ -275,7 +275,7 @@ function admFuncGeneratePagination(string $baseUrl, int $itemsCount, int $itemsP
  */
 function admFuncProcessableImageSize(): int
 {
-    $memoryLimit = PhpIni::getMemoryLimit();
+    $memoryLimit = PhpIniUtils::getMemoryLimit();
     // if memory_limit is disabled in php.ini
     if ($memoryLimit === -1)
     {
@@ -328,7 +328,7 @@ function admFuncProcessableImageSize(): int
  */
 function admFuncVariableIsValid(array $array, string $variableName, string $datatype, array $options = array())
 {
-    global $gL10n, $gMessage, $gPreferences;
+    global $gL10n, $gMessage, $gSettingsManager;
 
     // create array with all options
     $optionsDefault = array('defaultValue' => null, 'requireValue' => false, 'validValues' => null, 'directOutput' => null);
@@ -406,7 +406,7 @@ function admFuncVariableIsValid(array $array, string $variableName, string $data
 
         case 'date':
             // check if date is a valid Admidio date format
-            $objAdmidioDate = \DateTime::createFromFormat($gPreferences['system_date'], $value);
+            $objAdmidioDate = \DateTime::createFromFormat($gSettingsManager->getString('system_date'), $value);
 
             if (!$objAdmidioDate)
             {
@@ -509,10 +509,10 @@ function admFuncVariableIsValid(array $array, string $variableName, string $data
  */
 function admFuncShowCreateChangeInfoById(int $userIdCreated, string $timestampCreate, int $userIdEdited = 0, string $timestampEdited = ''): string
 {
-    global $gDb, $gProfileFields, $gL10n, $gPreferences;
+    global $gDb, $gProfileFields, $gL10n, $gSettingsManager;
 
     // only show info if system setting is activated
-    if ((int) $gPreferences['system_show_create_edit'] === 0)
+    if ((int) $gSettingsManager->get('system_show_create_edit') === 0)
     {
         return '';
     }
@@ -525,7 +525,7 @@ function admFuncShowCreateChangeInfoById(int $userIdCreated, string $timestampCr
         {
             $userCreate = new User($gDb, $gProfileFields, $userIdCreated);
 
-            if ((int) $gPreferences['system_show_create_edit'] === 1)
+            if ((int) $gSettingsManager->get('system_show_create_edit') === 1)
             {
                 $htmlCreateName = $userCreate->getValue('FIRST_NAME') . ' ' . $userCreate->getValue('LAST_NAME');
             }
@@ -548,7 +548,7 @@ function admFuncShowCreateChangeInfoById(int $userIdCreated, string $timestampCr
         {
             $userEdit = new User($gDb, $gProfileFields, $userIdEdited);
 
-            if ((int) $gPreferences['system_show_create_edit'] === 1)
+            if ((int) $gSettingsManager->get('system_show_create_edit') === 1)
             {
                 $htmlEditName = $userEdit->getValue('FIRST_NAME') . ' ' . $userEdit->getValue('LAST_NAME');
             }
@@ -592,10 +592,10 @@ function admFuncShowCreateChangeInfoById(int $userIdCreated, string $timestampCr
  */
 function admFuncShowCreateChangeInfoByName(string $userNameCreated, string $timestampCreate, string $userNameEdited, string $timestampEdited, int $userIdCreated = 0, int $userIdEdited = 0): string
 {
-    global $gL10n, $gValidLogin, $gPreferences;
+    global $gL10n, $gValidLogin, $gSettingsManager;
 
     // only show info if system setting is activated
-    if ((int) $gPreferences['system_show_create_edit'] === 0)
+    if ((int) $gSettingsManager->get('system_show_create_edit') === 0)
     {
         return '';
     }
@@ -615,8 +615,8 @@ function admFuncShowCreateChangeInfoByName(string $userNameCreated, string $time
         // if valid login and a user id is given than create a link to the profile of this user
         if ($gValidLogin && $userIdCreated > 0 && $userNameCreated !== $gL10n->get('SYS_SYSTEM'))
         {
-            $userNameCreated = '<a href="' . ADMIDIO_URL . FOLDER_MODULES . '/profile/profile.php?user_id=' .
-                                $userIdCreated . '">' . $userNameCreated . '</a>';
+            $userNameCreated = '<a href="' . safeUrl(ADMIDIO_URL . FOLDER_MODULES . '/profile/profile.php', array('user_id' => $userIdCreated)) .
+                               '">' . $userNameCreated . '</a>';
         }
 
         $html .= '<span class="admidio-info-created">' . $gL10n->get('SYS_CREATED_BY', array($userNameCreated, $timestampCreate)) . '</span>';
@@ -635,8 +635,8 @@ function admFuncShowCreateChangeInfoByName(string $userNameCreated, string $time
         // if valid login and a user id is given than create a link to the profile of this user
         if ($gValidLogin && $userIdEdited > 0 && $userNameEdited !== $gL10n->get('SYS_SYSTEM'))
         {
-            $userNameEdited = '<a href="' . ADMIDIO_URL . FOLDER_MODULES . '/profile/profile.php?user_id=' .
-                               $userIdEdited . '">' . $userNameEdited . '</a>';
+            $userNameEdited = '<a href="' . safeUrl(ADMIDIO_URL . FOLDER_MODULES . '/profile/profile.php', array('user_id' => $userIdEdited)) .
+                              '">' . $userNameEdited . '</a>';
         }
 
         $html .= '<span class="info-edited">' . $gL10n->get('SYS_LAST_EDITED_BY', array($userNameEdited, $timestampEdited)) . '</span>';
@@ -704,8 +704,8 @@ function admFuncGetDirectoryEntries(string $directory, string $searchType = 'fil
  */
 function admGetDiskSpace(string $path = '/'): array
 {
-    $total = disk_total_space($path);
-    $free = disk_free_space($path);
+    $total = (int) disk_total_space($path);
+    $free = (int) disk_free_space($path);
     $used = $total - $free;
 
     return array('total' => $total, 'free' => $free, 'used' => $used);
@@ -763,6 +763,62 @@ function admFuncCheckUrl(string $url)
 }
 
 /**
+ * Escape all HTML, JavaScript, and CSS
+ * @param string $input    The input string
+ * @param string $encoding Define character encoding tue use
+ * @return string Escaped string
+ */
+function noHTML(string $input, string $encoding = 'UTF-8'): string
+{
+    // backwards compatibility for PHP-Version < 5.4
+    if (!defined('ENT_HTML5'))
+    {
+        return htmlentities($input, ENT_QUOTES, $encoding);
+    }
+
+    return htmlentities($input, ENT_QUOTES | ENT_HTML5, $encoding);
+}
+
+/**
+ * @param string              $path
+ * @param array<string,mixed> $params
+ * @param string              $anchor
+ * @param bool                $escape
+ * @return string
+ */
+function safeUrl($path, array $params = array(), $anchor = '', $escape = false)
+{
+    $paramsText = '';
+    if (count($params) > 0)
+    {
+        // backwards compatibility for PHP-Version < 5.4
+        if (defined('PHP_QUERY_RFC3986'))
+        {
+            $paramsText = '?' . http_build_query($params, '', '&', PHP_QUERY_RFC3986);
+        }
+        else
+        {
+            $paramsText = '?' . http_build_query($params, '', '&');
+        }
+    }
+
+    $anchorText = '';
+    if ($anchor !== '')
+    {
+        $anchorText = '#' . rawurlencode($anchor);
+    }
+
+    $url = $path . $paramsText . $anchorText;
+
+    if ($escape)
+    {
+        return noHTML($url);
+    }
+
+    return $url;
+}
+
+/**
  * This is a safe method for redirecting.
  * @param string $url        The URL where redirecting to. Must be a absolute URL. (www.example.org)
  * @param int    $statusCode The status-code which should be send. (301, 302, 303 (default), 307)
@@ -808,28 +864,11 @@ function admRedirect(string $url, int $statusCode = 303)
     {
         $gLogger->notice('REDIRECT: Redirecting to external URL!', $loggerObject);
 
-        $redirectUrl = ADMIDIO_URL . '/adm_program/system/redirect.php?url=' . $url;
+        $redirectUrl = safeUrl(ADMIDIO_URL . '/adm_program/system/redirect.php', array('url' => $url));
     }
 
     header('Location: ' . $redirectUrl, true, $statusCode);
     exit();
-}
-
-/**
- * Escape all HTML, JavaScript, and CSS
- * @param string $input    The input string
- * @param string $encoding Define character encoding tue use
- * @return string Escaped string
- */
-function noHTML(string $input, string $encoding = 'UTF-8'): string
-{
-    // backwards compatibility for PHP-Version < 5.4
-    if (!defined('ENT_HTML5'))
-    {
-        return htmlentities($input, ENT_QUOTES, $encoding);
-    }
-
-    return htmlentities($input, ENT_QUOTES | ENT_HTML5, $encoding);
 }
 
 /**
@@ -844,16 +883,16 @@ function replaceValuesArrWithQM(array $valuesArray): string
 
 /**
  * Berechnung der Maximalerlaubten Dateiuploadgröße in Byte
- * @deprecated 3.3.0:4.0.0 "admFuncMaxUploadSize()" is a typo. Use "PhpIni::getUploadMaxSize()" instead.
+ * @deprecated 3.3.0:4.0.0 "admFuncMaxUploadSize()" is a typo. Use "PhpIniUtils::getUploadMaxSize()" instead.
  * @return int
  */
 function admFuncMaxUploadSize(): int
 {
     global $gLogger;
 
-    $gLogger->warning('DEPRECATED: "admFuncMaxUploadSize()" is deprecated, use "PhpIni::getUploadMaxSize()" instead!');
+    $gLogger->warning('DEPRECATED: "admFuncMaxUploadSize()" is deprecated, use "PhpIniUtils::getUploadMaxSize()" instead!');
 
-    return PhpIni::getUploadMaxSize();
+    return PhpIniUtils::getUploadMaxSize();
 }
 
 /**

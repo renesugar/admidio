@@ -110,12 +110,12 @@ class ModuleWeblinks extends Modules
      */
     public function getDataSet(int $startElement = 0, int $limit = null): array
     {
-        global $gCurrentUser, $gPreferences, $gDb;
+        global $gCurrentUser, $gSettingsManager, $gDb;
 
         // Parameter
         if($limit === null)
         {
-            $limit = $gPreferences['weblinks_per_page'];
+            $limit = $gSettingsManager->getInt('weblinks_per_page');
         }
 
         $catIdParams = array_merge(array(0), $gCurrentUser->getAllVisibleCategories('LNK'));

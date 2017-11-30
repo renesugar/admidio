@@ -37,6 +37,9 @@ class HtmlForm extends HtmlFormBasic
     const FIELD_READONLY = 3;
     const FIELD_HIDDEN   = 4;
 
+    const SELECT_BOX_MODUS_EDIT = 'EDIT_CATEGORIES';
+    const SELECT_BOX_MODUS_FILTER = 'FILTER_CATEGORIES';
+
     /**
      * @var bool Flag if this form has required fields. Then a notice must be written at the end of the form
      */
@@ -506,7 +509,7 @@ class HtmlForm extends HtmlFormBasic
      */
     public function addEditor(string $id, string $label, string $value, array $options = array())
     {
-        global $gPreferences, $gL10n;
+        global $gSettingsManager, $gL10n;
 
         ++$this->countElements;
         $attributes = array('class' => 'editor');
@@ -545,12 +548,12 @@ class HtmlForm extends HtmlFormBasic
             CKEDITOR.replace("' . $id . '", {
                 toolbar: "' . $optionsAll['toolbar'] . '",
                 language: "' . $gL10n->getLanguageIsoCode() . '",
-                uiColor: "' . $gPreferences['system_js_editor_color'] . '",
+                uiColor: "' . $gSettingsManager->getString('system_js_editor_color') . '",
                 filebrowserImageUploadUrl: "' . ADMIDIO_URL . '/adm_program/system/ckeditor_upload_handler.php"
             });
             CKEDITOR.config.height = "' . $optionsAll['height'] . '";';
 
-        if ((int) $gPreferences['system_js_editor_enabled'] === 1)
+        if ($gSettingsManager->getBool('system_js_editor_enabled'))
         {
             // if a htmlPage object was set then add code to the page, otherwise to the current string
             if ($this->htmlPage instanceof HtmlPage)
@@ -588,7 +591,7 @@ class HtmlForm extends HtmlFormBasic
      *                          If this is set then the user can only choose the specified files with the browser file dialog.
      *                          You should check the uploaded file against the MIME type because the file could be manipulated.
      *                        - @b maxUploadSize : The size in byte that could be maximum uploaded.
-     *                          The default will be $gPreferences['max_file_upload_size'] * 1024 * 1024.
+     *                          The default will be $gSettingsManager->getInt('max_file_upload_size') * 1024 * 1024.
      *                        - @b enableMultiUploads : If set to true a button will be added where the user can
      *                          add new upload fields to upload more than one file.
      *                        - @b multiUploadLabel : The label for the button who will add new upload fields to the form.
@@ -609,7 +612,7 @@ class HtmlForm extends HtmlFormBasic
      */
     public function addFileUpload(string $id, string $label, array $options = array())
     {
-        global $gPreferences;
+        global $gSettingsManager;
 
         $attributes = array('class' => 'form-control');
         ++$this->countElements;
@@ -617,7 +620,7 @@ class HtmlForm extends HtmlFormBasic
         // create array with all options
         $optionsDefault = array(
             'property'           => self::FIELD_DEFAULT,
-            'maxUploadSize'      => $gPreferences['max_file_upload_size'] * 1024 * 1024, // MiB
+            'maxUploadSize'      => $gSettingsManager->getInt('max_file_upload_size') * 1024 * 1024, // MiB
             'allowedMimeTypes'   => array(),
             'enableMultiUploads' => false,
             'hideUploadField'    => false,
@@ -729,7 +732,7 @@ class HtmlForm extends HtmlFormBasic
      */
     public function addInput(string $id, string $label, string $value, array $options = array())
     {
-        global $gL10n, $gPreferences, $gLogger;
+        global $gL10n, $gSettingsManager, $gLogger;
 
         $attributes = array('class' => 'form-control');
         ++$this->countElements;
@@ -830,7 +833,7 @@ class HtmlForm extends HtmlFormBasic
         {
             if ($optionsAll['placeholder'] === '')
             {
-                $attributes['placeholder'] = DateTimeExtended::getDateFormatForDatepicker($gPreferences['system_date']);
+                $attributes['placeholder'] = DateTimeExtended::getDateFormatForDatepicker($gSettingsManager->getString('system_date'));
             }
             else
             {
@@ -856,7 +859,7 @@ class HtmlForm extends HtmlFormBasic
                 $javascriptCode = '
                     $("input[data-provide=\'' . $attributes['data-provide'] . '\']").datepicker({
                         language: "' . $gL10n->getLanguageIsoCode() . '",
-                        format: "' . DateTimeExtended::getDateFormatForDatepicker($gPreferences['system_date']) . '",
+                        format: "' . DateTimeExtended::getDateFormatForDatepicker($gSettingsManager->getString('system_date')) . '",
                         ' . $datepickerOptions . '
                         todayHighlight: "true"
                     });';
@@ -896,12 +899,12 @@ class HtmlForm extends HtmlFormBasic
             $timeValue = '';
 
             // first try to split datetime to a date and a time value
-            $datetime = \DateTime::createFromFormat($gPreferences['system_date'] . ' ' . $gPreferences['system_time'], $value);
+            $datetime = \DateTime::createFromFormat($gSettingsManager->getString('system_date') . ' ' . $gSettingsManager->getString('system_time'), $value);
 
             if ($datetime)
             {
-                $dateValue = $datetime->format($gPreferences['system_date']);
-                $timeValue = $datetime->format($gPreferences['system_time']);
+                $dateValue = $datetime->format($gSettingsManager->getString('system_date'));
+                $timeValue = $datetime->format($gSettingsManager->getString('system_time'));
             }
             // now add a date and a time field to the form
             $attributes['class'] .= ' datetime-date-control';
@@ -929,9 +932,9 @@ class HtmlForm extends HtmlFormBasic
         if ($optionsAll['passwordStrength'])
         {
             $passwordStrengthLevel = 1;
-            if ($gPreferences['password_min_strength'])
+            if ($gSettingsManager->getInt('password_min_strength'))
             {
-                $passwordStrengthLevel = $gPreferences['password_min_strength'];
+                $passwordStrengthLevel = $gSettingsManager->getInt('password_min_strength');
             }
 
             if ($this->htmlPage instanceof HtmlPage)
@@ -1584,19 +1587,20 @@ class HtmlForm extends HtmlFormBasic
         $selectBoxEntries = array();
 
         $xmlRootNode = new \SimpleXMLElement($xmlFile, 0, true);
+
+        /**
+         * @var \SimpleXMLElement $xmlChildNode
+         */
         foreach ($xmlRootNode->children() as $xmlChildNode)
         {
             $key   = '';
             $value = '';
 
             /**
-             * @var \SimpleXMLElement $xmlChildNode
+             * @var \SimpleXMLElement $xmlChildChildNode
              */
             foreach ($xmlChildNode->children() as $xmlChildChildNode)
             {
-                /**
-                 * @var \SimpleXMLElement $xmlChildChildNode
-                 */
                 if ($xmlChildChildNode->getName() === $xmlValueTag)
                 {
                     $key = (string) $xmlChildChildNode;
@@ -1663,7 +1667,7 @@ class HtmlForm extends HtmlFormBasic
         );
         $optionsAll = array_replace($optionsDefault, $options);
 
-        if($gCurrentOrganization->countAllRecords() > 1 && $selectBoxModus === 'EDIT_CATEGORIES')
+        if($selectBoxModus === self::SELECT_BOX_MODUS_EDIT && $gCurrentOrganization->countAllRecords() > 1)
         {
             $optionsAll['infoAlert'] = $gL10n->get('SYS_ALL_ORGANIZATIONS_DESC', array(implode(', ', $gCurrentOrganization->getOrganizationsInRelationship(true, true, true))));
 
@@ -1684,7 +1688,7 @@ class HtmlForm extends HtmlFormBasic
         $sqlConditions = '';
 
         // create sql conditions if category must have child elements
-        if ($selectBoxModus === 'FILTER_CATEGORIES')
+        if ($selectBoxModus === self::SELECT_BOX_MODUS_FILTER)
         {
             $catIdParams = array_merge(array(0), $gCurrentUser->getAllVisibleCategories($categoryType));
             $optionsAll['showContextDependentFirstEntry'] = false;
@@ -1715,7 +1719,7 @@ class HtmlForm extends HtmlFormBasic
         }
 
         // within edit dialogs child organizations are not allowed to assign categories of all organizations
-        if($selectBoxModus === 'EDIT_CATEGORIES' && $gCurrentOrganization->isChildOrganization())
+        if($selectBoxModus === self::SELECT_BOX_MODUS_EDIT && $gCurrentOrganization->isChildOrganization())
         {
             $sqlConditions .= ' AND cat_org_id = ? -- $gCurrentOrganization->getValue(\'org_id\') ';
         }
@@ -1744,7 +1748,7 @@ class HtmlForm extends HtmlFormBasic
         $countCategories = $pdoStatement->rowCount();
 
         // if no or only one category exist and in filter modus, than don't show category
-        if (($countCategories === 0 || $countCategories === 1) && $selectBoxModus === 'FILTER_CATEGORIES')
+        if ($selectBoxModus === self::SELECT_BOX_MODUS_FILTER && ($countCategories === 0 || $countCategories === 1))
         {
             return;
         }
@@ -1752,7 +1756,7 @@ class HtmlForm extends HtmlFormBasic
         $categoriesArray = array();
         $optionsAll['valueAttributes'] = array();
 
-        if ($countCategories > 1 && $selectBoxModus === 'FILTER_CATEGORIES')
+        if ($selectBoxModus === self::SELECT_BOX_MODUS_FILTER && $countCategories > 1)
         {
             $categoriesArray[0] = $gL10n->get('SYS_ALL');
             $optionsAll['valueAttributes'][0] = array('data-global' => 0);

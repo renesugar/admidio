@@ -156,9 +156,9 @@ class User extends TableAccess
      */
     private function checkRelationshipsRights(): bool
     {
-        global $gPreferences;
+        global $gSettingsManager;
 
-        if ((int) $this->getValue('usr_id') === 0 || $gPreferences['members_enable_user_relations'] == 0)
+        if ((int) $this->getValue('usr_id') === 0 || !$gSettingsManager->getBool('members_enable_user_relations'))
         {
             return false;
         }
@@ -572,7 +572,7 @@ class User extends TableAccess
      */
     public function checkLogin(string $password, bool $setAutoLogin = false, bool $updateSessionCookies = true, bool $updateHash = true, bool $isAdministrator = false)
     {
-        global $gLogger, $gPreferences, $gCurrentSession, $gSessionId, $installedDbVersion, $gL10n;
+        global $gLogger, $gSettingsManager, $gCurrentSession, $gSessionId, $installedDbVersion, $gL10n;
 
         if ($this->hasMaxInvalidLogins())
         {
@@ -617,7 +617,7 @@ class User extends TableAccess
         }
 
         // should the user stayed logged in automatically, than the cookie would expire in one year
-        if ($setAutoLogin && (int) $gPreferences['enable_auto_login'] === 1)
+        if ($setAutoLogin && $gSettingsManager->getBool('enable_auto_login'))
         {
             $gCurrentSession->setAutoLogin();
         }
@@ -788,7 +788,8 @@ class User extends TableAccess
         $sqlQueries[] = 'DELETE FROM '.TBL_IDS.'
                           WHERE ids_usr_id = '.$currUsrId;
 
-        $sqlQueries[] = 'INSERT INTO '.TBL_IDS.' (ids_usr_id, ids_reference_id)
+        $sqlQueries[] = 'INSERT INTO '.TBL_IDS.'
+                                (ids_usr_id, ids_reference_id)
                          SELECT '.$currUsrId.', msc_msg_id
                            FROM '.TBL_MESSAGES_CONTENT.'
                           WHERE msc_usr_id = '.$usrId;
@@ -1042,14 +1043,14 @@ class User extends TableAccess
      */
     public function getValue(string $columnName, string $format = '')
     {
-        global $gPreferences;
+        global $gSettingsManager;
 
         if (!admStrStartsWith($columnName, 'usr_'))
         {
             return $this->mProfileFieldsData->getValue($columnName, $format);
         }
 
-        if ($columnName === 'usr_photo' && (int) $gPreferences['profile_photo_storage'] === 0)
+        if ($columnName === 'usr_photo' && (int) $gSettingsManager->get('profile_photo_storage') === 0)
         {
             $file = ADMIDIO_PATH . FOLDER_DATA . '/user_profile_photos/' . (int) $this->getValue('usr_id') . '.jpg';
             if (is_file($file))
@@ -1068,7 +1069,7 @@ class User extends TableAccess
      */
     public function getVCard(): string
     {
-        global $gPreferences, $gCurrentUser;
+        global $gSettingsManager, $gCurrentUser;
 
         $vCard = array(
             'BEGIN:VCARD',
@@ -1127,7 +1128,7 @@ class User extends TableAccess
             $vCard[] = 'EMAIL;PREF;INTERNET:' . $this->getValue('EMAIL');
         }
         $file = ADMIDIO_PATH . FOLDER_DATA . '/user_profile_photos/' . $this->getValue('usr_id') . '.jpg';
-        if ((int) $gPreferences['profile_photo_storage'] === 1 && is_file($file))
+        if ((int) $gSettingsManager->get('profile_photo_storage') === 1 && is_file($file))
         {
             $imgHandle = fopen($file, 'rb');
             if ($imgHandle !== false)
@@ -1138,7 +1139,7 @@ class User extends TableAccess
                 $vCard[] = 'PHOTO;ENCODING=BASE64;TYPE=JPEG:' . $base64Image;
             }
         }
-        if ((int) $gPreferences['profile_photo_storage'] === 0 && $this->getValue('usr_photo') !== '')
+        if ((int) $gSettingsManager->get('profile_photo_storage') === 0 && $this->getValue('usr_photo') !== '')
         {
             $vCard[] = 'PHOTO;ENCODING=BASE64;TYPE=JPEG:' . base64_encode($this->getValue('usr_photo'));
         }
@@ -1267,12 +1268,7 @@ class User extends TableAccess
         }
 
         // check if user has the right to view this role
-        if (array_key_exists($roleId, $rightsList) && $rightsList[$roleId])
-        {
-            return true;
-        }
-
-        return false;
+        return array_key_exists($roleId, $rightsList) && $rightsList[$roleId];
     }
 
     /**
@@ -1293,15 +1289,15 @@ class User extends TableAccess
      */
     public function hasRightViewFormerRolesMembers(int $roleId): bool
     {
-        global $gPreferences;
+        global $gSettingsManager;
 
-        if($gPreferences['lists_show_former_members'] === '1'
+        if((int) $gSettingsManager->get('lists_show_former_members') !== 1
         && ($this->checkRolesRight('rol_assign_roles')
         || ($this->isLeaderOfRole($roleId) && in_array($this->rolesMembershipLeader[$roleId], array(1, 3), true))))
         {
             return true;
         }
-        elseif($gPreferences['lists_show_former_members'] === '2'
+        elseif((int) $gSettingsManager->get('lists_show_former_members') !== 2
         && ($this->checkRolesRight('rol_edit_user')
         || ($this->isLeaderOfRole($roleId) && in_array($this->rolesMembershipLeader[$roleId], array(2, 3), true))))
         {
@@ -1562,7 +1558,7 @@ class User extends TableAccess
      */
     public function setPassword(string $newPassword, bool $isNewPassword = false, bool $doHashing = true): bool
     {
-        global $gPreferences, $gPasswordHashAlgorithm;
+        global $gSettingsManager, $gPasswordHashAlgorithm;
 
         $columnName = 'usr_password';
 
@@ -1578,9 +1574,9 @@ class User extends TableAccess
 
         // get the saved cost value that fits your server performance best and rehash your password
         $cost = 10;
-        if (isset($gPreferences) && array_key_exists('system_hashing_cost', $gPreferences))
+        if (isset($gSettingsManager) && $gSettingsManager->has('system_hashing_cost'))
         {
-            $cost = (int) $gPreferences['system_hashing_cost'];
+            $cost = (int) $gSettingsManager->getInt('system_hashing_cost');
         }
 
         $newPasswordHash = PasswordHashing::hash($newPassword, $gPasswordHashAlgorithm, array('cost' => $cost));
@@ -1852,7 +1848,7 @@ class User extends TableAccess
      */
     public function setValue(string $columnName, $newValue, bool $checkValue = true): bool
     {
-        global $gCurrentUser, $gPreferences;
+        global $gCurrentUser, $gSettingsManager;
 
         // users data from adm_users table
         if (admStrStartsWith($columnName, 'usr_'))
@@ -1879,7 +1875,7 @@ class User extends TableAccess
         // format of date will be local but database hase stored Y-m-d format must be changed for compare
         if($this->mProfileFieldsData->getProperty($columnName, 'usf_type') === 'DATE')
         {
-            $date = \DateTime::createFromFormat($gPreferences['system_date'], $newValue);
+            $date = \DateTime::createFromFormat($gSettingsManager->getString('system_date'), $newValue);
 
             if($date !== false)
             {
@@ -1912,7 +1908,7 @@ class User extends TableAccess
         // Felder, die mit usr_ beginnen
         // Felder, die sich nicht geändert haben
         // Wenn usr_id ist 0 (der User neu angelegt wird; Das wird bereits dokumentiert)
-        if ($returnCode && $usrId > 0 && (int) $gPreferences['profile_log_edit_fields'] === 1)
+        if ($returnCode && $usrId > 0 && $gSettingsManager->getBool('profile_log_edit_fields'))
         {
             $logEntry = new TableAccess($this->db, TBL_USER_LOG, 'usl');
             $logEntry->setValue('usl_usr_id', $usrId);

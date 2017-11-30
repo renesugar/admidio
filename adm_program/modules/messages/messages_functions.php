@@ -20,7 +20,7 @@ declare(strict_types=1);
 function getMessageIcon(int $msgId, string $icon, string $title): string
 {
     return '
-        <a class="admidio-icon-link" href="' . ADMIDIO_URL . FOLDER_MODULES . '/messages/messages_write.php?msg_id=' . $msgId . '">
+        <a class="admidio-icon-link" href="' . safeUrl(ADMIDIO_URL . FOLDER_MODULES . '/messages/messages_write.php', array('msg_id' => $msgId)) . '">
             <img class="admidio-icon-info" src="' . THEME_URL . '/icons/' . $icon . '" alt="' . $title . '" title="' . $title . '" />
         </a>';
 }
@@ -32,7 +32,7 @@ function getMessageIcon(int $msgId, string $icon, string $title): string
  */
 function getMessageLink(int $msgId, string $msgSubject): string
 {
-    return '<a href="' . ADMIDIO_URL . FOLDER_MODULES . '/messages/messages_write.php?msg_id=' . $msgId . '">' . $msgSubject . '</a>';
+    return '<a href="' . safeUrl(ADMIDIO_URL . FOLDER_MODULES . '/messages/messages_write.php', array('msg_id' => $msgId)) . '">' . $msgSubject . '</a>';
 }
 
 /**
@@ -99,7 +99,7 @@ function getAdministrationLink(int $rowIndex, int $msgId, string $msgSubject): s
 
     return '
         <a class="admidio-icon-link" data-toggle="modal" data-target="#admidio_modal"
-            href="' . ADMIDIO_URL . '/adm_program/system/popup_message.php?type=msg&amp;element_id=row_message_' . $rowIndex . '&amp;name=' . urlencode($msgSubject) . '&amp;database_id=' . $msgId . '">
+            href="' . safeUrl(ADMIDIO_URL . '/adm_program/system/popup_message.php', array('type' => 'msg', 'element_id' => 'row_message_' . $rowIndex, 'name' => $msgSubject, 'database_id' => $msgId)) . '">
             <img src="' . THEME_URL . '/icons/delete.png" alt="' . $gL10n->get('MSG_REMOVE') . '" title="' . $gL10n->get('MSG_REMOVE') . '" />
         </a>';
 }

@@ -149,11 +149,11 @@ class ModuleDates extends Modules
      */
     public function getDataSet(int $startElement = 0, int $limit = null): array
     {
-        global $gDb, $gPreferences, $gCurrentUser;
+        global $gDb, $gSettingsManager, $gCurrentUser;
 
         if ($limit === null)
         {
-            $limit = (int) $gPreferences['dates_per_page'];
+            $limit = $gSettingsManager->getInt('dates_per_page');
         }
 
         $catIdParams = array_merge(array(0), $gCurrentUser->getAllVisibleCategories('DAT'));
@@ -280,7 +280,7 @@ class ModuleDates extends Modules
      */
     public function setDateRange(string $dateRangeStart = '', string $dateRangeEnd = ''): bool
     {
-        global $gPreferences;
+        global $gSettingsManager;
 
         if ($dateRangeStart === '')
         {
@@ -316,7 +316,7 @@ class ModuleDates extends Modules
         if ($objDateFrom === false)
         {
             // check if date_from has system format
-            $objDateFrom = \DateTime::createFromFormat($gPreferences['system_date'], $dateRangeStart);
+            $objDateFrom = \DateTime::createFromFormat($gSettingsManager->getString('system_date'), $dateRangeStart);
         }
 
         if ($objDateFrom === false)
@@ -325,7 +325,7 @@ class ModuleDates extends Modules
         }
 
         $this->setParameter('dateStartFormatEnglish', $objDateFrom->format('Y-m-d'));
-        $this->setParameter('dateStartFormatAdmidio', $objDateFrom->format($gPreferences['system_date']));
+        $this->setParameter('dateStartFormatAdmidio', $objDateFrom->format($gSettingsManager->getString('system_date')));
 
         // Create date object and format date_to in English format and system format and push to daterange array
         $objDateTo = \DateTime::createFromFormat('Y-m-d', $dateRangeEnd);
@@ -333,7 +333,7 @@ class ModuleDates extends Modules
         if ($objDateTo === false)
         {
             // check if date_from  has system format
-            $objDateTo = \DateTime::createFromFormat($gPreferences['system_date'], $dateRangeEnd);
+            $objDateTo = \DateTime::createFromFormat($gSettingsManager->getString('system_date'), $dateRangeEnd);
         }
 
         if ($objDateTo === false)
@@ -342,7 +342,7 @@ class ModuleDates extends Modules
         }
 
         $this->setParameter('dateEndFormatEnglish', $objDateTo->format('Y-m-d'));
-        $this->setParameter('dateEndFormatAdmidio', $objDateTo->format($gPreferences['system_date']));
+        $this->setParameter('dateEndFormatAdmidio', $objDateTo->format($gSettingsManager->getString('system_date')));
 
         // DateTo should be greater than DateFrom (Timestamp must be less)
         if ($objDateFrom->getTimestamp() > $objDateTo->getTimestamp())
@@ -359,9 +359,9 @@ class ModuleDates extends Modules
      */
     private function sqlGetAdditional(): array
     {
-        global $gPreferences, $gProfileFields;
+        global $gSettingsManager, $gProfileFields;
 
-        if ($gPreferences['system_show_create_edit'] == 1)
+        if ((int) $gSettingsManager->get('system_show_create_edit') === 1)
         {
             $lastNameUsfId  = (int) $gProfileFields->getProperty('LAST_NAME', 'usf_id');
             $firstNameUsfId = (int) $gProfileFields->getProperty('FIRST_NAME', 'usf_id');
@@ -408,7 +408,7 @@ class ModuleDates extends Modules
 
     /**
      * Add several conditions to an SQL string that could later be used as additional conditions in other SQL queries.
-     * @return array<string,mixed> Returns an array of a SQL string with additional conditions and it's query params.
+     * @return array<string,string|array<int,mixed>> Returns an array of a SQL string with additional conditions and it's query params.
      */
     private function getSqlConditions(): array
     {
@@ -493,7 +493,7 @@ class ModuleDates extends Modules
      */
     private function formatDate(string $date)
     {
-        global $gLogger, $gPreferences;
+        global $gLogger, $gSettingsManager;
 
         $gLogger->warning('DEPRECATED: "$moduleDates->formatDate()" is deprecated without replacement!');
 
@@ -504,7 +504,7 @@ class ModuleDates extends Modules
         }
 
         // check if date has system format
-        $objDate = \DateTime::createFromFormat($gPreferences['system_date'], $date);
+        $objDate = \DateTime::createFromFormat($gSettingsManager->getString('system_date'), $date);
         if ($objDate !== false)
         {
             return $objDate->format('Y-m-d');

@@ -110,8 +110,7 @@ $profileFieldsEditMenu = $page->getMenu();
 $profileFieldsEditMenu->addItem('menu_item_back', $gNavigation->getPreviousUrl(), $gL10n->get('SYS_BACK'), 'back.png');
 
 // show form
-$form = new HtmlForm('profile_fields_edit_form',
-                     ADMIDIO_URL.FOLDER_MODULES.'/preferences/fields_function.php?usf_id='.$getUsfId.'&amp;mode=1', $page);
+$form = new HtmlForm('profile_fields_edit_form', safeUrl(ADMIDIO_URL.FOLDER_MODULES.'/preferences/fields_function.php', array('usf_id' => $getUsfId, 'mode' => '1')), $page);
 $form->openGroupBox('gb_designation', $gL10n->get('SYS_DESIGNATION'));
 if($userField->getValue('usf_system') == 1)
 {
@@ -148,7 +147,7 @@ if($userField->getValue('usf_system') == 1)
 else
 {
     $form->addSelectBoxForCategories(
-        'usf_cat_id', $gL10n->get('SYS_CATEGORY'), $gDb, 'USF', 'EDIT_CATEGORIES',
+        'usf_cat_id', $gL10n->get('SYS_CATEGORY'), $gDb, 'USF', HtmlForm::SELECT_BOX_MODUS_EDIT,
         array('property' => HtmlForm::FIELD_REQUIRED, 'defaultValue' => $userField->getValue('usf_cat_id'))
     );
 }

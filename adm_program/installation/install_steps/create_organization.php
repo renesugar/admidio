@@ -33,7 +33,7 @@ if (isset($_POST['db_host']))
     {
         showNotice(
             $gL10n->get('INS_DATABASE_CONNECTION_NOT_COMPLETELY'),
-            'installation.php?step=connect_database',
+            safeUrl(ADMIDIO_PATH . '/adm_program/installation/installation.php', array('step' => 'connect_database')),
             $gL10n->get('SYS_BACK'),
             'layout/back.png'
         );
@@ -45,7 +45,7 @@ if (isset($_POST['db_host']))
     {
         showNotice(
             $gL10n->get('INS_DATABASE_TYPE_INVALID'),
-            'installation.php?step=connect_database',
+            safeUrl(ADMIDIO_PATH . '/adm_program/installation/installation.php', array('step' => 'connect_database')),
             $gL10n->get('SYS_BACK'),
             'layout/back.png'
         );
@@ -58,7 +58,7 @@ if (isset($_POST['db_host']))
     {
         showNotice(
             $gL10n->get('INS_HOST_INVALID'),
-            'installation.php?step=connect_database',
+            safeUrl(ADMIDIO_PATH . '/adm_program/installation/installation.php', array('step' => 'connect_database')),
             $gL10n->get('SYS_BACK'),
             'layout/back.png'
         );
@@ -78,7 +78,7 @@ if (isset($_POST['db_host']))
     {
         showNotice(
             $gL10n->get('INS_DATABASE_PORT_INVALID'),
-            'installation.php?step=connect_database',
+            safeUrl(ADMIDIO_PATH . '/adm_program/installation/installation.php', array('step' => 'connect_database')),
             $gL10n->get('SYS_BACK'),
             'layout/back.png'
         );
@@ -90,7 +90,7 @@ if (isset($_POST['db_host']))
     {
         showNotice(
             $gL10n->get('INS_DATABASE_NAME_INVALID'),
-            'installation.php?step=connect_database',
+            safeUrl(ADMIDIO_PATH . '/adm_program/installation/installation.php', array('step' => 'connect_database')),
             $gL10n->get('SYS_BACK'),
             'layout/back.png'
         );
@@ -102,7 +102,7 @@ if (isset($_POST['db_host']))
     {
         showNotice(
             $gL10n->get('INS_DATABASE_USER_INVALID'),
-            'installation.php?step=connect_database',
+            safeUrl(ADMIDIO_PATH . '/adm_program/installation/installation.php', array('step' => 'connect_database')),
             $gL10n->get('SYS_BACK'),
             'layout/back.png'
         );
@@ -121,7 +121,7 @@ if (isset($_POST['db_host']))
     {
         showNotice(
             $gL10n->get('INS_TABLE_PREFIX_INVALID'),
-            'installation.php?step=connect_database',
+            safeUrl(ADMIDIO_PATH . '/adm_program/installation/installation.php', array('step' => 'connect_database')),
             $gL10n->get('SYS_BACK'),
             'layout/back.png'
         );
@@ -140,7 +140,7 @@ if (isset($_POST['db_host']))
         {
             showNotice(
                 $gL10n->get('SYS_DATABASE_NO_LOGIN', array($e->getText())),
-                'installation.php?step=connect_database',
+                safeUrl(ADMIDIO_PATH . '/adm_program/installation/installation.php', array('step' => 'connect_database')),
                 $gL10n->get('SYS_BACK'),
                 'layout/back.png'
             );
@@ -151,7 +151,7 @@ if (isset($_POST['db_host']))
         $message = checkDatabaseVersion($db);
         if ($message !== '')
         {
-            showNotice($message, 'installation.php?step=connect_database', $gL10n->get('SYS_BACK'), 'layout/back.png');
+            showNotice($message, safeUrl(ADMIDIO_PATH . '/adm_program/installation/installation.php', array('step' => 'connect_database')), $gL10n->get('SYS_BACK'), 'layout/back.png');
             // => EXIT
         }
 
@@ -164,7 +164,7 @@ if (isset($_POST['db_host']))
             // valid installation exists -> exit installation
             showNotice(
                 $gL10n->get('INS_INSTALLATION_EXISTS'),
-                '../index.php',
+                ADMIDIO_URL . '/adm_program/index.php',
                 $gL10n->get('SYS_OVERVIEW'),
                 'layout/application_view_list.png'
             );
@@ -174,7 +174,7 @@ if (isset($_POST['db_host']))
 }
 
 // create a page to enter the organization names
-$form = new HtmlFormInstallation('installation-form', 'installation.php?step=create_administrator');
+$form = new HtmlFormInstallation('installation-form', safeUrl(ADMIDIO_PATH . '/adm_program/installation/installation.php', array('step' => 'create_administrator')));
 
 // initialize form data
 $shortnameProperty = HtmlForm::FIELD_REQUIRED;
@@ -198,7 +198,7 @@ else
 }
 
 // create array with possible PHP timezones
-$allTimezones = DateTimeZone::listIdentifiers();
+$allTimezones = \DateTimeZone::listIdentifiers();
 $timezones = array();
 foreach ($allTimezones as $timezone)
 {
@@ -226,7 +226,7 @@ $form->addSelectBox(
 $form->closeGroupBox();
 $form->addButton(
     'previous_page', $gL10n->get('SYS_BACK'),
-    array('icon' => 'layout/back.png', 'link' => 'installation.php?step=connect_database')
+    array('icon' => 'layout/back.png', 'link' => safeUrl(ADMIDIO_PATH . '/adm_program/installation/installation.php', array('step' => 'connect_database')))
 );
 $form->addSubmitButton('next_page', $gL10n->get('INS_CREATE_ADMINISTRATOR'), array('icon' => 'layout/forward.png'));
 echo $form->show();

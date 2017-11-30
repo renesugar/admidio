@@ -178,7 +178,7 @@ class FunctionClass
      */
     public function sendEcard(string $senderName, string $senderEmail, string $ecardHtmlData, string $recipientName, string $recipientEmail, string $photoServerPath)
     {
-        global $gPreferences;
+        global $gSettingsManager;
 
         $imgPhotoPath = '';
         $returnCode = true;
@@ -216,7 +216,7 @@ class FunctionClass
                     $imgPhotoPath  = $imgServerPath;
 
                     $imageSized = new Image($photoServerPath);
-                    $imageSized->scale($gPreferences['ecard_card_picture_width'], $gPreferences['ecard_card_picture_height']);
+                    $imageSized->scale($gSettingsManager->getInt('ecard_card_picture_width'), $gSettingsManager->getInt('ecard_card_picture_height'));
                     $imageSized->copyToFile(null, $imgServerPath);
                 }
 

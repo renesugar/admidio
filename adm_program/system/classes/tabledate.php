@@ -305,7 +305,7 @@ class TableDate extends TableAccess
             if ($columnName === 'dat_country' && $value !== '')
             {
                 // beim Land die sprachabhaengige Bezeichnung auslesen
-                $value = $gL10n->getCountryByCode($value);
+                $value = $gL10n->getCountryName($value);
             }
             elseif ($columnName === 'cat_name')
             {
@@ -326,7 +326,7 @@ class TableDate extends TableAccess
      */
     public function getValidDeadline(): string
     {
-        global $gPreferences;
+        global $gSettingsManager;
 
         if ($this->getValue('dat_deadline') == null)
         {
@@ -337,7 +337,7 @@ class TableDate extends TableAccess
             $validDeadline = $this->getValue('dat_deadline');
         }
 
-        $objDateDeadline = \DateTime::createFromFormat($gPreferences['system_date'].' '.$gPreferences['system_time'], $validDeadline);
+        $objDateDeadline = \DateTime::createFromFormat($gSettingsManager->getString('system_date').' '.$gSettingsManager->getString('system_time'), $validDeadline);
 
         return $objDateDeadline->format('Y-m-d H:i:s');
     }

@@ -107,14 +107,14 @@ elseif($getMode === 4)
     // reload role memberships
     $roleStatement  = getRolesFromDatabase($getUserId);
     $countRole      = $roleStatement->rowCount();
-    getRoleMemberships('role_list', $user, $roleStatement, $countRole, true);
+    echo getRoleMemberships('role_list', $user, $roleStatement);
 }
 elseif($getMode === 5)
 {
     // reload former role memberships
     $roleStatement  = getFormerRolesFromDatabase($getUserId);
     $countRole      = $roleStatement->rowCount();
-    getRoleMemberships('former_role_list', $user, $roleStatement, $countRole, true);
+    echo getRoleMemberships('former_role_list', $user, $roleStatement);
 
     if($countRole === 0)
     {
@@ -130,7 +130,7 @@ elseif($getMode === 6)
     // reload future role memberships
     $roleStatement  = getFutureRolesFromDatabase($getUserId);
     $countRole      = $roleStatement->rowCount();
-    getRoleMemberships('future_role_list', $user, $roleStatement, $countRole, true);
+    echo getRoleMemberships('future_role_list', $user, $roleStatement);
 
     if($countRole === 0)
     {
@@ -160,10 +160,10 @@ elseif($getMode === 7)
     $formatedEndDate   = '';
 
     // Check das Beginn Datum
-    $startDate = \DateTime::createFromFormat($gPreferences['system_date'], $getMembershipStart);
+    $startDate = \DateTime::createFromFormat($gSettingsManager->getString('system_date'), $getMembershipStart);
     if($startDate === false)
     {
-        exit($gL10n->get('SYS_DATE_INVALID', array($gL10n->get('SYS_START'), $gPreferences['system_date'])));
+        exit($gL10n->get('SYS_DATE_INVALID', array($gL10n->get('SYS_START'), $gSettingsManager->getString('system_date'))));
     }
     else
     {
@@ -174,10 +174,10 @@ elseif($getMode === 7)
     // Falls gesetzt wird das Enddatum gecheckt
     if($getMembershipEnd !== '')
     {
-        $endDate = \DateTime::createFromFormat($gPreferences['system_date'], $getMembershipEnd);
+        $endDate = \DateTime::createFromFormat($gSettingsManager->getString('system_date'), $getMembershipEnd);
         if($endDate === false)
         {
-            exit($gL10n->get('SYS_DATE_INVALID', array($gL10n->get('SYS_END'), $gPreferences['system_date'])));
+            exit($gL10n->get('SYS_DATE_INVALID', array($gL10n->get('SYS_END'), $gSettingsManager->getString('system_date'))));
         }
         else
         {

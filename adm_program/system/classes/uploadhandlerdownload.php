@@ -39,7 +39,7 @@ class UploadHandlerDownload extends UploadHandler
      */
     protected function handle_file_upload(string $uploadedFile, string $name, int $size, $type, $error, $index = null, $contentRange = null): \stdClass
     {
-        global $gPreferences, $gL10n, $gDb, $getId, $gCurrentOrganization, $gCurrentUser;
+        global $gSettingsManager, $gL10n, $gDb, $getId, $gCurrentOrganization, $gCurrentUser;
 
         $file = parent::handle_file_upload($uploadedFile, $name, $size, $type, $error, $index, $contentRange);
 
@@ -48,9 +48,9 @@ class UploadHandlerDownload extends UploadHandler
             try
             {
                 // check filesize against module settings
-                if ($file->size > $gPreferences['max_file_upload_size'] * 1024 * 1024)
+                if ($file->size > $gSettingsManager->getInt('max_file_upload_size') * 1024 * 1024)
                 {
-                    throw new AdmException('DOW_FILE_TO_LARGE', $gPreferences['max_file_upload_size']);
+                    throw new AdmException('DOW_FILE_TO_LARGE', $gSettingsManager->getInt('max_file_upload_size'));
                 }
 
                 // check filename and throw exception if something is wrong
@@ -65,7 +65,7 @@ class UploadHandlerDownload extends UploadHandler
                 $newFile->setValue('fil_fol_id', $targetFolder->getValue('fol_id'));
                 $newFile->setValue('fil_name', $file->name);
                 $newFile->setValue('fil_locked', $targetFolder->getValue('fol_locked'));
-                $newFile->setValue('fil_counter', '0');
+                $newFile->setValue('fil_counter', 0);
                 $newFile->save();
 
                 // Benachrichtigungs-Email für neue Einträge
@@ -76,7 +76,7 @@ class UploadHandlerDownload extends UploadHandler
                         $gCurrentOrganization->getValue('org_longname'),
                         $file->name,
                         $fullName,
-                        date($gPreferences['system_date'])
+                        date($gSettingsManager->getString('system_date'))
                     )
                 );
                 $notification = new Email();

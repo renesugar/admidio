@@ -31,7 +31,7 @@ require_once(PLUGIN_PATH. '/../adm_program/system/file_extension_icons.php');
 require_once(PLUGIN_PATH. '/'.$pluginFolder.'/config.php');
 
 // Sprachdatei des Plugins einbinden
-$gL10n->addLanguagePath(PLUGIN_PATH. '/'.$pluginFolder.'/languages');
+$gL10n->addLanguageFolderPath(PLUGIN_PATH. '/'.$pluginFolder.'/languages');
 
 // pruefen, ob alle Einstellungen in config.php gesetzt wurden
 // falls nicht, hier noch mal die Default-Werte setzen
@@ -60,10 +60,10 @@ if(!isset($plg_show_upload_timestamp))
 }
 
 // Sprachdatei des Plugins einbinden
-$gL10n->addLanguagePath(PLUGIN_PATH. '/'.$pluginFolder.'/languages');
+$gL10n->addLanguageFolderPath(PLUGIN_PATH. '/'.$pluginFolder.'/languages');
 
 // check if the module is enabled
-if ($gPreferences['enable_download_module'] == 1)
+if ($gSettingsManager->getBool('enable_download_module'))
 {
     $countVisibleDownloads = 0;
     $sqlCondition          = '';
@@ -148,7 +148,7 @@ if ($gPreferences['enable_download_module'] == 1)
                 }
 
                 echo '
-                <a class="btn admidio-icon-link '.$plg_link_class_downl.'" data-toggle="tooltip" data-html="true" title="'. $tooltip. '" href="'. ADMIDIO_URL. FOLDER_MODULES. '/downloads/get_file.php?file_id='. $rowFile->fil_id. '"><img
+                <a class="btn admidio-icon-link '.$plg_link_class_downl.'" data-toggle="tooltip" data-html="true" title="'. $tooltip. '" href="'. safeUrl(ADMIDIO_URL. FOLDER_MODULES. '/downloads/get_file.php', array('file_id' => $rowFile->fil_id)). '"><img
                     src="'. THEME_URL. '/icons/'.$iconFile.'" alt="'. $fullFolderFileName. '/" />'.$fileName.'.'.$fileExtension. '</a>';
 
                 if($countVisibleDownloads === $plg_downloads_count)

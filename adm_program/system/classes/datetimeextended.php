@@ -27,7 +27,7 @@ class DateTimeExtended extends DateTime
      * @param string        $format   das zum Datum passende Format (Schreibweise aus date())
      * @param \DateTimeZone $timezone DateTimeZone
      */
-    public function __construct(string $date, string $format, DateTimeZone $timezone = null)
+    public function __construct(string $date, string $format, \DateTimeZone $timezone = null)
     {
         global $gLogger;
 

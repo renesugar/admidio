@@ -32,7 +32,7 @@ if (isset($_POST['user_last_name']))
     {
         showNotice(
             $gL10n->get('INS_ADMINISTRATOR_DATA_NOT_COMPLETELY'),
-            'installation.php?step=create_administrator',
+            safeUrl(ADMIDIO_PATH . '/adm_program/installation/installation.php', array('step' => 'create_administrator')),
             $gL10n->get('SYS_BACK'),
             'layout/back.png'
         );
@@ -44,7 +44,7 @@ if (isset($_POST['user_last_name']))
     {
         showNotice(
             $gL10n->get('SYS_FIELD_INVALID_CHAR', array($gL10n->get('SYS_USERNAME'))),
-            'installation.php?step=create_administrator',
+            safeUrl(ADMIDIO_PATH . '/adm_program/installation/installation.php', array('step' => 'create_administrator')),
             $gL10n->get('SYS_BACK'),
             'layout/back.png'
         );
@@ -58,7 +58,7 @@ if (isset($_POST['user_last_name']))
     {
         showNotice(
             $gL10n->get('SYS_EMAIL_INVALID', array($gL10n->get('SYS_EMAIL'))),
-            'installation.php?step=create_administrator',
+            safeUrl(ADMIDIO_PATH . '/adm_program/installation/installation.php', array('step' => 'create_administrator')),
             $gL10n->get('SYS_BACK'),
             'layout/back.png'
         );
@@ -70,7 +70,7 @@ if (isset($_POST['user_last_name']))
     {
         showNotice(
             $gL10n->get('PRO_PASSWORD_LENGTH'),
-            'installation.php?step=create_administrator',
+            safeUrl(ADMIDIO_PATH . '/adm_program/installation/installation.php', array('step' => 'create_administrator')),
             $gL10n->get('SYS_BACK'),
             'layout/back.png'
         );
@@ -89,7 +89,7 @@ if (isset($_POST['user_last_name']))
     {
         showNotice(
             $gL10n->get('PRO_PASSWORD_NOT_STRONG_ENOUGH'),
-            'installation.php?step=create_administrator',
+            safeUrl(ADMIDIO_PATH . '/adm_program/installation/installation.php', array('step' => 'create_administrator')),
             $gL10n->get('SYS_BACK'),
             'layout/back.png'
         );
@@ -101,7 +101,7 @@ if (isset($_POST['user_last_name']))
     {
         showNotice(
             $gL10n->get('INS_PASSWORDS_NOT_EQUAL'),
-            'installation.php?step=create_administrator',
+            safeUrl(ADMIDIO_PATH . '/adm_program/installation/installation.php', array('step' => 'create_administrator')),
             $gL10n->get('SYS_BACK'),
             'layout/back.png'
         );
@@ -112,7 +112,7 @@ if (isset($_POST['user_last_name']))
 // if config file exists than don't create a new one
 if (is_file($pathConfigFile))
 {
-    admRedirect(ADMIDIO_URL . '/adm_program/installation/installation.php?step=start_installation');
+    admRedirect(safeUrl(ADMIDIO_URL . '/adm_program/installation/installation.php', array('step' => 'start_installation')));
     // => EXIT
 }
 
@@ -170,7 +170,7 @@ if ($configFileHandle)
     fclose($configFileHandle);
 
     // start installation
-    $form = new HtmlFormInstallation('installation-form', 'installation.php?step=start_installation');
+    $form = new HtmlFormInstallation('installation-form', safeUrl(ADMIDIO_PATH . '/adm_program/installation/installation.php', array('step' => 'start_installation')));
     $form->setFormDescription($gL10n->get('INS_DATA_FULLY_ENTERED'), $gL10n->get('INS_INSTALL_ADMIDIO'));
     $form->addSubmitButton(
         'next_page', $gL10n->get('INS_INSTALL_ADMIDIO'),
@@ -181,15 +181,15 @@ if ($configFileHandle)
 else
 {
     // if user doesn't has write access then create a page with a download link for the config file
-    $form = new HtmlFormInstallation('installation-form', 'installation.php?step=start_installation');
+    $form = new HtmlFormInstallation('installation-form', safeUrl(ADMIDIO_PATH . '/adm_program/installation/installation.php', array('step' => 'start_installation')));
     $form->setFormDescription($gL10n->get('INS_DOWNLOAD_CONFIGURATION_FILE_DESC', array('config.php', ADMIDIO_PATH . FOLDER_DATA, 'adm_my_files'), $gL10n->get('INS_CREATE_CONFIGURATION_FILE')));
     $form->addButton(
         'previous_page', $gL10n->get('SYS_BACK'),
-        array('icon' => 'layout/back.png', 'link' => 'installation.php?step=create_administrator')
+        array('icon' => 'layout/back.png', 'link' => safeUrl(ADMIDIO_PATH . '/adm_program/installation/installation.php', array('step' => 'create_administrator')))
     );
     $form->addButton(
         'download_config', $gL10n->get('INS_DOWNLOAD_CONFIGURATION_FILE'),
-        array('icon' => 'layout/page_white_download.png', 'link' => 'installation.php?step=download_config')
+        array('icon' => 'layout/page_white_download.png', 'link' => safeUrl(ADMIDIO_PATH . '/adm_program/installation/installation.php', array('step' => 'download_config')))
     );
     $form->addSubmitButton(
         'next_page', $gL10n->get('INS_INSTALL_ADMIDIO'),

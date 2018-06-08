@@ -94,6 +94,8 @@ class Organization extends TableAccess
 
         $this->bCheckChildOrganizations = false;
         $this->childOrganizations       = array();
+        $this->countOrganizations       = 0;
+
         if ($this->settingsManager instanceof SettingsManager)
         {
             $this->settingsManager->clearAll();
@@ -224,7 +226,7 @@ class Organization extends TableAccess
 
         // Create role administrator
         $roleAdministrator = new TableRoles($this->db);
-        $roleAdministrator->setValue('rol_cat_id', $categoryCommon);
+        $roleAdministrator->setValue('rol_cat_id', $categoryCommon, false);
         $roleAdministrator->setValue('rol_name', $gL10n->get('SYS_ADMINISTRATOR'));
         $roleAdministrator->setValue('rol_description', $gL10n->get('INS_DESCRIPTION_ADMINISTRATOR'));
         $roleAdministrator->setValue('rol_assign_roles', 1);
@@ -247,7 +249,7 @@ class Organization extends TableAccess
 
         // Create role member
         $roleMember = new TableRoles($this->db);
-        $roleMember->setValue('rol_cat_id', $categoryCommon);
+        $roleMember->setValue('rol_cat_id', $categoryCommon, false);
         $roleMember->setValue('rol_name', $gL10n->get('SYS_MEMBER'));
         $roleMember->setValue('rol_description', $gL10n->get('INS_DESCRIPTION_MEMBER'));
         $roleMember->setValue('rol_mail_this_role', 2);
@@ -258,7 +260,7 @@ class Organization extends TableAccess
 
         // Create role board
         $roleManagement = new TableRoles($this->db);
-        $roleManagement->setValue('rol_cat_id', $categoryCommon);
+        $roleManagement->setValue('rol_cat_id', $categoryCommon, false);
         $roleManagement->setValue('rol_name', $gL10n->get('INS_BOARD'));
         $roleManagement->setValue('rol_description', $gL10n->get('INS_DESCRIPTION_BOARD'));
         $roleManagement->setValue('rol_announcements', 1);
@@ -351,7 +353,7 @@ class Organization extends TableAccess
 
         // set participant list to default configuration in date module settings
         $sql = 'UPDATE '.TBL_PREFERENCES.'
-                   SET prf_value = ? -- $participantList->getValue(lst_id)
+                   SET prf_value = ? -- $participantList->getValue(\'lst_id\')
                  WHERE prf_name   = \'dates_default_list_configuration\'
                    AND prf_org_id = ? -- $orgId';
         $this->db->queryPrepared($sql, array($participantList->getValue('lst_id'), $orgId));
@@ -479,21 +481,24 @@ class Organization extends TableAccess
      */
     public function setValue($columnName, $newValue, $checkValue = true)
     {
-        // org_shortname shouldn't be edited
-        if($columnName === 'org_shortname' && !$this->newRecord)
+        if($checkValue)
         {
-            return false;
-        }
-
-        if($columnName === 'org_homepage' && $newValue !== '')
-        {
-            $newValue = admFuncCheckUrl($newValue);
-
-            if ($newValue === false)
+            // org_shortname shouldn't be edited
+            if($columnName === 'org_shortname' && !$this->newRecord)
             {
                 return false;
             }
+            elseif($columnName === 'org_homepage' && $newValue !== '')
+            {
+                $newValue = admFuncCheckUrl($newValue);
+
+                if ($newValue === false)
+                {
+                    return false;
+                }
+            }
         }
+
         return parent::setValue($columnName, $newValue, $checkValue);
     }
 

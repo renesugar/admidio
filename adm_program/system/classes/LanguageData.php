@@ -55,13 +55,11 @@ class LanguageData
     /**
      * Creates an object that stores all necessary language data and can be handled in session.
      * Therefore the language must be set and optional a path where the language files are stored.
-     * @param string $language           The ISO code of the language for which the texts should be read e.g. **'de'**
-     *                                   If no language is set than the browser language will be determined.
-     * @param string $languageFolderPath Optional a server path to the language files. If no path is set
-     *                                   than the default Admidio language path **adm_program/languages** will be set.
+     * @param string $language The ISO code of the language for which the texts should be read e.g. **'de'**
+     *                         If no language is set than the browser language will be determined.
      * @throws \UnexpectedValueException
      */
-    public function __construct($language = '', $languageFolderPath = '')
+    public function __construct($language = '')
     {
         if ($language === '')
         {
@@ -70,15 +68,39 @@ class LanguageData
         }
         $this->language = $language;
 
-        if ($languageFolderPath === '')
+        $this->addLanguageFolderPath(ADMIDIO_PATH . FOLDER_LANGUAGES);
+        foreach (self::getPluginLanguageFolderPaths() as $pluginLanguageFolderPath)
         {
-            $languageFolderPath = ADMIDIO_PATH . FOLDER_LANGUAGES;
+            $this->addLanguageFolderPath($pluginLanguageFolderPath);
         }
-        if (!is_dir($languageFolderPath))
+    }
+
+    /**
+     * Search and returns all plugin language folder paths
+     * @return array<int,string> Returns all plugin language folder paths
+     */
+    private static function getPluginLanguageFolderPaths()
+    {
+        try
         {
-            throw new \UnexpectedValueException('Invalid folder path!');
+            $pluginFolders = FileSystemUtils::getDirectoryContent(ADMIDIO_PATH . FOLDER_PLUGINS, false, true, array(FileSystemUtils::CONTENT_TYPE_DIRECTORY));
         }
-        $this->languageFolderPaths[] = $languageFolderPath;
+        catch (\RuntimeException $exception)
+        {
+            return array();
+        }
+
+        $languageFolders = array();
+        foreach ($pluginFolders as $pluginFolder => $type)
+        {
+            $languageFolder = $pluginFolder . '/languages';
+            if (is_dir($languageFolder))
+            {
+                $languageFolders[] = $languageFolder;
+            }
+        }
+
+        return $languageFolders;
     }
 
     /**

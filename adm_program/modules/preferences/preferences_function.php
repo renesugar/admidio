@@ -48,7 +48,7 @@ switch($getMode)
             {
                 case 'common':
                     $checkboxes = array(
-                        'enable_rss', 'enable_auto_login', 'enable_password_recovery',
+                        'system_cookie_note', 'enable_rss',
                         'system_search_similar', 'system_js_editor_enabled', 'system_browser_update_check'
                     );
 
@@ -58,6 +58,22 @@ switch($getMode)
                         $gMessage->show($gL10n->get('ORG_INVALID_THEME'));
                         // => EXIT
                     }
+                    if($_POST['system_url_imprint'] !== '' && !strValidCharacters($_POST['system_url_imprint'], 'url'))
+                    {
+                        $gMessage->show($gL10n->get('SYS_URL_INVALID_CHAR', array($gL10n->get('SYS_IMPRINT'))));
+                        // => EXIT
+                    }
+                    if($_POST['system_url_data_protection'] !== '' && !strValidCharacters($_POST['system_url_data_protection'], 'url'))
+                    {
+                        $gMessage->show($gL10n->get('SYS_URL_INVALID_CHAR', array($gL10n->get('SYS_DATA_PROTECTION'))));
+                        // => EXIT
+                    }
+                    break;
+
+                case 'security':
+                    $checkboxes = array(
+                        'enable_auto_login', 'enable_password_recovery'
+                    );
 
                     if(!is_numeric($_POST['logout_minutes']) || $_POST['logout_minutes'] <= 0)
                     {
@@ -113,7 +129,6 @@ switch($getMode)
 
                     if($_POST['mail_sendmail_address'] !== '')
                     {
-                        $_POST['mail_sendmail_address'] = admStrToLower($_POST['mail_sendmail_address']);
                         if(!strValidCharacters($_POST['mail_sendmail_address'], 'email'))
                         {
                             $gMessage->show($gL10n->get('SYS_EMAIL_INVALID', array($gL10n->get('MAI_SENDER_EMAIL'))));
@@ -132,7 +147,6 @@ switch($getMode)
                     }
                     else
                     {
-                        $_POST['email_administrator'] = admStrToLower($_POST['email_administrator']);
                         if(!strValidCharacters($_POST['email_administrator'], 'email'))
                         {
                             $gMessage->show($gL10n->get('SYS_EMAIL_INVALID', array($gL10n->get('ORG_SYSTEM_MAIL_ADDRESS'))));
@@ -221,11 +235,11 @@ switch($getMode)
             // Elmente, die nicht in adm_preferences gespeichert werden hier aussortieren
             if($key !== 'save')
             {
-                if(admStrStartsWith($key, 'org_'))
+                if(StringUtils::strStartsWith($key, 'org_'))
                 {
                     $gCurrentOrganization->setValue($key, $value);
                 }
-                elseif(admStrStartsWith($key, 'SYSMAIL_'))
+                elseif(StringUtils::strStartsWith($key, 'SYSMAIL_'))
                 {
                     $text = new TableText($gDb);
                     $text->readDataByColumns(array('txt_org_id' => $gCurrentOrganization->getValue('org_id'), 'txt_name' => $key));
@@ -308,7 +322,7 @@ switch($getMode)
         );
 
         // add form to html page and show page
-        $page->addHtml($form->show(false));
+        $page->addHtml($form->show());
         $page->show();
         break;
 
@@ -357,6 +371,10 @@ switch($getMode)
         $settingsManager->setMulti($defaultOrgPreferences, false);
         $newOrganization->createBasicData((int) $gCurrentUser->getValue('usr_id'));
 
+        // now refresh the session organization object because of the new organization
+        $currentOrganizationId = (int) $gCurrentOrganization->getValue('org_id');
+        $gCurrentOrganization = new Organization($gDb, $currentOrganizationId);
+
         // if installation of second organization than show organization select at login
         if($gCurrentOrganization->countAllRecords() === 2)
         {
@@ -378,7 +396,7 @@ switch($getMode)
         $form->addSubmitButton('btn_forward', $gL10n->get('SYS_NEXT'), array('icon' => THEME_URL.'/icons/forward.png'));
 
         // add form to html page and show page
-        $page->addHtml($form->show(false));
+        $page->addHtml($form->show());
         $page->show();
 
         // clean up

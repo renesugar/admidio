@@ -147,19 +147,20 @@ function getStaticText($type, $text, $info = '')
 }
 
 /**
+ * @param string $group
  * @param string $id
  * @param string $title
  * @param string $icon
  * @param string $body
  * @return string
  */
-function getPreferencePanel($id, $title, $icon, $body)
+function getPreferencePanel($group, $id, $title, $icon, $body)
 {
     return '
         <div class="panel panel-default" id="panel_' . $id . '">
             <div class="panel-heading">
                 <h4 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#accordion_common" href="#collapse_' . $id . '">
+                    <a data-toggle="collapse" data-parent="#accordion_' . $group . '" href="#collapse_' . $id . '">
                         <img class="admidio-panel-heading-icon" src="' . THEME_URL . '/icons/' . $icon . '" alt="' . $title . '" />' . $title . '
                     </a>
                 </h4>
@@ -214,16 +215,8 @@ $formCommon->addCheckbox(
     array('helpTextIdInline' => 'ORG_ENABLE_RSS_FEEDS_DESC')
 );
 $formCommon->addCheckbox(
-    'enable_auto_login', $gL10n->get('ORG_LOGIN_AUTOMATICALLY'), (bool) $formValues['enable_auto_login'],
-    array('helpTextIdInline' => 'ORG_LOGIN_AUTOMATICALLY_DESC')
-);
-$formCommon->addInput(
-    'logout_minutes', $gL10n->get('ORG_AUTOMATOC_LOGOUT_AFTER'), $formValues['logout_minutes'],
-    array('type' => 'number', 'minNumber' => 0, 'maxNumber' => 9999, 'step' => 1, 'helpTextIdInline' => array('ORG_AUTOMATOC_LOGOUT_AFTER_DESC', array('SYS_REMEMBER_ME')))
-);
-$formCommon->addCheckbox(
-    'enable_password_recovery', $gL10n->get('ORG_SEND_PASSWORD'), (bool) $formValues['enable_password_recovery'],
-    array('helpTextIdInline' => array('ORG_SEND_PASSWORD_DESC', array('ORG_ACTIVATE_SYSTEM_MAILS')))
+    'system_cookie_note', $gL10n->get('SYS_COOKIE_NOTE'), (bool) $formValues['system_cookie_note'],
+    array('helpTextIdInline' => 'SYS_COOKIE_NOTE_DESC')
 );
 $formCommon->addCheckbox(
     'system_search_similar', $gL10n->get('ORG_SEARCH_SIMILAR_NAMES'), (bool) $formValues['system_search_similar'],
@@ -234,24 +227,21 @@ $formCommon->addSelectBox(
     'system_show_create_edit', $gL10n->get('ORG_SHOW_CREATE_EDIT'), $selectBoxEntries,
     array('defaultValue' => $formValues['system_show_create_edit'], 'showContextDependentFirstEntry' => false, 'helpTextIdInline' => 'ORG_SHOW_CREATE_EDIT_DESC')
 );
-$formCommon->addCheckbox(
-    'system_js_editor_enabled', $gL10n->get('ORG_JAVASCRIPT_EDITOR_ENABLE'), (bool) $formValues['system_js_editor_enabled'],
-    array('helpTextIdInline' => 'ORG_JAVASCRIPT_EDITOR_ENABLE_DESC')
+$formCommon->addInput(
+    'system_url_data_protection', $gL10n->get('SYS_DATA_PROTECTION'), $formValues['system_url_data_protection'],
+    array('maxLength' => 250, 'helpTextIdInline' => 'SYS_DATA_PROTECTION_DESC')
+);
+$formCommon->addInput(
+    'system_url_imprint', $gL10n->get('SYS_IMPRINT'), $formValues['system_url_imprint'],
+    array('maxLength' => 250, 'helpTextIdInline' => 'SYS_IMPRINT_DESC')
 );
 $formCommon->addInput(
     'system_js_editor_color', $gL10n->get('ORG_JAVASCRIPT_EDITOR_COLOR'), $formValues['system_js_editor_color'],
     array('maxLength' => 10, 'helpTextIdInline' => array('ORG_JAVASCRIPT_EDITOR_COLOR_DESC', array('SYS_REMEMBER_ME')), 'class' => 'form-control-small')
 );
-$selectBoxEntries = array(
-    0 => $gL10n->get('ORG_PASSWORD_MIN_STRENGTH_NO'),
-    1 => $gL10n->get('ORG_PASSWORD_MIN_STRENGTH_LOW'),
-    2 => $gL10n->get('ORG_PASSWORD_MIN_STRENGTH_MID'),
-    3 => $gL10n->get('ORG_PASSWORD_MIN_STRENGTH_HIGH'),
-    4 => $gL10n->get('ORG_PASSWORD_MIN_STRENGTH_VERY_HIGH')
-);
-$formCommon->addSelectBox(
-    'password_min_strength', $gL10n->get('ORG_PASSWORD_MIN_STRENGTH'), $selectBoxEntries,
-    array('defaultValue' => $formValues['password_min_strength'], 'showContextDependentFirstEntry' => false, 'helpTextIdInline' => 'ORG_PASSWORD_MIN_STRENGTH_DESC')
+$formCommon->addCheckbox(
+    'system_js_editor_enabled', $gL10n->get('ORG_JAVASCRIPT_EDITOR_ENABLE'), (bool) $formValues['system_js_editor_enabled'],
+    array('helpTextIdInline' => 'ORG_JAVASCRIPT_EDITOR_ENABLE_DESC')
 );
 $formCommon->addCheckbox(
     'system_browser_update_check', $gL10n->get('ORG_BROWSER_UPDATE_CHECK'), (bool) $formValues['system_browser_update_check'],
@@ -262,7 +252,46 @@ $formCommon->addSubmitButton(
     array('icon' => THEME_URL.'/icons/disk.png', 'class' => ' col-sm-offset-3')
 );
 
-$page->addHtml(getPreferencePanel('common', $gL10n->get('SYS_COMMON'), 'options.png', $formCommon->show(false)));
+$page->addHtml(getPreferencePanel('common', 'common', $gL10n->get('SYS_COMMON'), 'options.png', $formCommon->show(false)));
+
+// PANEL: SECURITY
+
+$formSecurity = new HtmlForm(
+    'organization_preferences_form', safeUrl(ADMIDIO_URL.FOLDER_MODULES.'/preferences/preferences_function.php', array('form' => 'security')),
+    $page, array('class' => 'form-preferences')
+);
+
+$formSecurity->addInput(
+    'logout_minutes', $gL10n->get('ORG_AUTOMATOC_LOGOUT_AFTER'), $formValues['logout_minutes'],
+    array('type' => 'number', 'minNumber' => 0, 'maxNumber' => 9999, 'step' => 1, 'helpTextIdInline' => array('ORG_AUTOMATOC_LOGOUT_AFTER_DESC', array('SYS_REMEMBER_ME')))
+);
+$selectBoxEntries = array(
+    0 => $gL10n->get('ORG_PASSWORD_MIN_STRENGTH_NO'),
+    1 => $gL10n->get('ORG_PASSWORD_MIN_STRENGTH_LOW'),
+    2 => $gL10n->get('ORG_PASSWORD_MIN_STRENGTH_MID'),
+    3 => $gL10n->get('ORG_PASSWORD_MIN_STRENGTH_HIGH'),
+    4 => $gL10n->get('ORG_PASSWORD_MIN_STRENGTH_VERY_HIGH')
+);
+$formSecurity->addSelectBox(
+    'password_min_strength', $gL10n->get('ORG_PASSWORD_MIN_STRENGTH'), $selectBoxEntries,
+    array('defaultValue' => $formValues['password_min_strength'], 'showContextDependentFirstEntry' => false, 'helpTextIdInline' => 'ORG_PASSWORD_MIN_STRENGTH_DESC')
+);
+$formSecurity->addCheckbox(
+    'enable_auto_login', $gL10n->get('ORG_LOGIN_AUTOMATICALLY'), (bool) $formValues['enable_auto_login'],
+    array('helpTextIdInline' => 'ORG_LOGIN_AUTOMATICALLY_DESC')
+);
+$formSecurity->addCheckbox(
+    'enable_password_recovery', $gL10n->get('ORG_SEND_PASSWORD'), (bool) $formValues['enable_password_recovery'],
+    array('helpTextIdInline' => array('ORG_SEND_PASSWORD_DESC', array('ORG_ACTIVATE_SYSTEM_MAILS')))
+);
+
+
+$formSecurity->addSubmitButton(
+    'btn_save_security', $gL10n->get('SYS_SAVE'),
+    array('icon' => THEME_URL.'/icons/disk.png', 'class' => ' col-sm-offset-3')
+);
+
+$page->addHtml(getPreferencePanel('common', 'security', $gL10n->get('SYS_SECURITY'), 'shield.png', $formSecurity->show()));
 
 // PANEL: ORGANIZATION
 
@@ -284,24 +313,24 @@ $formOrganization->addInput(
     array('maxLength' => 60)
 );
 
-// Falls andere Orgas untergeordnet sind, darf diese Orga keiner anderen Orga untergeordnet werden
-if(!$gCurrentOrganization->isParentOrganization())
-{
-    $sqlData = array();
-    $sqlData['query'] = 'SELECT org_id, org_longname
-                           FROM '.TBL_ORGANIZATIONS.'
-                          WHERE org_id <> ? -- $orgId
-                            AND org_org_id_parent IS NULL
-                       ORDER BY org_longname ASC, org_shortname ASC';
-    $sqlData['params'] = array($orgId);
-    $formOrganization->addSelectBoxFromSql(
-        'org_org_id_parent', $gL10n->get('ORG_PARENT_ORGANIZATION'), $gDb, $sqlData,
-        array('defaultValue' => $formValues['org_org_id_parent'], 'helpTextIdInline' => 'ORG_PARENT_ORGANIZATION_DESC')
-    );
-}
-
 if($gCurrentOrganization->countAllRecords() > 1)
 {
+    // Falls andere Orgas untergeordnet sind, darf diese Orga keiner anderen Orga untergeordnet werden
+    if(!$gCurrentOrganization->isParentOrganization())
+    {
+        $sqlData = array();
+        $sqlData['query'] = 'SELECT org_id, org_longname
+                               FROM '.TBL_ORGANIZATIONS.'
+                              WHERE org_id <> ? -- $orgId
+                                AND org_org_id_parent IS NULL
+                           ORDER BY org_longname ASC, org_shortname ASC';
+        $sqlData['params'] = array($orgId);
+        $formOrganization->addSelectBoxFromSql(
+            'org_org_id_parent', $gL10n->get('ORG_PARENT_ORGANIZATION'), $gDb, $sqlData,
+            array('defaultValue' => $formValues['org_org_id_parent'], 'helpTextIdInline' => 'ORG_PARENT_ORGANIZATION_DESC')
+        );
+    }
+
     $formOrganization->addCheckbox(
         'system_organization_select', $gL10n->get('ORG_SHOW_ORGANIZATION_SELECT'), (bool) $formValues['system_organization_select'],
         array('helpTextIdInline' => 'ORG_SHOW_ORGANIZATION_SELECT_DESC')
@@ -317,7 +346,7 @@ $formOrganization->addSubmitButton(
     array('icon' => THEME_URL.'/icons/disk.png', 'class' => ' col-sm-offset-3')
 );
 
-$page->addHtml(getPreferencePanel('organization', $gL10n->get('SYS_ORGANIZATION'), 'chart_organisation.png', $formOrganization->show(false)));
+$page->addHtml(getPreferencePanel('common', 'organization', $gL10n->get('SYS_ORGANIZATION'), 'chart_organisation.png', $formOrganization->show()));
 
 // PANEL: REGIONAL SETTINGS
 
@@ -355,7 +384,7 @@ $formRegionalSettings->addSubmitButton(
     array('icon' => THEME_URL.'/icons/disk.png', 'class' => ' col-sm-offset-3')
 );
 
-$page->addHtml(getPreferencePanel('regional_settings', $gL10n->get('ORG_REGIONAL_SETTINGS'), 'world.png', $formRegionalSettings->show(false)));
+$page->addHtml(getPreferencePanel('common', 'regional_settings', $gL10n->get('ORG_REGIONAL_SETTINGS'), 'world.png', $formRegionalSettings->show()));
 
 // PANEL: REGISTRATION
 
@@ -381,7 +410,7 @@ $formRegistration->addSubmitButton(
     array('icon' => THEME_URL.'/icons/disk.png', 'class' => ' col-sm-offset-3')
 );
 
-$page->addHtml(getPreferencePanel('registration', $gL10n->get('SYS_REGISTRATION'), 'new_registrations.png', $formRegistration->show(false)));
+$page->addHtml(getPreferencePanel('common', 'registration', $gL10n->get('SYS_REGISTRATION'), 'new_registrations.png', $formRegistration->show()));
 
 // PANEL: EMAIL DISPATCH
 
@@ -460,7 +489,7 @@ $formEmailDispatch->addSubmitButton(
     array('icon' => THEME_URL.'/icons/disk.png', 'class' => ' col-sm-offset-3')
 );
 
-$page->addHtml(getPreferencePanel('email_dispatch', $gL10n->get('SYS_MAIL_DISPATCH'), 'system_mail.png', $formEmailDispatch->show(false)));
+$page->addHtml(getPreferencePanel('common', 'email_dispatch', $gL10n->get('SYS_MAIL_DISPATCH'), 'system_mail.png', $formEmailDispatch->show()));
 
 // PANEL: SYSTEM NOTIFICATION
 
@@ -517,7 +546,7 @@ $formSystemNotification->addSubmitButton(
     array('icon' => THEME_URL.'/icons/disk.png', 'class' => ' col-sm-offset-3')
 );
 
-$page->addHtml(getPreferencePanel('system_notification', $gL10n->get('SYS_SYSTEM_MAILS'), 'system_notification.png', $formSystemNotification->show(false)));
+$page->addHtml(getPreferencePanel('common', 'system_notification', $gL10n->get('SYS_SYSTEM_MAILS'), 'system_notification.png', $formSystemNotification->show()));
 
 // PANEL: CAPTCHA
 
@@ -589,7 +618,7 @@ $formCaptcha->addSubmitButton(
     array('icon' => THEME_URL.'/icons/disk.png', 'class' => ' col-sm-offset-3')
 );
 
-$page->addHtml(getPreferencePanel('captcha', $gL10n->get('SYS_CAPTCHA'), 'captcha.png', $formCaptcha->show(false)));
+$page->addHtml(getPreferencePanel('common', 'captcha', $gL10n->get('SYS_CAPTCHA'), 'captcha.png', $formCaptcha->show()));
 
 // PANEL: SYSTEM INFORMATION
 
@@ -601,7 +630,7 @@ $html = '<span id="admidio_version_content">'.ADMIDIO_VERSION_TEXT.'
 $formSystemInformation->addCustomContent($gL10n->get('SYS_ADMIDIO_VERSION'), $html);
 
 // if database version is different to file version, then show database version
-if(strcmp(ADMIDIO_VERSION, $gSystemComponent->getValue('com_version')) !== 0)
+if($gSystemComponent->getValue('com_version') !== ADMIDIO_VERSION)
 {
     $formSystemInformation->addStaticControl('admidio_database_version', $gL10n->get('ORG_DIFFERENT_DATABASE_VERSION'), $gSystemComponent->getValue('com_version'));
 }
@@ -651,7 +680,7 @@ $formSystemInformation->addStaticControl('database_version', $gDb->getName().'-'
 
 try
 {
-    PasswordHashing::genRandomInt(0, 1, true);
+    PasswordUtils::genRandomInt(0, 1, true);
     $html = getStaticText('success', $gL10n->get('SYS_SECURE'));
 }
 catch (AdmException $e)
@@ -731,26 +760,36 @@ else
 }
 $formSystemInformation->addStaticControl('debug_mode', $gL10n->get('SYS_DEBUG_MODUS'), $html);
 
-$diskSpace = FileSystemUtils::getDiskSpace(ADMIDIO_PATH . '/');
-$diskUsagePercent = round(($diskSpace['used'] / $diskSpace['total']) * 100, 1);
-$progressBarClass = '';
-if ($diskUsagePercent > 90)
+try
 {
-    $progressBarClass = ' progress-bar-danger';
-}
-elseif ($diskUsagePercent > 70)
-{
-    $progressBarClass = ' progress-bar-warning';
-}
-$html = '
+    $diskSpace = FileSystemUtils::getDiskSpace();
+
+    $diskUsagePercent = round(($diskSpace['used'] / $diskSpace['total']) * 100, 1);
+    $progressBarClass = '';
+    if ($diskUsagePercent > 90)
+    {
+        $progressBarClass = ' progress-bar-danger';
+    }
+    elseif ($diskUsagePercent > 70)
+    {
+        $progressBarClass = ' progress-bar-warning';
+    }
+    $html = '
     <div class="progress">
         <div class="progress-bar' . $progressBarClass . '" role="progressbar" aria-valuenow="' . $diskSpace['used'] . '" aria-valuemin="0" aria-valuemax="' . $diskSpace['total'] . '" style="width: ' . $diskUsagePercent . '%;">
             ' . FileSystemUtils::getHumanReadableBytes($diskSpace['used']) . ' / ' . FileSystemUtils::getHumanReadableBytes($diskSpace['total']) . '
         </div>
     </div>';
+}
+catch (\RuntimeException $exception)
+{
+    $gLogger->error('FILE-SYSTEM: Disk space could not be determined!');
+
+    $html = getStaticText('danger', $gL10n->get('SYS_DISK_SPACE_ERROR', array($exception->getMessage())));
+}
 $formSystemInformation->addStaticControl('disk_space', $gL10n->get('SYS_DISK_SPACE'), $html);
 
-$page->addHtml(getPreferencePanel('system_information', $gL10n->get('ORG_SYSTEM_INFORMATION'), 'info.png', $formSystemInformation->show(false)));
+$page->addHtml(getPreferencePanel('common', 'system_information', $gL10n->get('ORG_SYSTEM_INFORMATION'), 'info.png', $formSystemInformation->show()));
 
 $page->addHtml('
         </div>
@@ -790,7 +829,7 @@ $formAnnouncements->addSubmitButton(
     array('icon' => THEME_URL.'/icons/disk.png', 'class' => ' col-sm-offset-3')
 );
 
-$page->addHtml(getPreferencePanel('announcements', $gL10n->get('ANN_ANNOUNCEMENTS'), 'announcements.png', $formAnnouncements->show(false)));
+$page->addHtml(getPreferencePanel('modules', 'announcements', $gL10n->get('ANN_ANNOUNCEMENTS'), 'announcements.png', $formAnnouncements->show()));
 
 // PANEL: USER MANAGEMENT
 
@@ -816,12 +855,17 @@ $formUserManagement->addCheckbox(
     'members_enable_user_relations', $gL10n->get('MEM_ENABLE_USER_RELATIONS'), (bool) $formValues['members_enable_user_relations'],
     array('helpTextIdInline' => 'MEM_ENABLE_USER_RELATIONS_DESC')
 );
+$html = '<a class="btn" href="'. ADMIDIO_URL. FOLDER_MODULES.'/userrelations/relationtypes.php"><img
+            src="'. THEME_URL. '/icons/user_administration.png" alt="'.$gL10n->get('SYS_MAINTAIN_USER_RELATION_TYPES').'" />'.$gL10n->get('SYS_MAINTAIN_USER_RELATION_TYPES').'</a>';
+$htmlDesc = $gL10n->get('SYS_MAINTAIN_USER_RELATION_TYPES_DESC').'<div class="alert alert-warning alert-small" role="alert"><span class="glyphicon glyphicon-warning-sign"></span>'.$gL10n->get('ORG_NOT_SAVED_SETTINGS_LOST').'</div>';
+$formUserManagement->addCustomContent($gL10n->get('SYS_MAINTAIN_USER_RELATION_TYPES'), $html, array('helpTextIdInline' => $htmlDesc));
+
 $formUserManagement->addSubmitButton(
     'btn_save_user_management', $gL10n->get('SYS_SAVE'),
     array('icon' => THEME_URL.'/icons/disk.png', 'class' => ' col-sm-offset-3')
 );
 
-$page->addHtml(getPreferencePanel('user_administration', $gL10n->get('MEM_USER_MANAGEMENT'), 'user_administration.png', $formUserManagement->show(false)));
+$page->addHtml(getPreferencePanel('modules', 'user_administration', $gL10n->get('MEM_USER_MANAGEMENT'), 'user_administration.png', $formUserManagement->show()));
 
 // PANEL: DOWNLOADS
 
@@ -843,7 +887,7 @@ $formDownloads->addSubmitButton(
     array('icon' => THEME_URL.'/icons/disk.png', 'class' => ' col-sm-offset-3')
 );
 
-$page->addHtml(getPreferencePanel('downloads', $gL10n->get('DOW_DOWNLOADS'), 'download.png', $formDownloads->show(false)));
+$page->addHtml(getPreferencePanel('modules', 'downloads', $gL10n->get('DOW_DOWNLOADS'), 'download.png', $formDownloads->show()));
 
 // PANEL: PHOTOS
 
@@ -915,7 +959,7 @@ $formPhotos->addSubmitButton(
     array('icon' => THEME_URL.'/icons/disk.png', 'class' => ' col-sm-offset-3')
 );
 
-$page->addHtml(getPreferencePanel('photos', $gL10n->get('PHO_PHOTOS'), 'photo.png', $formPhotos->show(false)));
+$page->addHtml(getPreferencePanel('modules', 'photos', $gL10n->get('PHO_PHOTOS'), 'photo.png', $formPhotos->show()));
 
 // PANEL: GUESTBOOK
 
@@ -967,7 +1011,7 @@ $formGuestbook->addSubmitButton(
     array('icon' => THEME_URL.'/icons/disk.png', 'class' => ' col-sm-offset-3')
 );
 
-$page->addHtml(getPreferencePanel('guestbook', $gL10n->get('GBO_GUESTBOOK'), 'guestbook.png', $formGuestbook->show(false)));
+$page->addHtml(getPreferencePanel('modules', 'guestbook', $gL10n->get('GBO_GUESTBOOK'), 'guestbook.png', $formGuestbook->show()));
 
 // PANEL: ECARDS
 
@@ -1012,7 +1056,7 @@ $formEcards->addSubmitButton(
     array('icon' => THEME_URL.'/icons/disk.png', 'class' => ' col-sm-offset-3')
 );
 
-$page->addHtml(getPreferencePanel('ecards', $gL10n->get('ECA_GREETING_CARDS'), 'ecard.png', $formEcards->show(false)));
+$page->addHtml(getPreferencePanel('modules', 'ecards', $gL10n->get('ECA_GREETING_CARDS'), 'ecard.png', $formEcards->show()));
 
 // PANEL: LISTS
 
@@ -1068,7 +1112,7 @@ $formLists->addSubmitButton(
     array('icon' => THEME_URL.'/icons/disk.png', 'class' => ' col-sm-offset-3')
 );
 
-$page->addHtml(getPreferencePanel('lists', $gL10n->get('LST_LISTS'), 'list.png', $formLists->show(false)));
+$page->addHtml(getPreferencePanel('modules', 'lists', $gL10n->get('LST_LISTS'), 'list.png', $formLists->show()));
 
 // PANEL: MESSAGES
 
@@ -1127,7 +1171,7 @@ $formMessages->addSubmitButton(
     array('icon' => THEME_URL.'/icons/disk.png', 'class' => ' col-sm-offset-3')
 );
 
-$page->addHtml(getPreferencePanel('messages', $gL10n->get('SYS_MESSAGES'), 'messages.png', $formMessages->show(false)));
+$page->addHtml(getPreferencePanel('modules', 'messages', $gL10n->get('SYS_MESSAGES'), 'messages.png', $formMessages->show()));
 
 // PANEL: PROFILE
 
@@ -1175,7 +1219,7 @@ $formProfile->addSubmitButton(
     array('icon' => THEME_URL.'/icons/disk.png', 'class' => ' col-sm-offset-3')
 );
 
-$page->addHtml(getPreferencePanel('profile', $gL10n->get('PRO_PROFILE'), 'profile.png', $formProfile->show(false)));
+$page->addHtml(getPreferencePanel('modules', 'profile', $gL10n->get('PRO_PROFILE'), 'profile.png', $formProfile->show()));
 
 // PANEL: EVENTS
 
@@ -1268,7 +1312,7 @@ $formEvents->addSubmitButton(
     array('icon' => THEME_URL.'/icons/disk.png', 'class' => ' col-sm-offset-3')
 );
 
-$page->addHtml(getPreferencePanel('events', $gL10n->get('DAT_DATES'), 'dates.png', $formEvents->show(false)));
+$page->addHtml(getPreferencePanel('modules', 'events', $gL10n->get('DAT_DATES'), 'dates.png', $formEvents->show()));
 
 // PANEL: WEBLINKS
 
@@ -1311,7 +1355,7 @@ $formWeblinks->addSubmitButton(
     array('icon' => THEME_URL.'/icons/disk.png', 'class' => ' col-sm-offset-3')
 );
 
-$page->addHtml(getPreferencePanel('links', $gL10n->get('LNK_WEBLINKS'), 'weblinks.png', $formWeblinks->show(false)));
+$page->addHtml(getPreferencePanel('modules', 'links', $gL10n->get('LNK_WEBLINKS'), 'weblinks.png', $formWeblinks->show()));
 
 $page->addHtml('
         </div>

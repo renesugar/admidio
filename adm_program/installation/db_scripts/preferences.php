@@ -22,18 +22,21 @@ $defaultOrgPreferences = array(
     'homepage_login'                 => 'adm_program/index.php',
     'theme'                          => 'modern',
     'enable_password_recovery'       => '1',
-    'system_show_create_edit'        => '1',
+    'system_browser_update_check'    => '0',
+    'system_cookie_note'             => '1',
     'system_currency'                => '€',
     'system_date'                    => 'd.m.Y',
+    'system_hashing_cost'            => '10',
     'system_js_editor_enabled'       => '1',
     'system_js_editor_color'         => '#96c4cb',
     'system_language'                => 'de',
     'system_organization_select'     => '0',
     'system_search_similar'          => '1',
+    'system_show_create_edit'        => '1',
     'system_time'                    => 'H:i',
+    'system_url_imprint'             => '',
+    'system_url_data_protection'     => '',
     'password_min_strength'          => '1',
-    'system_browser_update_check'    => '0',
-    'system_hashing_cost'            => '10',
 
     // Registration
     'registration_enable_module'     => '1',
@@ -139,7 +142,7 @@ $defaultOrgPreferences = array(
 
     // Profile
     'profile_log_edit_fields'   => '1',
-    'profile_show_map_link'     => '1',
+    'profile_show_map_link'     => '0',
     'profile_show_roles'        => '1',
     'profile_show_former_roles' => '1',
     'profile_show_extern_roles' => '1',

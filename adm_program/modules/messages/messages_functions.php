@@ -46,11 +46,11 @@ function prepareReceivers($receiversString)
     $receiversSplit = explode('|', $receiversString);
     foreach ($receiversSplit as $receivers)
     {
-        if (admStrStartsWith($receivers, 'list '))
+        if (StringUtils::strStartsWith($receivers, 'list '))
         {
             $receiverNames .= '; ' . substr($receivers, 5);
         }
-        elseif (strpos($receivers, ':') > 0)
+        elseif (StringUtils::strContains($receivers, ':'))
         {
             $moduleMessages = new ModuleMessages();
             $receiverNames .= '; ' . $moduleMessages->msgGroupNameSplit($receivers);
@@ -70,7 +70,7 @@ function prepareReceivers($receiversString)
  * @param int                 $usrId
  * @return string
  */
-function getReceiverName($row, $usrId)
+function getReceiverName(array $row, $usrId)
 {
     global $gDb, $gProfileFields;
 

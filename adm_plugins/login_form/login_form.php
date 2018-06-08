@@ -3,14 +3,12 @@
  ***********************************************************************************************
  * Login Form
  *
- * Version 1.9.0
- *
  * Login Form stellt das Loginformular mit den entsprechenden Feldern dar,
  * damit sich ein Benutzer anmelden kann. Ist der Benutzer angemeldet, so
  * werden an der Stelle der Felder nun nützliche Informationen des Benutzers
  * angezeigt.
  *
- * Compatible with Admidio version 3.2
+ * Compatible with Admidio version 3.3
  *
  * @copyright 2004-2018 The Admidio Team
  * @see https://www.admidio.org/
@@ -18,24 +16,14 @@
  ***********************************************************************************************
  */
 
-// create path to plugin
-$pluginFolderPos = strpos(__FILE__, 'adm_plugins') + 11;
-$pluginFilePos   = strpos(__FILE__, 'login_form.php');
-$pluginFolder    = substr(__FILE__, $pluginFolderPos + 1, $pluginFilePos - $pluginFolderPos - 2);
+$rootPath = dirname(dirname(__DIR__));
+$pluginFolder = basename(__DIR__);
+
+require_once($rootPath . '/adm_program/system/common.php');
+require_once(__DIR__ . '/config.php');
 
 // initialize parameters
 $iconCode = null;
-
-if(!defined('PLUGIN_PATH'))
-{
-    define('PLUGIN_PATH', substr(__FILE__, 0, $pluginFolderPos));
-}
-require_once(PLUGIN_PATH. '/../adm_program/system/common.php');
-
-// Sprachdatei des Plugins einbinden
-$gL10n->addLanguageFolderPath(PLUGIN_PATH. '/'.$pluginFolder.'/languages');
-
-require_once(PLUGIN_PATH. '/'.$pluginFolder.'/config.php');
 
 // pruefen, ob alle Einstellungen in config.php gesetzt wurden
 // falls nicht, hier noch mal die Default-Werte setzen
@@ -92,7 +80,7 @@ echo '<div id="plugin_'. $pluginFolder. '" class="admidio-plugin-content">';
 
 if($gValidLogin)
 {
-    if($plg_link_target === '' || admStrStartsWith($plg_link_target, '_'))
+    if($plg_link_target === '' || StringUtils::strStartsWith($plg_link_target, '_'))
     {
         $jsContentNextPage = 'self.location.href = \''. ADMIDIO_URL. '/adm_program/system/logout.php\';';
     }
@@ -163,7 +151,7 @@ if($gValidLogin)
     $form->addStaticControl('plg_active_since', $gL10n->get('PLG_LOGIN_ACTIVE_SINCE'), $gCurrentSession->getValue('ses_begin', $gSettingsManager->getString('system_time')));
     $form->addStaticControl('plg_last_login', $gL10n->get('PLG_LOGIN_LAST_LOGIN'), $lastLogin);
     $form->addStaticControl('plg_number_of_logins', $gL10n->get('PLG_LOGIN_NUMBER_OF_LOGINS'), $gCurrentUser->getValue('usr_number_login').$htmlUserRank);
-    $form->show();
+    echo $form->show();
 
     echo '<div class="btn-group-vertical" role="group">';
 
@@ -219,7 +207,7 @@ else
     }
 
     $form->addSubmitButton('next_page', $gL10n->get('SYS_LOGIN'), array('icon' => $iconCode));
-    $form->show();
+    echo $form->show();
 
     echo '<div class="btn-group-vertical" role="group">';
 

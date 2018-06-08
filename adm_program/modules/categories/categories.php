@@ -78,6 +78,11 @@ switch ($getType)
         $editableHeadline = $gL10n->get('PRO_EDIT_PROFILE_FIELDS');
         break;
 
+    case 'AWA':
+        $rolesRightsColumn = 'rol_edit_user';
+        $headline = $gL10n->get('SYS_CATEGORIES_VAR', 'Awards');
+        break;
+
     default:
         $gMessage->show($gL10n->get('SYS_INVALID_PAGE_VIEW'));
         // => EXIT
@@ -286,7 +291,14 @@ while($catRow = $categoryStatement->fetch())
             }
             else
             {
-                $htmlViewRolesNames = $gL10n->get('SYS_ALL').' ('.$gL10n->get('SYS_ALSO_VISITORS').')';
+                if($getType === 'USF')
+                {
+                    $htmlViewRolesNames = $gL10n->get('CAT_ALL_THIS_ORGANIZATION');
+                }
+                else
+                {
+                    $htmlViewRolesNames = $gL10n->get('SYS_ALL').' ('.$gL10n->get('SYS_ALSO_VISITORS').')';
+                }
             }
         }
     }

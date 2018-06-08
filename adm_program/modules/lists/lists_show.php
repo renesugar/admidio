@@ -62,7 +62,7 @@ if ($numberRoles > 1)
 {
     $sql = 'SELECT rol_id, rol_name, rol_valid
               FROM '.TBL_ROLES.'
-             WHERE rol_id IN ('.replaceValuesArrWithQM($roleIds).')';
+             WHERE rol_id IN ('.Database::getQmForValues($roleIds).')';
     $rolesStatement = $gDb->queryPrepared($sql, $roleIds);
     $rolesData      = $rolesStatement->fetchAll();
 
@@ -111,27 +111,27 @@ else
             }
         }
     }
-}
 
-// check if user has right to view role
-// only users with the right to assign roles can view inactive roles
-if (!$gCurrentUser->hasRightViewRole($roleIds[0])
-|| ((int) $role->getValue('rol_valid') === 0 && !$gCurrentUser->checkRolesRight('rol_assign_roles')))
-{
-    $gMessage->show($gL10n->get('SYS_NO_RIGHTS'));
-    // => EXIT
-}
+    // check if user has right to view role
+    // only users with the right to assign roles can view inactive roles
+    if (!$gCurrentUser->hasRightViewRole($roleIds[0])
+    || ((int) $role->getValue('rol_valid') === 0 && !$gCurrentUser->checkRolesRight('rol_assign_roles')))
+    {
+        $gMessage->show($gL10n->get('SYS_NO_RIGHTS'));
+        // => EXIT
+    }
 
-// check if user has right to send mail to role
-if (!$gCurrentUser->hasRightSendMailToRole($roleIds[0]))
-{
-    $showLinkMailToList = false;
-    // => do not show the link
-}
+    // check if user has right to send mail to role
+    if (!$gCurrentUser->hasRightSendMailToRole($roleIds[0]))
+    {
+        $showLinkMailToList = false;
+        // => do not show the link
+    }
 
-$roleName         = $role->getValue('rol_name');
-$htmlSubHeadline .= $role->getValue('cat_name');
-$hasRightViewFormerMembers = $gCurrentUser->hasRightViewFormerRolesMembers($roleIds[0]);
+    $roleName         = $role->getValue('rol_name');
+    $htmlSubHeadline .= $role->getValue('cat_name');
+    $hasRightViewFormerMembers = $gCurrentUser->hasRightViewFormerRolesMembers($roleIds[0]);
+}
 
 // if user should not view former roles members then disallow it
 if(!$hasRightViewFormerMembers)
@@ -173,7 +173,7 @@ if (count($relationTypeIds) > 0)
 {
     $sql = 'SELECT urt_id, urt_name
               FROM '.TBL_USER_RELATION_TYPES.'
-             WHERE urt_id IN ('.replaceValuesArrWithQM($relationTypeIds).')
+             WHERE urt_id IN ('.Database::getQmForValues($relationTypeIds).')
           ORDER BY urt_name';
     $relationTypesStatement = $gDb->queryPrepared($sql, $relationTypeIds);
 
@@ -316,7 +316,7 @@ elseif (count($relationTypeIds) > 1)
 }
 
 // if html mode and last url was not a list view then save this url to navigation stack
-if ($getMode === 'html' && !admStrContains($gNavigation->getUrl(), 'lists_show.php'))
+if ($getMode === 'html' && !StringUtils::strContains($gNavigation->getUrl(), 'lists_show.php'))
 {
     $gNavigation->addUrl(CURRENT_URL);
 }
@@ -431,7 +431,7 @@ if ($getMode !== 'csv')
             $form->addInput('rol_ids', '', $getRoleIds, array('property' => HtmlForm::FIELD_HIDDEN));
             $form->addCheckbox('show_former_members', $gL10n->get('LST_SHOW_FORMER_MEMBERS_ONLY'), $getShowFormerMembers);
             $form->addSubmitButton('btn_send', $gL10n->get('SYS_OK'));
-            $filterNavbar->addForm($form->show(false));
+            $filterNavbar->addForm($form->show());
             $page->addHtml($filterNavbar->show());
         }
 
@@ -514,8 +514,8 @@ if ($getMode !== 'csv')
             'pdfl'   => $gL10n->get('SYS_PDF').' ('.$gL10n->get('SYS_LANDSCAPE').')',
             'csv-oo' => $gL10n->get('SYS_CSV').' ('.$gL10n->get('SYS_UTF8').')'
         );
-        $form->addSelectBox('export_list_to', null, $selectBoxEntries, array('showContextDependentFirstEntry' => false));
-        $listsMenu->addForm($form->show(false));
+        $form->addSelectBox('export_list_to', '', $selectBoxEntries, array('showContextDependentFirstEntry' => false));
+        $listsMenu->addForm($form->show());
 
         $table = new HtmlTable('adm_lists_table', $page, $hoverRows, $datatable, $classTable);
         $table->setDatatablesRowsPerPage($gSettingsManager->getInt('lists_members_per_page'));
@@ -971,7 +971,7 @@ elseif ($getMode === 'html' || $getMode === 'print')
             <div class="panel panel-default" id="adm_lists_infobox">
                 <div class="panel-heading">'.$gL10n->get('LST_INFOBOX').': '.$role->getValue('rol_name').'</div>
                 <div class="panel-body">';
-            $form = new HtmlForm('list_infobox_items', null);
+            $form = new HtmlForm('list_infobox_items');
             $form->addStaticControl('infobox_category', $gL10n->get('SYS_CATEGORY'), $role->getValue('cat_name'));
 
             // Description
@@ -1024,7 +1024,7 @@ elseif ($getMode === 'html' || $getMode === 'print')
             {
                 $form->addStaticControl('infobox_max_participants', $gL10n->get('SYS_MAX_PARTICIPANTS'), $role->getValue('rol_max_members'));
             }
-            $htmlBox .= $form->show(false);
+            $htmlBox .= $form->show();
             $htmlBox .= '</div>
             </div>';
         } // end of infobox

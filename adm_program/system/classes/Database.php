@@ -466,18 +466,18 @@ class Database
                     'null'     => $properties['Null'] === 'YES',
                     'key'      => $properties['Key'] === 'PRI' || $properties['Key'] === 'MUL',
                     'default'  => $properties['Default'],
-                    'unsigned' => admStrContains($properties['Type'], 'unsigned')
+                    'unsigned' => StringUtils::strContains($properties['Type'], 'unsigned')
                 );
 
-                if (admStrContains($properties['Type'], 'tinyint(1)'))
+                if (StringUtils::strContains($properties['Type'], 'tinyint(1)'))
                 {
                     $props['type'] = 'boolean';
                 }
-                elseif (admStrContains($properties['Type'], 'smallint'))
+                elseif (StringUtils::strContains($properties['Type'], 'smallint'))
                 {
                     $props['type'] = 'smallint';
                 }
-                elseif (admStrContains($properties['Type'], 'int'))
+                elseif (StringUtils::strContains($properties['Type'], 'int'))
                 {
                     $props['type'] = 'integer';
                 }
@@ -500,18 +500,18 @@ class Database
             foreach ($columnsList as $properties)
             {
                 $props = array(
-                    'serial'   => admStrContains($properties['column_default'], 'nextval'),
+                    'serial'   => StringUtils::strContains($properties['column_default'], 'nextval'),
                     'null'     => $properties['is_nullable'] === 'YES',
                     'key'      => null,
                     'default'  => $properties['column_default'],
                     'unsigned' => null
                 );
 
-                if (admStrContains($properties['data_type'], 'timestamp'))
+                if (StringUtils::strContains($properties['data_type'], 'timestamp'))
                 {
                     $props['type'] = 'timestamp';
                 }
-                elseif (admStrContains($properties['data_type'], 'time'))
+                elseif (StringUtils::strContains($properties['data_type'], 'time'))
                 {
                     $props['type'] = 'time';
                 }
@@ -531,7 +531,7 @@ class Database
     /**
      * Returns the ID of the unique id column of the last INSERT operation.
      * This method replace the old method Database#insert_id.
-     * @return string Return ID value of the last INSERT operation.
+     * @return int Return ID value of the last INSERT operation.
      * @see Database#insert_id
      */
     public function lastInsertId()
@@ -540,10 +540,10 @@ class Database
         {
             $lastValStatement = $this->queryPrepared('SELECT lastval()');
 
-            return $lastValStatement->fetchColumn();
+            return (int) $lastValStatement->fetchColumn();
         }
 
-        return $this->pdo->lastInsertId();
+        return (int) $this->pdo->lastInsertId();
     }
 
     /**
@@ -552,15 +552,13 @@ class Database
      */
     private function preparePgSqlQuery($sql)
     {
-        $sqlCompare = strtolower($sql);
-
         // prepare the sql statement to be compatible with PostgreSQL
-        if (admStrContains($sqlCompare, 'create table'))
+        if (StringUtils::strContains($sql, 'CREATE TABLE', false))
         {
             // on a create-table-statement if necessary cut existing MySQL table options
             $sql = substr($sql, 0, strrpos($sql, ')') + 1);
         }
-        if (admStrContains($sqlCompare, 'create table') || admStrContains($sqlCompare, 'alter table'))
+        if (StringUtils::strContains($sql, 'CREATE TABLE', false) || StringUtils::strContains($sql, 'ALTER TABLE', false))
         {
             $replaces = array(
                 // PostgreSQL doesn't know unsigned
@@ -570,7 +568,7 @@ class Database
                 // A blob is in PostgreSQL a bytea datatype
                 'blob'     => 'bytea'
             );
-            $sql = admStrMultiReplace($sql, $replaces);
+            $sql = StringUtils::strMultiReplace($sql, $replaces);
 
             // Auto_Increment must be replaced with Serial
             $posAutoIncrement = strpos($sql, 'AUTO_INCREMENT');
@@ -638,7 +636,7 @@ class Database
         {
             $this->pdoStatement = $this->pdo->query($sql);
 
-            if ($this->pdoStatement !== false && admStrStartsWith(strtoupper($sql), 'SELECT'))
+            if ($this->pdoStatement !== false && StringUtils::strStartsWith($sql, 'SELECT', false))
             {
                 $gLogger->debug('SQL: Found rows: ' . $this->pdoStatement->rowCount());
             }
@@ -700,7 +698,7 @@ class Database
             {
                 $this->pdoStatement->execute($params);
 
-                if (admStrStartsWith(strtoupper($sql), 'SELECT'))
+                if (StringUtils::strStartsWith($sql, 'SELECT', false))
                 {
                     $gLogger->info('SQL: Found rows: ' . $this->pdoStatement->rowCount());
                 }
@@ -726,6 +724,16 @@ class Database
         }
 
         return $this->pdoStatement;
+    }
+
+    /**
+     * Get an string with question marks that are comma separated.
+     * @param array<int,mixed> $valuesArray An array with the values that should be replaced with question marks
+     * @return string Question marks string
+     */
+    public static function getQmForValues(array $valuesArray)
+    {
+        return implode(',', array_fill(0, count($valuesArray), '?'));
     }
 
     /**

@@ -125,24 +125,21 @@ class TableGuestbook extends TableAccess
      */
     public function setValue($columnName, $newValue, $checkValue = true)
     {
-        if ($columnName === 'gbo_text')
+        if($checkValue)
         {
-            return parent::setValue($columnName, $newValue, false);
-        }
-
-        if ($newValue !== '')
-        {
-            if ($columnName === 'gbo_email')
+            if ($columnName === 'gbo_text')
             {
-                $newValue = admStrToLower($newValue);
-
+                return parent::setValue($columnName, $newValue, false);
+            }
+            elseif ($columnName === 'gbo_email' && $newValue !== '')
+            {
                 // If Email has a invalid format, it won't be set
                 if (!strValidCharacters($newValue, 'email'))
                 {
                     return false;
                 }
             }
-            elseif ($columnName === 'gbo_homepage')
+            elseif ($columnName === 'gbo_homepage' && $newValue !== '')
             {
                 if (admFuncCheckUrl($newValue) === false)
                 {

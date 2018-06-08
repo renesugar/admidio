@@ -105,7 +105,7 @@ if ($gValidLogin && $getMsgType === TableMessage::MESSAGE_TYPE_PM && count($arrA
          LEFT JOIN '.TBL_USER_DATA.' AS first_name
                 ON first_name.usd_usr_id = usr_id
                AND first_name.usd_usf_id = ? -- $gProfileFields->getProperty(\'FIRST_NAME\', \'usf_id\')
-             WHERE rol_id IN ('.replaceValuesArrWithQM($arrAllVisibleRoles).')
+             WHERE rol_id IN ('.Database::getQmForValues($arrAllVisibleRoles).')
                AND cat_name_intern <> \'EVENTS\'
                AND (  cat_org_id = ? -- $currOrgId
                    OR cat_org_id IS NULL )
@@ -172,7 +172,7 @@ else
 
 // Wenn die letzte URL in der Zuruecknavigation die des Scriptes message_send.php ist,
 // dann soll das Formular gefuellt werden mit den Werten aus der Session
-if (admStrContains($gNavigation->getUrl(), 'messages_send.php') && isset($_SESSION['message_request']))
+if (StringUtils::strContains($gNavigation->getUrl(), 'messages_send.php') && isset($_SESSION['message_request']))
 {
     // Das Formular wurde also schon einmal ausgefüllt,
     // da der User hier wieder gelandet ist nach der Mailversand-Seite
@@ -265,7 +265,7 @@ if ($getMsgType === TableMessage::MESSAGE_TYPE_PM)
     $form->addSubmitButton('btn_send', $gL10n->get('SYS_SEND'), array('icon' => THEME_URL.'/icons/email.png'));
 
     // add form to html page
-    $page->addHtml($form->show(false));
+    $page->addHtml($form->show());
 }
 elseif (!isset($messageStatement))
 {
@@ -357,7 +357,7 @@ elseif (!isset($messageStatement))
                         ON cat_id = rol_cat_id
                        AND (  cat_org_id = ? -- $currOrgId
                            OR cat_org_id IS NULL)
-                     WHERE rol_id IN ('.replaceValuesArrWithQM($sqlRoleIds).')
+                     WHERE rol_id IN ('.Database::getQmForValues($sqlRoleIds).')
                        AND rol_valid = 1
                            '.$sqlParticipationRoles.'
                   ORDER BY rol_name ASC';
@@ -407,7 +407,7 @@ elseif (!isset($messageStatement))
                        AND first_name.usd_usf_id = ? -- $gProfileFields->getProperty(\'FIRST_NAME\', \'usf_id\')
                      WHERE usr_id    <> ? -- $currUsrId
                        AND mem_begin <= ? -- DATE_NOW
-                       AND rol_id IN ('.replaceValuesArrWithQM($listVisibleRoleArray).')
+                       AND rol_id IN ('.Database::getQmForValues($listVisibleRoleArray).')
                            '.$sqlUserIds.'
                        AND usr_valid = 1
                   ORDER BY last_name, first_name, mem_end DESC';
@@ -523,17 +523,18 @@ elseif (!isset($messageStatement))
 
         if($possibleEmails > 1)
         {
-            $sqlData['params'] = 'SELECT email.usd_value AS ID, email.usd_value AS email
-                                    FROM '.TBL_USERS.'
-                              INNER JOIN '.TBL_USER_DATA.' AS email
-                                      ON email.usd_usr_id = usr_id
-                                     AND LENGTH(email.usd_value) > 0
-                              INNER JOIN '.TBL_USER_FIELDS.' AS field
-                                      ON field.usf_id = email.usd_usf_id
-                                     AND field.usf_type = \'EMAIL\'
-                                   WHERE usr_id = ? -- $currUsrId
-                                     AND usr_valid = 1
-                                GROUP BY email.usd_value, email.usd_value';
+            $sqlData = array();
+            $sqlData['query'] = 'SELECT email.usd_value AS ID, email.usd_value AS email
+                                   FROM '.TBL_USERS.'
+                             INNER JOIN '.TBL_USER_DATA.' AS email
+                                     ON email.usd_usr_id = usr_id
+                                    AND LENGTH(email.usd_value) > 0
+                             INNER JOIN '.TBL_USER_FIELDS.' AS field
+                                     ON field.usf_id = email.usd_usf_id
+                                    AND field.usf_type = \'EMAIL\'
+                                  WHERE usr_id = ? -- $currUsrId
+                                    AND usr_valid = 1
+                               GROUP BY email.usd_value, email.usd_value';
             $sqlData['params'] = array($currUsrId);
 
             $form->addSelectBoxFromSql(
@@ -622,7 +623,7 @@ elseif (!isset($messageStatement))
     $form->addSubmitButton('btn_send', $gL10n->get('SYS_SEND'), array('icon' => THEME_URL.'/icons/email.png'));
 
     // add form to html page and show page
-    $page->addHtml($form->show(false));
+    $page->addHtml($form->show());
 }
 
 if (isset($messageStatement))

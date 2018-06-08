@@ -136,7 +136,7 @@ else
         $dateRegistrationPossible = true;
     }
     // check if current user is assigned to this date
-    $dateCurrentUserAssigned = $gCurrentUser->isLeaderOfRole($date->getValue('dat_rol_id'));
+    $dateCurrentUserAssigned = $gCurrentUser->isLeaderOfRole((int) $date->getValue('dat_rol_id'));
 }
 
 if($date->getValue('dat_rol_id') > 0)
@@ -270,7 +270,7 @@ if($gSettingsManager->getBool('dates_show_map_link'))
         array('maxLength' => 100, 'helpTextIdLabel' => 'DAT_LOCATION_LINK')
     );
 
-    if($date->getValue('dat_country') === '' && $getDateId === 0)
+    if(!$date->getValue('dat_country') && $getDateId === 0)
     {
         $date->setValue('dat_country', $gSettingsManager->getString('default_country'));
     }
@@ -391,5 +391,5 @@ $form->addHtml(admFuncShowCreateChangeInfoById(
 ));
 
 // add form to html page and show page
-$page->addHtml($form->show(false));
+$page->addHtml($form->show());
 $page->show();

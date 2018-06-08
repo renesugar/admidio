@@ -180,6 +180,11 @@ class TableUserField extends TableAccess
             $value = parent::getValue($columnName, $format);
         }
 
+        if ($value === null)
+        {
+            return '';
+        }
+
         if ($format !== 'database')
         {
             switch ($columnName)
@@ -204,7 +209,7 @@ class TableUserField extends TableAccess
                             if ($this->dbColumns['usf_type'] === 'RADIO_BUTTON')
                             {
                                 // if value is imagefile or imageurl then show image
-                                if (admStrContains(admStrToLower($listValue), '.png') || admStrContains(admStrToLower($listValue), '.jpg'))
+                                if (StringUtils::strContains($listValue, '.png', false) || StringUtils::strContains($listValue, '.jpg', false))
                                 {
                                     // if there is imagefile and text separated by | then explode them
                                     $listValues = explode('|', $listValue);
@@ -238,7 +243,7 @@ class TableUserField extends TableAccess
                                     {
                                         try
                                         {
-                                            if (!admStrStartsWith(admStrToLower($listValueImage), 'http') || !strValidCharacters($listValueImage, 'url'))
+                                            if (!StringUtils::strStartsWith($listValueImage, 'http', false) || !strValidCharacters($listValueImage, 'url'))
                                             {
                                                 if (admStrIsValidFileName($listValueImage, true))
                                                 {
@@ -270,11 +275,11 @@ class TableUserField extends TableAccess
                     break;
                 case 'usf_icon':
                     // if value is imagefile or imageurl then show image
-                    if(admStrContains(admStrToLower($value), '.png') || admStrContains(admStrToLower($value), '.jpg'))
+                    if(StringUtils::strContains($value, '.png', false) || StringUtils::strContains($value, '.jpg', false))
                     {
                         try
                         {
-                            if (!admStrStartsWith(admStrToLower($value), 'http') || !strValidCharacters($value, 'url'))
+                            if (!StringUtils::strStartsWith($value, 'http', false) || !strValidCharacters($value, 'url'))
                             {
                                 if (admStrIsValidFileName($value, true))
                                 {
@@ -297,10 +302,6 @@ class TableUserField extends TableAccess
             }
         }
 
-        if ($value === null)
-        {
-            return '';
-        }
         return $value;
     }
 
@@ -404,26 +405,38 @@ class TableUserField extends TableAccess
     {
         global $gL10n;
 
-        if ($columnName === 'usf_description')
+        if($checkValue)
         {
-            return parent::setValue($columnName, $newValue, false);
-        }
-        if($columnName === 'usf_cat_id')
-        {
-            $category = new TableCategory($this->db, $newValue);
-
-            if(!$category->isVisible() || $category->getValue('cat_type') !== 'USF')
+            if ($columnName === 'usf_description')
             {
-                throw new AdmException('Category of the user field '. $this->getValue('dat_name'). ' could not be set
-                    because the category is not visible to the current user and current organization.');
+                return parent::setValue($columnName, $newValue, false);
             }
-        }
+            elseif ($columnName === 'usf_cat_id')
+            {
+                $category = new TableCategory($this->db, $newValue);
 
-        // name, category and type couldn't be edited if it's a system field
-        if (in_array($columnName, array('usf_cat_id', 'usf_type', 'usf_name'), true) && (int) $this->getValue('usf_system') === 1)
-        {
-            throw new AdmException('The user field ' . $this->getValue('usf_name_intern') . ' as a system field. You could
-                not change the category, type or name.');
+                if (!$category->isVisible() || $category->getValue('cat_type') !== 'USF')
+                {
+                    throw new AdmException('Category of the user field '. $this->getValue('dat_name'). ' could not be set
+                        because the category is not visible to the current user and current organization.');
+                }
+            }
+            elseif ($columnName === 'usf_url' && $newValue !== '')
+            {
+                $newValue = admFuncCheckUrl($newValue);
+
+                if ($newValue === false)
+                {
+                    throw new AdmException('SYS_URL_INVALID_CHAR', $gL10n->get('ORG_URL'));
+                }
+            }
+
+            // name, category and type couldn't be edited if it's a system field
+            if (in_array($columnName, array('usf_cat_id', 'usf_type', 'usf_name'), true) && (int) $this->getValue('usf_system') === 1)
+            {
+                throw new AdmException('The user field ' . $this->getValue('usf_name_intern') . ' as a system field. You could
+                    not change the category, type or name.');
+            }
         }
 
         if ($columnName === 'usf_cat_id' && $this->getValue($columnName) !== $newValue)
@@ -435,15 +448,6 @@ class TableUserField extends TableAccess
             $pdoStatement = $this->db->queryPrepared($sql, array($newValue));
 
             $this->setValue('usf_sequence', $pdoStatement->fetchColumn() + 1);
-        }
-        elseif ($columnName === 'usf_url' && $newValue !== '')
-        {
-            $newValue = admFuncCheckUrl($newValue);
-
-            if ($newValue === false)
-            {
-                throw new AdmException('SYS_URL_INVALID_CHAR', $gL10n->get('ORG_URL'));
-            }
         }
 
         return parent::setValue($columnName, $newValue, $checkValue);

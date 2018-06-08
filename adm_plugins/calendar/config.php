@@ -1,7 +1,7 @@
 <?php
 /**
  ***********************************************************************************************
- * Konfigurationsdatei fuer Sidebar-Kalender
+ * Configuration file for Admidio plugin Calendar
  *
  * Version 2.0.3
  *
@@ -42,6 +42,9 @@ $plg_geb_login = 1;
 
 // Anzeige der Geburtstage mit Icon (1) oder ohne Icon (0)
 $plg_geb_icon = 1;
+
+// Anzeige des "Nachname, Vorname" (0) oder "Vorname" (1) oder "Nachname" (2)
+$plg_geb_displayNames = 1;
 
 // Welche Kalender sollen ausgegeben werden: Alle (all), Kalender xyz (xyz)
 // Mehrere Einträge: $plg_kal_cat = array('abc','cdf')

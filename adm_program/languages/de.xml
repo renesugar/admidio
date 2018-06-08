@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <resources>
     <!-- Phrases only in Announcementmodule -->
     <string name="ANN_ANNOUNCEMENT">Ankündigung</string>
@@ -288,7 +288,7 @@
     <string name="INS_INSTALLATION_VERSION">Installation der Version #VAR1#</string>
     <string name="INS_INSTALLATION_WAS_SUCCESSFUL">Die Installation war erfolgreich</string>
     <string name="INS_INTERN">Intern</string>
-    <string name="INS_LANGUAGE_NOT_CHOOSEN">Es wurde keine Sprache ausgewählt.</string>
+    <string name="INS_LANGUAGE_NOT_CHOSEN">Es wurde keine Sprache ausgewählt.</string>
     <string name="INS_MEMBERSHIP">Mitgliedschaft</string>
     <string name="INS_MESSENGER">Messenger</string>
     <string name="INS_NO_INSTALLED_VERSION_FOUND">Die bereits installierte Version konnte nicht ermittelt werden. Falls du bisher noch Version 1.x von Admidio genutzt hast, aktualisiere zuerst auf Version 2.x und starte danach das Update auf Version #VAR1#. Falls du bereits Version 2.x oder neuer installiert hast, prüfe bitte die Konsistenz deiner Datenbank.</string>
@@ -744,7 +744,7 @@
     <string name="ORG_PARENT_ORGANIZATION">Übergeordnete Organisation</string>
     <string name="ORG_PARENT_ORGANIZATION_DESC">Hier kannst du die übergeordnete Organisation festlegen. Diese haben zum Beispiel die Möglichkeit Termine und Ankündigungen anzulegen, die auch in der aktuellen Organisation sichtbar sind.</string>
     <string name="ORG_PASSWORD_MIN_STRENGTH">Passwort Sicherheit</string>
-    <string name="ORG_PASSWORD_MIN_STRENGTH_DESC">Hier kannst du festlegen wie sicher und komplex Passwörter mindestens sein müssen.\nDer Wert in Klammern gibt an, wieviele Versuche durchschnittlich nötig sind, bis das Passwort ermittelt wurde.\n\nKeine: riskantes Passwort. (&lt;10^3)\nNiedrig: Schutz gegen gedrosselte Online-Angriffe. (&lt;10^6)\nMittel: Schutz gegen ungedrosselte Online-Angriffe. (&lt;10^8)\nHoch: Mäßiger Schutz gegen Offline-Hashing-Angriffe. (&lt;10^10)\nExtrem: Starker Schutz gegen Offline-Hashing-Angriffe. (&gt;=10^10)</string>
+    <string name="ORG_PASSWORD_MIN_STRENGTH_DESC">Hier kannst du festlegen wie sicher und komplex Passwörter mindestens sein müssen.\nDer Wert in Klammern gibt an, wieviele Versuche durchschnittlich nötig sind, bis das Passwort ermittelt wurde.\n\nKeine: riskantes Passwort. (&lt;10^3)\nNiedrig: Schutz gegen gedrosselte Online-Angriffe. (&lt;10^6)\nMittel: Schutz gegen ungedrosselte Online-Angriffe. (&lt;10^8)\nHoch: Mäßiger Schutz gegen Offline-Hashing-Angriffe. (&lt;10^10)\nSehr hoch: Starker Schutz gegen Offline-Hashing-Angriffe. (&gt;=10^10)</string>
     <string name="ORG_PASSWORD_MIN_STRENGTH_NO">Keine</string>
     <string name="ORG_PASSWORD_MIN_STRENGTH_LOW">Niedrig</string>
     <string name="ORG_PASSWORD_MIN_STRENGTH_MID">Mittel</string>
@@ -910,7 +910,7 @@
     <string name="PRO_LOGIN_NAME_EXIST">Der gewählte Benutzername existiert schon.\n\nWähle bitte einen anderen Namen.</string>
     <string name="PRO_MAINTAIN_ITEM_FIELDS">Artikelfelder verwalten</string>
     <string name="PRO_MAINTAIN_PROFILE_FIELDS">Profilfelder pflegen</string>
-    <string name="PRO_MAINTAIN_PROFILE_FIELDS_DESC">In der Profilfeldpflege können Profilfelder angelegt und bearbeitet werden. Diese können dann in Kategorien zusammengefasst werden.</string>
+    <string name="PRO_MAINTAIN_PROFILE_FIELDS_DESC">Neue Profilfelder und deren Eigenschaften können definiert, sowie von vorhandenen Profilfelder verändert werden. Die Felder können Kategorien zugeordnet und mit Rechten versehen werden, welche Rollen welche Profilfelder sehen oder bearbeiten können.</string>
     <string name="PRO_MY_PROFILE">Mein Profil</string>
     <string name="PRO_NEW_PASSWORD">Neues Passwort</string>
     <string name="PRO_NEW_PICTURE">Neues Profilfoto</string>
@@ -926,7 +926,7 @@
     <string name="PRO_PHOTO_DELETED">Das Profilfoto wurde gelöscht.</string>
     <string name="PRO_PHOTO_FILE_TO_LARGE">Das hochgeladene Foto übersteigt die vom Server zugelassene Dateigröße von #VAR1# B.</string>
     <string name="PRO_PHOTO_FORMAT_INVALID">Es können nur Fotos im JPG und PNG-Format hochgeladen und angezeigt werden.</string>
-    <string name="PRO_PHOTO_NOT_CHOOSEN">Es wurde keine Bilddatei ausgewählt.</string>
+    <string name="PRO_PHOTO_NOT_CHOSEN">Es wurde keine Bilddatei ausgewählt.</string>
     <string name="PRO_PHOTO_RESOLUTION_TO_LARGE">Die Auflösung des hochgeladenen Bildes übersteigt die vom Server zugelassene Auflösung von #VAR1# Megapixeln.</string>
     <string name="PRO_PHOTO_SAVED">Das neue Profilfoto wurde erfolgreich gespeichert.</string>
     <string name="PRO_PROFILE">Profil</string>
@@ -940,7 +940,7 @@
     <string name="PRO_SHOW_FORMER_ROLE_MEMBERSHIP">Ehemalige Rollenmitgliedschaften anzeigen</string>
     <string name="PRO_SHOW_FORMER_ROLE_MEMBERSHIP_DESC">Es wird ein Kasten mit allen Rollen dieser Organisation angezeigt, bei denen der Benutzer Mitglied war. Dazu wird das entsprechende Eintritts- und Austrittsdatum angezeigt. (Standard: ja)</string>
     <string name="PRO_SHOW_MAP_LINK">Kartenlink anzeigen</string>
-    <string name="PRO_SHOW_MAP_LINK_DESC">Sobald genügend Adressinformationen vorhanden sind, wird ein Link zu Google-Maps erstellt, welcher den Wohnort des Benutzers anzeigt, sowie eine Routenlink ausgehend vom eigenen Wohnort. (Standard: ja)</string>
+    <string name="PRO_SHOW_MAP_LINK_DESC">Ist die Adresse im Profil hinterlegt, so werden neben der Adresse zwei Links zu Google-Maps angezeigt. Es wird der Wohnort des Benutzers verlinkt und es wird die Route vom eigenen Wohnort zum Wohnort des angezeigten Benutzers verlinkt. Beim Aufruf der Links werden folgende Informationen der Profile an Google übertragen: Straße, Postleitzahl, Ort und Land. (Standard: nein)</string>
     <string name="PRO_SHOW_ROLE_MEMBERSHIP">Rollenmitgliedschaften anzeigen</string>
     <string name="PRO_SHOW_ROLE_MEMBERSHIP_DESC">Es wird ein Kasten mit allen Rollen dieser Organisation angezeigt, bei denen der Benutzer Mitglied ist. Dazu werden die entsprechenden Berechtigungen und das Eintrittsdatum aufgelistet. (Standard: ja)</string>
     <string name="PRO_SHOW_ROLES_OTHER_ORGANIZATIONS">Rollen anderer Organisationen anzeigen</string>
@@ -980,7 +980,7 @@
     <string name="ROL_DEPENDENCIES">Abhängigkeiten</string>
     <string name="ROL_DEPENDENT">Abhängig</string>
     <string name="ROL_DISABLE_ROLE">Rolle deaktivieren</string>
-    <string name="ROL_DISABLE_ROLE_DESC">Wenn du #VAR1_BOLD# auswählst, wird die Rolle und alle Mitgliedszuordnungen endgültig aus der Datenbank entfernt und es ist später nicht mehr möglich Daten dieser Rolle einzusehen.</string>
+    <string name="ROL_DISABLE_ROLE_DESC">Wenn du die Rolle #VAR1_BOLD# deaktivierst, kann die Rolle nicht mehr genutzt und Objekten zugeordnet werden. Ebenso sind sämtliche Rechte dieser Rolle nicht mehr wirksam. Die Rolle mit ihren Einstellung und allen Mitgliedszuordnungen bleibt allerdings bestehen und kann zu einem späteren Zeitpunkt wieder aktiviert werden.</string>
     <string name="ROL_EDIT_ROLE">Rolle bearbeiten</string>
     <string name="ROL_ENABLE_ROLE">Rolle aktivieren</string>
     <string name="ROL_ENABLE_ROLE_DESC">Wenn du die Rolle #VAR1_BOLD# wieder aktivierst, bekommen die Rollenmitglieder wieder die Rechte zugeordnet und die Rolle erscheint in sämtlichen Listen.\n\nMöchtest du die Rollen wieder aktivieren?</string>
@@ -1103,6 +1103,9 @@
     <string name="SYS_CONTENT">Inhalt</string>
     <string name="SYS_CONTRIBUTION">Beitrag</string>
     <string name="SYS_CONTRIBUTION_PERIOD">Beitragszeitraum</string>
+    <string name="SYS_COOKIE_NOTE">Hinweis auf Nutzung von Cookies anzeigen</string>
+    <string name="SYS_COOKIE_NOTE_DESC">Besucher und angemeldete Benutzer erhalten beim erstmaligen Aufruf der Webseite einen Hinweis, dass diese Seite Cookies nutzt. Dieser Hinweis muss vom Benutzer einmalig bestätigt werden, danach erhalt der Benutzer auf diesem Gerät und Browser keinen Hinweis mehr.</string>
+    <string name="SYS_COOKIE_DESC">Diese Website verwendet Cookies, um sicherzustellen, dass du die beste Erfahrung auf unserer Website erhältst. Mit der Nutzung dieser Webseite erklärst du dich einverstanden, dass wir Cookies verwenden.</string>
     <string name="SYS_COOKIE_NOT_SET">Der Login kann nicht durchgeführt werden, da dein Browser das Setzen von Cookies verbietet!\n\nDamit du dich erfolgreich anmelden kannst, musst du deinen Browser so einstellen, dass dieser Cookies von #VAR1_BOLD# akzeptiert.</string>
     <string name="SYS_COPY">Kopieren</string>
     <string name="SYS_COPY_VAR">#VAR1# kopieren</string>
@@ -1110,18 +1113,22 @@
     <string name="SYS_COUNTRY_EG" translation="edited">DEU</string>
     <string name="SYS_CREATE">Anlegen</string>
     <string name="SYS_CREATE_ENTRY">Eintrag anlegen</string>
-    <string name="SYS_CREATE_VAR">#VAR1# anlegen</string>
+    <string name="SYS_CREATE_HTACCESS">.htaccess erstellen</string>
     <string name="SYS_CREATE_NEW_USER">Neuen Benutzer anlegen</string>
     <string name="SYS_CREATE_NOT_FOUND_USER">Falls der neue Benutzer nicht unter den gefundenen Benutzern aufgelistet ist, kannst du diesen neu anlegen.</string>
     <string name="SYS_CREATE_ROLE">Rolle anlegen</string>
+    <string name="SYS_CREATE_VAR">#VAR1# anlegen</string>
     <string name="SYS_CREATED_BY">Angelegt von #VAR1# am #VAR2#</string>
     <string name="SYS_CSV">CSV</string>
     <string name="SYS_CURRENT_USER_NO_EMAIL" description="Var1 und Var2 erzeugen den Profil-Link">Du hast keine gültige E-Mail-Adresse hinterlegt!\n\nTrage bitte in deinem #VAR1#Profil#VAR1# eine E-Mail-Adresse ein.</string>
     <string name="SYS_DATA_CATEGORY_GLOBAL">Ist diese Option aktiviert, so sind die Objekte (Termine, Ankündigungen, Weblinks ...) dieser Kategorie auch auf den Webseiten folgender Organisationen sichtbar:\n#VAR1_BOLD#</string>
     <string name="SYS_DATA_MULTI_ORGA">Daten für mehrere Organisationen sichtbar</string>
+    <string name="SYS_DATA_PROTECTION">Datenschutz</string>
+    <string name="SYS_DATA_PROTECTION_DESC">Hier kann die URL zu deiner Seite mit den Datenschutzhinweisen hinterlegt werden. Diese Seite wird innerhalb des Hinweises auf die Verwendung von Cookies für weitere Informationen verlinkt. Sofern das gewählte Theme dies unterstützt, wird auch ein Link auf den Admidio-Seiten angezeigt. (Beispiel: https://www.example.com/data_protection.html)</string>
     <string name="SYS_DATABASE">Datenbank</string>
     <string name="SYS_DATABASE_ERROR">Datenbankfehler</string>
     <string name="SYS_DATABASE_NO_LOGIN">Es konnte keine Verbindung zur Datenbank erstellt werden!\n\nFolgender Fehler ist aufgetreten:\n#VAR1#.</string>
+    <string name="SYS_DATABASE_NO_LOGIN_CONFIG_FILE">Es konnte keine Verbindung zur Datenbank erstellt werden!\n\nBitte prüfe die Zugangsdaten in der Datei config.php im Order adm_my_files. Sollte die Datei noch von einer anderen Installation stammen, so entferne die config.php bitte aus dem Ordner, da über den Installationsassistenten eine neue Datei erzeugt wird. Danach kann die Installation fortgesetzt werden.\n\nFolgender Fehler ist aufgetreten:\n#VAR1#.</string>
     <string name="SYS_DATABASE_VERSION">Datenbank-Version</string>
     <string name="SYS_DATABASE_VERSION_INVALID" description="Var3 and Var4 create link to update">Die Datenbankversion #VAR1# ist niedriger als die Version der Admidio-Scripte #VAR2#.\n\nFühre bitte #VAR3#das Datenbankupdate#VAR4# auf die Version durch.</string>
     <string name="SYS_DATABASE_VERSION_REQUIRED">Admidio benötigt #VAR1# oder höher</string>
@@ -1143,8 +1150,8 @@
     <string name="SYS_DESCRIPTION">Beschreibung</string>
     <string name="SYS_DESIGNATION">Bezeichnung</string>
     <string name="SYS_DIRECTORY_PROTECTION">Verzeichnisschutz</string>
-    <string name="SYS_CREATE_HTACCESS">.htaccess erstellen</string>
     <string name="SYS_DISK_SPACE">Speicherplatz</string>
+    <string name="SYS_DISK_SPACE_ERROR">Die Belegung des Speicherplatzes konnte nicht ermittelt werden.\n\nFehlermeldung:\n#VAR1#</string>
     <string name="SYS_DONATE">Spenden</string>
     <string name="SYS_DONT_SHOW">Nicht anzeigen</string>
     <string name="SYS_DROPDOWN_LISTBOX">Dropdown-Listenfeld</string>
@@ -1194,6 +1201,7 @@
     <string name="SYS_FORGOT_MY_PASSWORD">Ich habe mein Passwort vergessen!</string>
     <string name="SYS_FRIDAY">Freitag</string>
     <string name="SYS_FULL_SCREEN">Vollbild</string>
+    <string name="SYS_FURTHER_INFORMATIONS">Weitere Informationen</string>
     <string name="SYS_GENDER">Geschlecht</string>
     <string name="SYS_GEN_RANDOM_ERROR">Es ist ein unerwarteter Fehler bei der Generierung einer zufälligen Zahl aufgetreten.\nError Code: #VAR1#\nError Message: #VAR2#</string>
     <string name="SYS_GEN_RANDOM_EXCEPTION">Das Programm kann keine zufälligen Zahlen erzeugen.\nError Code: #VAR1#\nError Message: #VAR2#</string>
@@ -1207,6 +1215,8 @@
     <string name="SYS_ICAL_DISABLED">Die iCal-Funktion wurde vom Administrator deaktiviert.</string>
     <string name="SYS_ICON">Icon</string>
     <string name="SYS_IMPORTANT">Wichtig</string>
+    <string name="SYS_IMPRINT">Impressum</string>
+    <string name="SYS_IMPRINT_DESC">Hier kann die URL zum Impressum deiner Seite hinterlegt werden. Sofern das gewählte Theme dies unterstützt, wird ein Link auf den Admidio-Seiten angezeigt. (Beispiel: https://www.example.com/imprint.html)</string>
     <string name="SYS_INFORMATIONS">Informationen</string>
     <string name="SYS_INTERNAL_NAME">Interner Name</string>
     <string name="SYS_INTERNAL_NAME_DESC">Der interne Name wird für den eindeutigen Zugriff auf dieses Datenobjekt benutzt. Dieser ist für die Programmbenutzung nicht relevant. Bei der Entwicklung muss allerdings immer dieser Name benutzt werden, um das Feld z.B. mit getValue() anzusprechen. Der interne Name wird beim Anlegen eines Datensatzes automatisch gefüllt.</string>
@@ -1242,9 +1252,12 @@
     <string name="SYS_MAIL_DISPATCH">E-Mailversand</string>
     <string name="SYS_MAINTAIN_CATEGORIES">Kategorien pflegen</string>
     <string name="SYS_MAINTAIN_USER_RELATION_TYPES">Beziehungstypen pflegen</string>
+    <string name="SYS_MAINTAIN_USER_RELATION_TYPES_DESC">Es können Beziehungstypen (Elternteil - Kind) definiert werden. Zu jeder definierten Beziehung wird der Typ (asymmetrisch, symmetrisch oder unidirektional) hinterlegt, sowie die Profilbearbeitungsrechte innerhalb der Beziehung festgelegt.</string>
     <string name="SYS_MALE">Männlich</string>
     <string name="SYS_MANDATORY_FIELD">Pflichtfeld</string>
     <string name="SYS_MAP">Karte</string>
+    <string name="SYS_MAP_LINK_HOME_DESC">Zeigt den Wohnort bei Google-Maps an. Es werden die Straße, PLZ, Wohnort und Land an Google übertragen.</string>
+    <string name="SYS_MAP_LINK_ROUTE_DESC">Zeigt eine Route vom eigenen Wohnort zum Wohnort dieses Benutzers bei Google-Maps an. Es werden die Straße, PLZ, Wohnort und Land an Google übertragen.</string>
     <string name="SYS_MASTER_DATA">Stammdaten</string>
     <string name="SYS_MAX_PARTICIPANTS">Max. Teilnehmer</string>
     <string name="SYS_MAX_PROCESSABLE_IMAGE_SIZE">max. bearbeitbare Bildgröße</string>
@@ -1353,6 +1366,7 @@
     <string name="SYS_SAVE_DATA">Die Daten wurden gespeichert.</string>
     <string name="SYS_SECONDS">Sekunden</string>
     <string name="SYS_SECURE">Sicher</string>
+    <string name="SYS_SECURITY">Sicherheit</string>
     <string name="SYS_SECURITY_ERROR">Sicherheitsfehler</string>
     <string name="SYS_SELECT_FROM_LIST">Aus Liste auswählen</string>
     <string name="SYS_SEND">Abschicken</string>

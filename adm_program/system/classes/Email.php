@@ -148,8 +148,6 @@ class Email extends PHPMailer
      */
     public function addRecipient($address, $name = '')
     {
-        $address = admStrToLower($address);
-
         try
         {
             $this->addAddress($address, $name);
@@ -172,8 +170,6 @@ class Email extends PHPMailer
      */
     public function addCopy($address, $name = '')
     {
-        $address = admStrToLower($address);
-
         try
         {
             $this->addCC($address, $name);
@@ -197,7 +193,6 @@ class Email extends PHPMailer
      */
     public function addBlindCopy($address, $name = '')
     {
-        $address = admStrToLower($address);
         // Blindcopy must be Ascii-US formated, so encode in MimeHeader
         $asciiName = stripslashes($name);
 
@@ -312,8 +307,6 @@ class Email extends PHPMailer
     {
         global $gSettingsManager;
 
-        $address = admStrToLower($address);
-
         // save sender if a copy of the mail should be send to him
         $this->emSender = array('address' => $address, 'name' => $name);
 
@@ -409,9 +402,16 @@ class Email extends PHPMailer
             $senderText .= self::CRLF . $gL10n->get('MAI_SENDER_NOT_LOGGED_IN');
         }
 
-        $senderText .= self::CRLF .
-            '*****************************************************************************************************************************' .
-            self::CRLF . self::CRLF;
+        if($this->emSendAsHTML)
+        {
+            $senderText .= self::CRLF . '<hr style="border-width: 1px; border-style: solid;" />' . self::CRLF . self::CRLF;            
+        }
+        else
+        {
+            $senderText .= self::CRLF .
+                '*****************************************************************************************************************************' .
+                self::CRLF . self::CRLF;
+        }
 
         $this->emText .= $senderText;
         $this->emHtmlText .= nl2br($senderText);

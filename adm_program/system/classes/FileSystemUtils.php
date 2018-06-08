@@ -47,14 +47,14 @@ final class FileSystemUtils
      * @param string $filename The original filename
      * @throws AdmException Throws if secure random identifier could not be generated
      * @return string Returns the generated filename
-     * @example "IMG_123456.JPG" => "20180131-123456_abcdef0123456798.JPG"
+     * @example "IMG_123456.JPG" => "20180131-123456_0123456789abcdef.jpg"
      */
     public static function getGeneratedFilename($filename)
     {
-        $extension = pathinfo($filename, PATHINFO_EXTENSION);
+        $extension = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
         $now = new \DateTime();
 
-        return $now->format('Ymd-His') . '_' . PasswordHashing::genRandomPassword() . '.' . $extension;
+        return $now->format('Ymd-His') . '_' . PasswordUtils::genRandomPassword(16, $charset = '0123456789abcdefghijklmnopqrstuvwxyz') . '.' . $extension;
     }
 
     /**
@@ -207,8 +207,8 @@ final class FileSystemUtils
     /**
      * Gets the total, free and used disk space in bytes
      * @param string $path Path of the filesystem
-     * @throws \RuntimeException Throws if the given path is not in an allowed directory
-     * @return array<string,int> Returns the total, free and used disk space in bytes
+     * @throws \RuntimeException Throws if the given path is not in an allowed directory or disk-space could not be determined
+     * @return array<string,float> Returns the total, free and used disk space in bytes
      * @see https://secure.php.net/manual/en/function.disk-total-space.php
      * @see https://secure.php.net/manual/en/function.disk-free-space.php
      * @example array("total" => 10737418240, "free" => 2147483648, "used" => 8589934592)
@@ -217,8 +217,18 @@ final class FileSystemUtils
     {
         self::checkIsInAllowedDirectories($path);
 
-        $total = (int) disk_total_space($path);
-        $free = (int) disk_free_space($path);
+        $total = disk_total_space($path);
+        if ($total === false)
+        {
+            throw new \RuntimeException('Total disk-space could not be determined!');
+        }
+
+        $free = disk_free_space($path);
+        if ($free === false)
+        {
+            throw new \RuntimeException('Free disk-space could not be determined!');
+        }
+
         $used = $total - $free;
 
         return array('total' => $total, 'free' => $free, 'used' => $used);

@@ -107,7 +107,7 @@ $navbarForm->addSelectBoxForCategories(
     'cat_id', $gL10n->get('SYS_CATEGORY'), $gDb, 'ROL', HtmlForm::SELECT_BOX_MODUS_FILTER,
     array('defaultValue' => $getCatId)
 );
-$listsMenu->addForm($navbarForm->show(false));
+$listsMenu->addForm($navbarForm->show());
 
 if($gCurrentUser->isAdministrator())
 {
@@ -236,7 +236,7 @@ foreach($listsResult['recordset'] as $row)
         <div id="collapse_'.$rolId.'" class="panel-collapse collapse">
             <div class="panel-body" id="admRoleDetails'.$rolId.'">');
                 // create a static form
-                $form = new HtmlForm('lists_static_form', null);
+                $form = new HtmlForm('lists_static_form');
 
                 // show combobox with lists if user is allowed to see members and the role has members
                 if($row['num_members'] > 0 || $row['num_leader'] > 0)
@@ -317,7 +317,7 @@ foreach($listsResult['recordset'] as $row)
                     $form->addStaticControl('list_cost_period', $gL10n->get('SYS_CONTRIBUTION_PERIOD'), TableRoles::getCostPeriods($role->getValue('rol_cost_period')));
                 }
 
-                $page->addHtml($form->show(false));
+                $page->addHtml($form->show());
             $page->addHtml('</div>
         </div>
     </div>');

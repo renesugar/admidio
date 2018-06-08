@@ -28,7 +28,7 @@ if (!array_key_exists(COOKIE_PREFIX . '_SESSION_ID', $_COOKIE))
 }
 
 // remove login page from navigation stack
-if (admStrEndsWith($gNavigation->getUrl(), '/login.php'))
+if (StringUtils::strEndsWith($gNavigation->getUrl(), '/login.php'))
 {
     $gNavigation->deleteLastUrl();
 }
@@ -40,7 +40,7 @@ if (array_key_exists('login_forward_url', $_SESSION))
 }
 else
 {
-    $forwardUrl = $gHomepage;
+    $forwardUrl = ADMIDIO_URL . '/' . $gSettingsManager->getString('homepage_login');
 }
 
 unset($_SESSION['login_forward_url']);

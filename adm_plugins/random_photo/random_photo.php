@@ -3,12 +3,10 @@
  ***********************************************************************************************
  * Random Photo
  *
- * Version 2.0.0
- *
  * Plugin zeigt ein zufaellig ausgewaehltes Foto aus dem Fotomodul an und
  * und verlinkt neben dem Bild das dazugehörige Album
  *
- * Compatible with Admidio version 3.2
+ * Compatible with Admidio version 3.3
  *
  * @copyright 2004-2018 The Admidio Team
  * @see https://www.admidio.org/
@@ -16,17 +14,11 @@
  ***********************************************************************************************
  */
 
-// create path to plugin
-$pluginFolderPos = strpos(__FILE__, 'adm_plugins') + 11;
-$pluginFilePos   = strpos(__FILE__, 'random_photo.php');
-$pluginFolder    = substr(__FILE__, $pluginFolderPos + 1, $pluginFilePos - $pluginFolderPos - 2);
+$rootPath = dirname(dirname(__DIR__));
+$pluginFolder = basename(__DIR__);
 
-if(!defined('PLUGIN_PATH'))
-{
-    define('PLUGIN_PATH', substr(__FILE__, 0, $pluginFolderPos));
-}
-require_once(PLUGIN_PATH. '/../adm_program/system/common.php');
-require_once(PLUGIN_PATH. '/'.$pluginFolder.'/config.php');
+require_once($rootPath . '/adm_program/system/common.php');
+require_once(__DIR__ . '/config.php');
 
 // pruefen, ob alle Einstellungen in config.php gesetzt wurden
 // falls nicht, hier noch mal die Default-Werte setzen
@@ -129,7 +121,7 @@ while(!is_file($picPath) && $i < 20 && $albumStatement->rowCount() > 0)
 
 if(!is_file($picPath))
 {
-    $picPath = THEME_PATH . '/images/nopix.jpg';
+    $picPath = THEME_PATH . '/images/no_photo_found.png';
 }
 
 if($plg_photos_show_link && $plg_max_char_per_word > 0)

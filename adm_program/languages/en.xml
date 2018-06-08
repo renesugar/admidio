@@ -288,7 +288,7 @@
   <string name="INS_INSTALLATION_VERSION">Installation of version #VAR1#</string>
   <string name="INS_INSTALLATION_WAS_SUCCESSFUL">Installation was successful</string>
   <string name="INS_INTERN">Internal</string>
-  <string name="INS_LANGUAGE_NOT_CHOOSEN">No language has been selected.</string>
+  <string name="INS_LANGUAGE_NOT_CHOSEN">No language has been selected.</string>
   <string name="INS_MEMBERSHIP">Membership</string>
   <string name="INS_MESSENGER">Messenger</string>
   <string name="INS_NO_INSTALLED_VERSION_FOUND">Could not find the current installation. If you\'ve used Admidio 1.x update to Admidio 2.x first. Afterwards you can update the version to #VAR1#. If you are already using Admidio 2.x or higher please check the consistency of your database.</string>
@@ -744,7 +744,7 @@
   <string name="ORG_PARENT_ORGANIZATION">Parent organization</string>
   <string name="ORG_PARENT_ORGANIZATION_DESC">Define parent organization here. Parent organizations are able to create events and announcements for example which will be displayed in selected (child) organization.</string>
   <string name="ORG_PASSWORD_MIN_STRENGTH">Password strength</string>
-  <string name="ORG_PASSWORD_MIN_STRENGTH_DESC">Here you can specify how safe and complex passwords must be at least.\nThe value in brackets indicates how many attempts are required on average until the password is determined.\n\n No: risky password (&lt;10^3)\n Low: Protection against throttled online attacks. (&lt;10^6)\n Middle: protection against unrestricted online attacks.(&lt;10^8)\n High: Moderate protection against offline hashing. (&lt;10 ^10)\n Extreme: Strong protection against offline hashing. (&gt;= 10^10)</string>
+  <string name="ORG_PASSWORD_MIN_STRENGTH_DESC">Here you can specify how safe and complex passwords must be at least.\nThe value in brackets indicates how many attempts are required on average until the password is determined.\n\n No: risky password (&lt;10^3)\n Low: Protection against throttled online attacks. (&lt;10^6)\n Middle: protection against unrestricted online attacks.(&lt;10^8)\n High: Moderate protection against offline hashing. (&lt;10 ^10)\n Very high: Strong protection against offline hashing. (&gt;= 10^10)</string>
   <string name="ORG_PASSWORD_MIN_STRENGTH_NO">None</string>
   <string name="ORG_PASSWORD_MIN_STRENGTH_LOW">Low</string>
   <string name="ORG_PASSWORD_MIN_STRENGTH_MID">Middle</string>
@@ -926,7 +926,7 @@
   <string name="PRO_PHOTO_DELETED">Profile picture has been deleted.</string>
   <string name="PRO_PHOTO_FILE_TO_LARGE">Size of uploaded photo exceeds server allowed file size of #VAR1# B.</string>
   <string name="PRO_PHOTO_FORMAT_INVALID">Only JPG and PNG formated photos are allowed.</string>
-  <string name="PRO_PHOTO_NOT_CHOOSEN">No picture file selected.</string>
+  <string name="PRO_PHOTO_NOT_CHOSEN">No picture file selected.</string>
   <string name="PRO_PHOTO_RESOLUTION_TO_LARGE">Uploaded picture\'s size exceeds server allowed resolution of #VAR1# megapixels.</string>
   <string name="PRO_PHOTO_SAVED">New profile picture has been successfully saved.</string>
   <string name="PRO_PROFILE">Profile</string>
@@ -980,7 +980,7 @@
   <string name="ROL_DEPENDENCIES">Dependencies</string>
   <string name="ROL_DEPENDENT">Dependent</string>
   <string name="ROL_DISABLE_ROLE">Turn off the role</string>
-  <string name="ROL_DISABLE_ROLE_DESC">If you select #VAR1_BOLD#, the role and all member mappings will be permanently removed from the database, and can not been seen anymore.</string>
+  <string name="ROL_DISABLE_ROLE_DESC">If you disable role #VAR1_BOLD#, the role can no longer be used and assigned to objects. Likewise, all rights of this role are no longer effective. However, the role with its setting and all member mappings remains and can be reactivated at a later date.</string>
   <string name="ROL_EDIT_ROLE">Edit role</string>
   <string name="ROL_ENABLE_ROLE">Activate role</string>
   <string name="ROL_ENABLE_ROLE_DESC">If you re-activate the role #VAR1_BOLD#, the role members are assigned again with permissions and the role is selectable in all lists.\n\nDo you want to re-activate the roles?</string>
@@ -1103,6 +1103,9 @@
   <string name="SYS_CONTENT">Content</string>
   <string name="SYS_CONTRIBUTION">Contribution</string>
   <string name="SYS_CONTRIBUTION_PERIOD">Contribution period</string>
+  <string name="SYS_COOKIE_NOTE">Show notice of use of cookies</string>
+  <string name="SYS_COOKIE_NOTE_DESC">Visitors and registered users receive a notice when using the website for the first time that this site uses cookies. This note must be confirmed once by the user, after that the user no longer receives any information on this device and browser.</string>
+  <string name="SYS_COOKIE_DESC">This website uses cookies to ensure that you get the best experience on our website. By using this website you agree that we use cookies.</string>
   <string name="SYS_COOKIE_NOT_SET">Log-in error! Your browser does not accept cookies!\n\nFor successful log-in, please, configure your browser to accept cookies from #VAR1_BOLD#.</string>
   <string name="SYS_COPY">Copy</string>
   <string name="SYS_COPY_VAR">Copy #VAR1#</string>
@@ -1122,6 +1125,7 @@
   <string name="SYS_DATABASE">Database</string>
   <string name="SYS_DATABASE_ERROR">Database error</string>
   <string name="SYS_DATABASE_NO_LOGIN">The connection to the database failed!\n\nThe following error occurred:\n#VAR1#.</string>
+  <string name="SYS_DATABASE_NO_LOGIN_CONFIG_FILE">No connection to the database could be created!\n\nPlease check the access data in the file config.php in the folder adm_my_files. If the file is still from another installation, please remove the config.php from the folder, because a new file will be created via the installation wizard. After that you can continue the installation.\n\nThe following error occurred: \n#VAR1#.</string>
   <string name="SYS_DATABASE_VERSION">Database version</string>
   <string name="SYS_DATABASE_VERSION_INVALID" description="Var3 and Var4 create link to update">The database version #VAR1# is lower than the version of the Admidio scripts #VAR2#.\n\nPlease perform #VAR3# database update to version #VAR4#.</string>
   <string name="SYS_DATABASE_VERSION_REQUIRED">Admidio requires #VAR1# or higher</string>
@@ -1145,6 +1149,7 @@
   <string name="SYS_DIRECTORY_PROTECTION">Directory protection</string>
   <string name="SYS_CREATE_HTACCESS">Create .htaccess</string>
   <string name="SYS_DISK_SPACE">Disk space</string>
+  <string name="SYS_DISK_SPACE_ERROR">The usage of the storage space could not be determined.\n\nError message:\n#VAR1#</string>
   <string name="SYS_DONATE">Donate</string>
   <string name="SYS_DONT_SHOW">Do not display</string>
   <string name="SYS_DROPDOWN_LISTBOX">Drop-down list box</string>
@@ -1194,6 +1199,7 @@
   <string name="SYS_FORGOT_MY_PASSWORD">I forgot my password!</string>
   <string name="SYS_FRIDAY">Friday</string>
   <string name="SYS_FULL_SCREEN">Full screen</string>
+  <string name="SYS_FURTHER_INFORMATIONS">Further informations</string>
   <string name="SYS_GENDER">Gender</string>
   <string name="SYS_GEN_RANDOM_ERROR">An unexpected error occurred while generating a random number.\nError Code: #VAR1#\nError Message: #VAR2#</string>
   <string name="SYS_GEN_RANDOM_EXCEPTION">The program can not generate random numbers.\nError Code: #VAR1#\nError Message: #VAR2#</string>

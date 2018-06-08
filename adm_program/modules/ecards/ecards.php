@@ -10,7 +10,7 @@
  * Parameters:
  *
  * pho_id:      Id of photo album whose image you want to send
- * photo_nr:    Number of the photo of the choosen album
+ * photo_nr:    Number of the photo of the chosen album
  * usr_id:      (optional) Id of the user who should receive the ecard
  ***********************************************************************************************
  */
@@ -196,7 +196,7 @@ $sql = 'SELECT rol_id, rol_name
           FROM '.TBL_ROLES.'
     INNER JOIN '.TBL_CATEGORIES.'
             ON cat_id = rol_cat_id
-         WHERE rol_id IN ('.replaceValuesArrWithQM($arrayMailRoles).')
+         WHERE rol_id IN ('.Database::getQmForValues($arrayMailRoles).')
            AND cat_name_intern <> \'EVENTS\'
       ORDER BY rol_name';
 $statement = $gDb->queryPrepared($sql, $arrayMailRoles);
@@ -271,5 +271,5 @@ $form->addSubmitButton('btn_ecard_submit', $gL10n->get('SYS_SEND'), array('icon'
 $form->closeButtonGroup();
 
 // add form to html page and show page
-$page->addHtml($form->show(false));
+$page->addHtml($form->show());
 $page->show();

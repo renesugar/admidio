@@ -684,7 +684,7 @@ if($getActiveRole)
                            FROM '.TBL_ROLES.'
                      INNER JOIN '.TBL_CATEGORIES.'
                              ON cat_id = rol_cat_id
-                          WHERE rol_id IN (' . replaceValuesArrWithQM($allVisibleRoles) . ')
+                          WHERE rol_id IN (' . Database::getQmForValues($allVisibleRoles) . ')
                        ORDER BY cat_sequence, rol_name';
     $sqlData['params'] = $allVisibleRoles;
 }
@@ -732,5 +732,5 @@ $form->addButton(
 );
 
 // add form to html page and show page
-$page->addHtml($form->show(false));
+$page->addHtml($form->show());
 $page->show();

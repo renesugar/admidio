@@ -169,11 +169,11 @@ function admFuncGeneratePagination($baseUrl, $itemsCount, $itemsPerPage, $pageSt
         {
             if ($i === $page)
             {
-                $pageNavString .= getListElementString($i, 'active');
+                $pageNavString .= getListElementString((string) $i, 'active');
             }
             else
             {
-                $pageNavString .= getListElementString($i, '', $url, $paramName, ($i - 1) * $itemsPerPage);
+                $pageNavString .= getListElementString((string) $i, '', $url, $paramName, ($i - 1) * $itemsPerPage);
             }
         }
 
@@ -185,10 +185,10 @@ function admFuncGeneratePagination($baseUrl, $itemsCount, $itemsPerPage, $pageSt
      * @param string $className
      * @param string $url
      * @param string $paramName
-     * @param string $paramValue
+     * @param int    $paramValue
      * @return string
      */
-    function getListElementString($linkText, $className = '', $url = '', $paramName = '', $paramValue = '')
+    function getListElementString($linkText, $className = '', $url = '', $paramName = '', $paramValue = null)
     {
         $classString = '';
         if ($className !== '')
@@ -335,7 +335,6 @@ function admFuncVariableIsValid(array $array, $variableName, $datatype, array $o
     $optionsAll     = array_replace($optionsDefault, $options);
 
     $errorMessage = '';
-    $datatype = strtolower($datatype);
     $value = null;
 
     // set default value for each datatype if no value is given and no value was required
@@ -381,9 +380,7 @@ function admFuncVariableIsValid(array $array, $variableName, $datatype, array $o
 
     // check if parameter has a valid value
     // do a strict check with in_array because the function don't work properly
-    if ($optionsAll['validValues'] !== null
-    && !in_array(admStrToUpper($value), $optionsAll['validValues'], true)
-    && !in_array(admStrToLower($value), $optionsAll['validValues'], true))
+    if ($optionsAll['validValues'] !== null && !in_array($value, $optionsAll['validValues'], true))
     {
         $errorMessage = $gL10n->get('SYS_INVALID_PAGE_VIEW');
     }
@@ -495,13 +492,13 @@ function admFuncVariableIsValid(array $array, $variableName, $datatype, array $o
  * Creates a html fragment with information about user and time when the recordset was created
  * and when it was at last edited. Therefore all necessary data must be set in the function
  * parameters. If userId is not set then the function will show **deleted user**.
- * @param int    $userIdCreated   Id of the user who create the recordset.
- * @param string $timestampCreate Date and time of the moment when the user create the recordset.
- * @param int    $userIdEdited    Id of the user last changed the recordset.
- * @param string $timestampEdited Date and time of the moment when the user last changed the recordset
+ * @param int         $userIdCreated   Id of the user who create the recordset.
+ * @param string      $timestampCreate Date and time of the moment when the user create the recordset.
+ * @param int         $userIdEdited    Id of the user last changed the recordset.
+ * @param string|null $timestampEdited Date and time of the moment when the user last changed the recordset
  * @return string Returns a html string with usernames who creates item and edit item the last time
  */
-function admFuncShowCreateChangeInfoById($userIdCreated, $timestampCreate, $userIdEdited = 0, $timestampEdited = '')
+function admFuncShowCreateChangeInfoById($userIdCreated, $timestampCreate, $userIdEdited = 0, $timestampEdited = null)
 {
     global $gDb, $gProfileFields, $gL10n, $gSettingsManager;
 
@@ -574,17 +571,17 @@ function admFuncShowCreateChangeInfoById($userIdCreated, $timestampCreate, $user
  * Creates a html fragment with information about user and time when the recordset was created
  * and when it was at last edited. Therefore all necessary data must be set in the function
  * parameters. If user name is not set then the function will show **deleted user**.
- * @param string $userNameCreated Id of the user who create the recordset.
- * @param string $timestampCreate Date and time of the moment when the user create the recordset.
- * @param string $userNameEdited  Id of the user last changed the recordset.
- * @param string $timestampEdited Date and time of the moment when the user last changed the recordset
- * @param int    $userIdCreated   (optional) The id of the user who create the recordset.
- *                                If id is set than a link to the user profile will be created
- * @param int    $userIdEdited    (optional) The id of the user last changed the recordset.
- *                                If id is set than a link to the user profile will be created
+ * @param string      $userNameCreated Id of the user who create the recordset.
+ * @param string      $timestampCreate Date and time of the moment when the user create the recordset.
+ * @param string|null $userNameEdited  Id of the user last changed the recordset.
+ * @param string|null $timestampEdited Date and time of the moment when the user last changed the recordset
+ * @param int         $userIdCreated   (optional) The id of the user who create the recordset.
+ *                                     If id is set than a link to the user profile will be created
+ * @param int         $userIdEdited    (optional) The id of the user last changed the recordset.
+ *                                     If id is set than a link to the user profile will be created
  * @return string Returns a html string with usernames who creates item and edit item the last time
  */
-function admFuncShowCreateChangeInfoByName($userNameCreated, $timestampCreate, $userNameEdited, $timestampEdited, $userIdCreated = 0, $userIdEdited = 0)
+function admFuncShowCreateChangeInfoByName($userNameCreated, $timestampCreate, $userNameEdited = null, $timestampEdited = null, $userIdCreated = 0, $userIdEdited = 0)
 {
     global $gL10n, $gValidLogin, $gSettingsManager;
 
@@ -603,7 +600,14 @@ function admFuncShowCreateChangeInfoByName($userNameCreated, $timestampCreate, $
 
         if ($userNameCreated === '')
         {
-            $userNameCreated = $gL10n->get('SYS_DELETED_USER');
+            if($userIdCreated === 1)
+            {
+                $userNameCreated = $gL10n->get('SYS_SYSTEM');                
+            }
+            else
+            {
+                $userNameCreated = $gL10n->get('SYS_DELETED_USER');
+            }
         }
 
         // if valid login and a user id is given than create a link to the profile of this user
@@ -623,7 +627,14 @@ function admFuncShowCreateChangeInfoByName($userNameCreated, $timestampCreate, $
 
         if ($userNameEdited === '')
         {
-            $userNameEdited = $gL10n->get('SYS_DELETED_USER');
+            if($userIdEdited === 1)
+            {
+                $userNameEdited = $gL10n->get('SYS_SYSTEM');                
+            }
+            else
+            {
+                $userNameEdited = $gL10n->get('SYS_DELETED_USER');
+            }
         }
 
         // if valid login and a user id is given than create a link to the profile of this user
@@ -699,8 +710,7 @@ function admFuncGetDirectoryEntries($directory, $searchType = 'file')
 function admFuncCheckUrl($url)
 {
     // Homepage url have to start with "http://"
-    if (strpos(admStrToLower($url), 'http://')  !== 0
-    &&  strpos(admStrToLower($url), 'https://') !== 0)
+    if (!StringUtils::strStartsWith($url, 'http://', false) && !StringUtils::strStartsWith($url, 'https://', false))
     {
         $url = 'http://' . $url;
     }
@@ -807,16 +817,6 @@ function admRedirect($url, $statusCode = 303)
 
     header('Location: ' . $redirectUrl, true, $statusCode);
     exit();
-}
-
-/**
- * Get an string with question marks that are comma separated.
- * @param array<int,mixed> $valuesArray An array with the values that should be replaced with question marks
- * @return string Question marks string
- */
-function replaceValuesArrWithQM(array $valuesArray)
-{
-    return implode(',', array_fill(0, count($valuesArray), '?'));
 }
 
 /**

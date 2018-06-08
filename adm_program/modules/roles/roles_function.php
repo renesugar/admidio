@@ -244,7 +244,7 @@ if($getMode === 2)
         // POST Variablen in das Role-Objekt schreiben
         foreach($_POST as $key => $value) // TODO possible security issue
         {
-            if(admStrStartsWith($key, 'rol_'))
+            if(StringUtils::strStartsWith($key, 'rol_'))
             {
                 $role->setValue($key, $value);
             }
@@ -323,10 +323,12 @@ if($getMode === 2)
     $gMessage->show($gL10n->get('SYS_SAVE_DATA'));
     // => EXIT
 }
-elseif($getMode === 3)
+elseif($getMode === 3) // set role inactive
 {
-    // Rolle zur inaktiven Rolle machen
-    if($role->setInactive())
+    // event roles should not set inactive
+    // all other roles could now set inactive
+    if($role->getValue('cat_name_intern') !== 'EVENTS'
+    && $role->setInactive())
     {
         echo 'done';
     }
@@ -353,10 +355,12 @@ elseif($getMode === 4)
     }
     exit();
 }
-elseif($getMode === 5)
+elseif($getMode === 5) // set role active
 {
-    // Rolle wieder aktiv setzen
-    if($role->setActive())
+    // event roles should not set active
+    // all other roles could now set active
+    if($role->getValue('cat_name_intern') !== 'EVENTS'
+    && $role->setActive())
     {
         echo 'done';
     }

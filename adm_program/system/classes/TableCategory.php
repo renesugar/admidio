@@ -232,6 +232,12 @@ class TableCategory extends TableAccess
 
         if($this->isVisible())
         {
+            // a new record will always be visible until all data is saved
+            if($this->newRecord)
+            {
+                return true;
+            }
+
             // if category belongs to current organization than it's editable
             if($this->getValue('cat_org_id') > 0
             && (int) $this->getValue('cat_org_id') === (int) $gCurrentOrganization->getValue('org_id'))
@@ -239,14 +245,8 @@ class TableCategory extends TableAccess
                 return true;
             }
 
-            // if category belongs to all organizations only parent organization could edit it
-            if((int) $this->getValue('cat_org_id') === 0 && $gCurrentOrganization->isParentOrganization())
-            {
-                return true;
-            }
-
-            // a new record will always be visible until all data is saved
-            if($this->newRecord)
+            // if category belongs to all organizations, child organization couldn't edit it
+            if((int) $this->getValue('cat_org_id') === 0 && !$gCurrentOrganization->isChildOrganization())
             {
                 return true;
             }
@@ -485,21 +485,23 @@ class TableCategory extends TableAccess
     {
         global $gCurrentOrganization;
 
-        // Systemkategorien duerfen nicht umbenannt werden
-        if ($columnName === 'cat_name' && (int) $this->getValue('cat_system') === 1)
+        if($checkValue)
         {
-            return false;
-        }
-
-        if ($columnName === 'cat_default' && $newValue == '1')
-        {
-            // es darf immer nur eine Default-Kategorie je Bereich geben
-            $sql = 'UPDATE '.TBL_CATEGORIES.'
-                       SET cat_default = 0
-                     WHERE cat_type    = ? -- $this->getValue(\'cat_type\')
-                       AND (  cat_org_id IS NOT NULL
-                           OR cat_org_id = ?) -- $gCurrentOrganization->getValue(\'org_id\')';
-            $this->db->queryPrepared($sql, array($this->getValue('cat_type'), $gCurrentOrganization->getValue('org_id')));
+            // Systemkategorien duerfen nicht umbenannt werden
+            if ($columnName === 'cat_name' && (int) $this->getValue('cat_system') === 1)
+            {
+                return false;
+            }
+            elseif ($columnName === 'cat_default' && $newValue == '1')
+            {
+                // es darf immer nur eine Default-Kategorie je Bereich geben
+                $sql = 'UPDATE '.TBL_CATEGORIES.'
+                           SET cat_default = 0
+                         WHERE cat_type    = ? -- $this->getValue(\'cat_type\')
+                           AND (  cat_org_id IS NOT NULL
+                               OR cat_org_id = ?) -- $gCurrentOrganization->getValue(\'org_id\')';
+                $this->db->queryPrepared($sql, array($this->getValue('cat_type'), $gCurrentOrganization->getValue('org_id')));
+            }
         }
 
         return parent::setValue($columnName, $newValue, $checkValue);

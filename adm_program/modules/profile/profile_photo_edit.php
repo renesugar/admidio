@@ -202,7 +202,7 @@ if($getMode === 'choose')
     );
 
     // add form to html page and show page
-    $page->addHtml($form->show(false));
+    $page->addHtml($form->show());
     $page->show();
 }
 elseif($getMode === 'upload')
@@ -219,7 +219,7 @@ elseif($getMode === 'upload')
     // Kontrolle ob Fotos ausgewaehlt wurden
     if(!is_file($_FILES['userfile']['tmp_name'][0]))
     {
-        $gMessage->show($gL10n->get('PRO_PHOTO_NOT_CHOOSEN'));
+        $gMessage->show($gL10n->get('PRO_PHOTO_NOT_CHOSEN'));
         // => EXIT
     }
 
@@ -289,6 +289,6 @@ elseif($getMode === 'upload')
     $form->addButton('btn_cancel', $gL10n->get('SYS_ABORT'), array('icon' => THEME_URL.'/icons/error.png'));
 
     // add form to html page and show page
-    $page->addHtml($form->show(false));
+    $page->addHtml($form->show());
     $page->show();
 }

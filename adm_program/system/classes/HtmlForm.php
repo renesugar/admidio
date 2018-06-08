@@ -98,7 +98,7 @@ class HtmlForm extends HtmlFormBasic
      *                           - **class** : An additional css classname. The class **form-horizontal**
      *                             is set as default and need not set with this parameter.
      */
-    public function __construct($id, $action, HtmlPage $htmlPage = null, array $options = array())
+    public function __construct($id, $action = null, HtmlPage $htmlPage = null, array $options = array())
     {
         // create array with all options
         $optionsDefault = array(
@@ -219,7 +219,7 @@ class HtmlForm extends HtmlFormBasic
 
         if ($optionsAll['data-admidio'] !== '')
         {
-            $this->addAttribute('data-admidio', $optionsAll['data-admidio']);
+            $this->addAttribute('data-admidio', (string) $optionsAll['data-admidio']);
         }
 
         if ($optionsAll['onClickText'] !== '')
@@ -406,7 +406,7 @@ class HtmlForm extends HtmlFormBasic
         if ($optionsAll['icon'] !== '')
         {
             // create html for icon
-            if (admStrStartsWith(admStrToLower($optionsAll['icon']), 'http') && strValidCharacters($optionsAll['icon'], 'url'))
+            if (StringUtils::strStartsWith($optionsAll['icon'], 'http', false) && strValidCharacters($optionsAll['icon'], 'url'))
             {
                 $htmlIcon = '<img class="admidio-icon-info" src="' . $optionsAll['icon'] . '" title="' . $label . '" alt="' . $label . '" />';
             }
@@ -676,7 +676,7 @@ class HtmlForm extends HtmlFormBasic
 
         $this->openControlStructure($id, $label, $optionsAll['property'], $optionsAll['helpTextIdLabel'],
                                     $optionsAll['icon'], 'form-upload');
-        $this->addSimpleInput('hidden', 'MAX_FILE_SIZE', 'MAX_FILE_SIZE', $optionsAll['maxUploadSize']);
+        $this->addSimpleInput('hidden', 'MAX_FILE_SIZE', 'MAX_FILE_SIZE', (string) $optionsAll['maxUploadSize']);
 
         // if multi uploads are enabled then the file upload field could be hidden
         // until the user will click on the button to add a new upload field
@@ -1170,7 +1170,7 @@ class HtmlForm extends HtmlFormBasic
             }
 
             $this->addHtml('<label for="' . $id . '_' . $key . '" class="radio-inline">');
-            $this->addSimpleInput('radio', $id, $id . '_' . $key, $key, $attributes);
+            $this->addSimpleInput('radio', $id, $id . '_' . $key, (string) $key, $attributes);
             $this->addHtml($value . '</label>');
         }
 
@@ -1233,10 +1233,7 @@ class HtmlForm extends HtmlFormBasic
         $attributes = array('class' => 'form-control');
         $name = $id;
 
-        if (count($values) > 0)
-        {
-            ++$this->countElements;
-        }
+        ++$this->countElements;
 
         // create array with all options
         $optionsDefault = array(
@@ -1258,7 +1255,8 @@ class HtmlForm extends HtmlFormBasic
         $optionsAll = array_replace($optionsDefault, $options);
 
         // disable field
-        if ($optionsAll['property'] === self::FIELD_DISABLED)
+        if ($optionsAll['property'] === self::FIELD_DISABLED ||
+            ($optionsAll['firstEntry'] === '' && !$optionsAll['showContextDependentFirstEntry'] && count($values) === 0))
         {
             $attributes['disabled'] = 'disabled';
         }
@@ -1333,6 +1331,10 @@ class HtmlForm extends HtmlFormBasic
                 $this->addOption('', ' ', null, $defaultEntry);
             }
         }
+        elseif (count($values) === 0)
+        {
+            $this->addOption('', '');
+        }
 
         $optionGroup = null;
 
@@ -1367,11 +1369,11 @@ class HtmlForm extends HtmlFormBasic
 
                 if(is_array($optionsAll['valueAttributes']))
                 {
-                    $this->addOption($value[0], $value[1], null, $defaultEntry, false, $optionsAll['valueAttributes'][$value[0]]);
+                    $this->addOption((string) $value[0], $value[1], null, $defaultEntry, false, $optionsAll['valueAttributes'][$value[0]]);
                 }
                 else
                 {
-                    $this->addOption($value[0], $value[1], null, $defaultEntry);
+                    $this->addOption((string) $value[0], $value[1], null, $defaultEntry);
                 }
             }
             else
@@ -1387,11 +1389,11 @@ class HtmlForm extends HtmlFormBasic
 
                 if(is_array($optionsAll['valueAttributes']))
                 {
-                    $this->addOption($key, $value, null, $defaultEntry, false, $optionsAll['valueAttributes'][$key]);
-            }
+                    $this->addOption((string) $key, $value, null, $defaultEntry, false, $optionsAll['valueAttributes'][$key]);
+                }
                 else
                 {
-                    $this->addOption($key, $value, null, $defaultEntry);
+                    $this->addOption((string) $key, $value, null, $defaultEntry);
                 }
             }
         }
@@ -1736,7 +1738,7 @@ class HtmlForm extends HtmlFormBasic
         $sql = 'SELECT DISTINCT cat_id, cat_org_id, cat_name, cat_default, cat_sequence
                   FROM ' . TBL_CATEGORIES . '
                        ' . $sqlTables . '
-                 WHERE cat_id IN (' . replaceValuesArrWithQM($catIdParams) . ')
+                 WHERE cat_id IN (' . Database::getQmForValues($catIdParams) . ')
                    AND cat_type = ? -- $categoryType
                        ' . $sqlConditions . '
               ORDER BY cat_sequence ASC';
@@ -1995,7 +1997,7 @@ class HtmlForm extends HtmlFormBasic
         if ($icon !== '')
         {
             // create html for icon
-            if (admStrStartsWith(admStrToLower($icon), 'http') && strValidCharacters($icon, 'url'))
+            if (StringUtils::strStartsWith($icon, 'http', false) && strValidCharacters($icon, 'url'))
             {
                 $htmlIcon = '<img class="admidio-icon-info" src="' . $icon . '" title="' . $label . '" alt="' . $label . '" />';
             }
@@ -2055,21 +2057,19 @@ class HtmlForm extends HtmlFormBasic
 
 
     /**
-     * This method send the whole html code of the form to the browser. Call this method
+     * This method create the whole html code of the form. Call this method
      * if you have finished your form layout. If mandatory fields were set than a notice
      * which marker represents the mandatory will be shown before the form.
-     * @param bool $directOutput (optional) If set to **true** (default) the form html will be directly send
-     *                                   to the browser. If set to **false** the html will be returned.
-     * @return string|null If $directOutput is set to **false** this method will return the html code of the form.
+     * @return string Return the html code of the form.
      */
-    public function show($directOutput = true)
+    public function show()
     {
         global $gL10n;
 
         // if there are no elements in the form then return nothing
         if ($this->countElements === 0)
         {
-            return null;
+            return '';
         }
 
         $html = '';
@@ -2082,12 +2082,6 @@ class HtmlForm extends HtmlFormBasic
 
         // now get whole form html code
         $html .= $this->getHtmlForm();
-
-        if ($directOutput)
-        {
-            echo $html;
-            return null;
-        }
 
         return $html;
     }

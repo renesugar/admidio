@@ -543,7 +543,7 @@ class User extends TableAccess
             throw new AdmException($gL10n->get('SYS_LOGIN_MAX_INVALID_LOGIN'));
         }
 
-        if (!PasswordHashing::verify($password, $this->getValue('usr_password')))
+        if (!PasswordUtils::verify($password, $this->getValue('usr_password')))
         {
             $incorrectLoginMessage = $this->handleIncorrectPasswordLogin();
 
@@ -852,7 +852,7 @@ class User extends TableAccess
                                     ON rrd_ror_id = ror_id
                                  WHERE ror_name_intern = \'category_edit\'
                                    AND rrd_object_id   = cat_id
-                                   AND rrd_rol_id IN ('.replaceValuesArrWithQM($rolIdParams).') )
+                                   AND rrd_rol_id IN ('.Database::getQmForValues($rolIdParams).') )
                     )';
         }
 
@@ -929,9 +929,9 @@ class User extends TableAccess
                                 FROM ' . TBL_ROLES_RIGHTS . '
                           INNER JOIN ' . TBL_ROLES_RIGHTS_DATA . '
                                   ON rrd_ror_id = ror_id
-                               WHERE ror_name_intern = \'category_edit\'
+                               WHERE ror_name_intern = \'category_view\'
                                  AND rrd_object_id   = cat_id
-                                 AND rrd_rol_id IN ('.replaceValuesArrWithQM($rolIdParams).') )
+                                 AND rrd_rol_id IN ('.Database::getQmForValues($rolIdParams).') )
                       OR NOT EXISTS (SELECT 1
                                        FROM ' . TBL_ROLES_RIGHTS . '
                                  INNER JOIN ' . TBL_ROLES_RIGHTS_DATA . '
@@ -1074,7 +1074,7 @@ class User extends TableAccess
     {
         global $gSettingsManager;
 
-        if (!admStrStartsWith($columnName, 'usr_'))
+        if (!StringUtils::strStartsWith($columnName, 'usr_'))
         {
             return $this->mProfileFieldsData->getValue($columnName, $format);
         }
@@ -1417,7 +1417,7 @@ class User extends TableAccess
                    AND mem_end    > ? -- DATE_NOW
                    AND (  cat_org_id = ? -- $this->organizationId
                        OR cat_org_id IS NULL ) ';
-        $queryParams = array($this->getValue('usr_id'), DATE_NOW, DATE_NOW, $this->organizationId);
+        $queryParams = array($user->getValue('usr_id'), DATE_NOW, DATE_NOW, $this->organizationId);
         $listViewStatement = $this->db->queryPrepared($sql, $queryParams);
 
         if ($listViewStatement->rowCount() > 0)
@@ -1655,7 +1655,7 @@ class User extends TableAccess
     {
         global $gLogger;
 
-        if (!PasswordHashing::needsRehash($this->getValue('usr_password')))
+        if (!PasswordUtils::needsRehash($this->getValue('usr_password')))
         {
             return false;
         }
@@ -1753,6 +1753,7 @@ class User extends TableAccess
 
     /**
      * If this method is set then a user can save changes to the user if he hasn't the necessary rights
+     * to edit the whole profile or a special profile field of that user.
      * @return void
      */
     public function saveChangesWithoutRights()
@@ -1804,7 +1805,7 @@ class User extends TableAccess
             $cost = (int) $gSettingsManager->getInt('system_hashing_cost');
         }
 
-        $newPasswordHash = PasswordHashing::hash($newPassword, $gPasswordHashAlgorithm, array('cost' => $cost));
+        $newPasswordHash = PasswordUtils::hash($newPassword, $gPasswordHashAlgorithm, array('cost' => $cost));
 
         if ($newPasswordHash === false)
         {
@@ -1855,7 +1856,7 @@ class User extends TableAccess
         global $gCurrentUser, $gSettingsManager;
 
         // users data from adm_users table
-        if (admStrStartsWith($columnName, 'usr_'))
+        if (StringUtils::strStartsWith($columnName, 'usr_'))
         {
             // don't change user password; use $user->setPassword()
             if ($columnName === 'usr_password' || $columnName === 'usr_new_password')
@@ -1864,7 +1865,7 @@ class User extends TableAccess
             }
 
             // username should not contain special characters
-            if ($columnName === 'usr_login_name' && $newValue !== '' && !strValidCharacters($newValue, 'noSpecialChar'))
+            if ($checkValue && $columnName === 'usr_login_name' && $newValue !== '' && !strValidCharacters($newValue, 'noSpecialChar'))
             {
                 return false;
             }
@@ -1888,7 +1889,7 @@ class User extends TableAccess
         }
 
         // only to a update if value has changed
-        if (strcmp($oldFieldValue, $newValue) === 0) // https://secure.php.net/manual/en/function.strcmp.php#108563
+        if ($oldFieldValue === $newValue)
         {
             return true;
         }
@@ -1903,7 +1904,8 @@ class User extends TableAccess
         if (($usrId === 0 && (int) $gCurrentUser->getValue('usr_id') === 0)
         ||  (int) $this->mProfileFieldsData->getProperty($columnName, 'usf_disabled') === 0
         || ((int) $this->mProfileFieldsData->getProperty($columnName, 'usf_disabled') === 1
-            && $gCurrentUser->hasRightEditProfile($this, false)))
+            && $gCurrentUser->hasRightEditProfile($this, false))
+        || $this->saveChangesWithoutRights === true)
         {
             $returnCode = $this->mProfileFieldsData->setValue($columnName, $newValue);
         }

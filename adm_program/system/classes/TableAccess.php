@@ -108,7 +108,7 @@ class TableAccess
     {
         global $gDb;
 
-        if ($gDb instanceof \Database)
+        if ($gDb instanceof Database)
         {
             $this->db = $gDb;
         }
@@ -270,11 +270,11 @@ class TableAccess
                     {
                         if ($format === '' && isset($gSettingsManager))
                         {
-                            if (admStrContains($this->columnsInfos[$columnName]['type'], 'timestamp'))
+                            if (StringUtils::strContains($this->columnsInfos[$columnName]['type'], 'timestamp'))
                             {
                                 $format = $gSettingsManager->getString('system_date') . ' ' . $gSettingsManager->getString('system_time');
                             }
-                            elseif (admStrContains($this->columnsInfos[$columnName]['type'], 'date'))
+                            elseif (StringUtils::strContains($this->columnsInfos[$columnName]['type'], 'date'))
                             {
                                 $format = $gSettingsManager->getString('system_date');
                             }
@@ -348,7 +348,7 @@ class TableAccess
         }
 
         // if condition starts with AND then remove this
-        if (admStrStartsWith(strtoupper(ltrim($sqlWhereCondition)), 'AND'))
+        if (StringUtils::strStartsWith(ltrim($sqlWhereCondition), 'AND', false))
         {
             $sqlWhereCondition = substr($sqlWhereCondition, 4);
         }
@@ -371,7 +371,7 @@ class TableAccess
                 {
                     if ($value === null)
                     {
-                        $this->dbColumns[$key] = '';
+                        $this->dbColumns[$key] = ''; // TODO: remove
                     }
                     else
                     {
@@ -510,7 +510,7 @@ class TableAccess
         {
             // Auto-Increment-Felder duerfen nicht im Insert/Update erscheinen
             // Felder anderer Tabellen auch nicht
-            if (admStrStartsWith($key, $this->columnPrefix . '_')
+            if (StringUtils::strStartsWith($key, $this->columnPrefix . '_')
             && !$this->columnsInfos[$key]['serial'] && $this->columnsInfos[$key]['changed'])
             {
                 if ($this->newRecord)
@@ -546,7 +546,7 @@ class TableAccess
             // insert record and mark this object as not new and remember the new id
             $sql = 'INSERT INTO '.$this->tableName.'
                            ('.implode(',', $sqlFieldArray).')
-                    VALUES ('.replaceValuesArrWithQM($sqlFieldArray).')';
+                    VALUES ('.Database::getQmForValues($sqlFieldArray).')';
             $this->db->queryPrepared($sql, $queryParams);
 
             $this->newRecord = false;
@@ -667,7 +667,7 @@ class TableAccess
             // now mark all other columns with values of this object as changed
             foreach ($this->dbColumns as $column => $value)
             {
-                if (strlen($value) > 0)
+                if (strlen((string) $value) > 0)
                 {
                     $this->columnsInfos[$column]['changed'] = true;
                 }
@@ -677,7 +677,7 @@ class TableAccess
         if (array_key_exists($columnName, $this->dbColumns))
         {
             // only mark as "changed" if the value is different (use binary safe function!)
-            if (strcmp($this->dbColumns[$columnName], $newValue) !== 0)
+            if ($this->dbColumns[$columnName] !== $newValue)
             {
                 $this->dbColumns[$columnName] = $newValue;
                 $this->columnsValueChanged = true;

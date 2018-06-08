@@ -173,7 +173,7 @@ if ($getMsgType === TableMessage::MESSAGE_TYPE_EMAIL)
         foreach ($postTo as $value)
         {
             // check if role or user is given
-            if (strpos($value, ':') > 0)
+            if (StringUtils::strContains($value, ':'))
             {
                 $moduleMessages = new ModuleMessages();
                 $group = $moduleMessages->msgGroupSplit($value);
@@ -280,11 +280,11 @@ if ($getMsgType === TableMessage::MESSAGE_TYPE_EMAIL)
                     }
 
                     // all role members will be attached as BCC
-                    while ($row = $statement->fetchObject())
+                    while ($row = $statement->fetch())
                     {
-                        if (strValidCharacters($row->email, 'email'))
+                        if (strValidCharacters($row['email'], 'email'))
                         {
-                            $receiver[] = array($row->email, $row->firstName . ' ' . $row->lastName);
+                            $receiver[] = array($row['email'], $row['firstName'] . ' ' . $row['lastName']);
                         }
                     }
                 }
@@ -300,9 +300,8 @@ if ($getMsgType === TableMessage::MESSAGE_TYPE_EMAIL)
                     $receiver[] = array($user->getValue('EMAIL'), $user->getValue('FIRST_NAME') . ' ' . $user->getValue('LAST_NAME'));
                 }
             }
-            $receiverString .= ' | ' . $value;
         }
-        $receiverString = substr($receiverString, 3);
+        $receiverString = implode(' | ', $postTo);
     }
     else
     {
@@ -465,7 +464,7 @@ if ($getMsgType === TableMessage::MESSAGE_TYPE_EMAIL)
         '#message#'  => $postBody,
         '#receiver#' => $receiverName
     );
-    $emailTemplate = admStrMultiReplace($emailTemplate, $replaces);
+    $emailTemplate = StringUtils::strMultiReplace($emailTemplate, $replaces);
 
     // prepare body of email with note of sender and homepage
     $email->setSenderInText($postName, $receiverName);
@@ -477,7 +476,7 @@ if ($getMsgType === TableMessage::MESSAGE_TYPE_EMAIL)
     $sendResult = $email->sendEmail();
 
     // within this mode an smtp protocol will be shown and the header was still send to browser
-    if ($gDebug)
+    if ($gDebug && headers_sent())
     {
         $email->isSMTP();
         $gMessage->showHtmlTextOnly(true);

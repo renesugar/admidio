@@ -288,7 +288,7 @@
   <string name="INS_INSTALLATION_VERSION">Installation der Version #VAR1#</string>
   <string name="INS_INSTALLATION_WAS_SUCCESSFUL">Die Installation war erfolgreich</string>
   <string name="INS_INTERN">Intern</string>
-  <string name="INS_LANGUAGE_NOT_CHOOSEN">Es wurde keine Sprache ausgewählt.</string>
+  <string name="INS_LANGUAGE_NOT_CHOSEN">Es wurde keine Sprache ausgewählt.</string>
   <string name="INS_MEMBERSHIP">Mitgliedschaft</string>
   <string name="INS_MESSENGER">Messenger</string>
   <string name="INS_NO_INSTALLED_VERSION_FOUND">Die bereits installierte Version konnte nicht ermittelt werden. Falls Sie bisher noch Version 1.x von Admidio genutzt haben, aktualisieren Sie zuerst auf Version 2.x und starte danach das Update auf Version #VAR1#. Falls Sie bereits Version 2.x oder neuer installiert haben, prüfen Sie bitte die Konsistenz Ihrer Datenbank.</string>
@@ -744,7 +744,7 @@
   <string name="ORG_PARENT_ORGANIZATION">Übergeordnete Organisation</string>
   <string name="ORG_PARENT_ORGANIZATION_DESC">Hier können Sie die übergeordnete Organisation festlegen. Diese haben zum Beispiel die Möglichkeit Termine und Ankündigungen anzulegen, die auch in der aktuellen Organisation sichtbar sind.</string>
   <string name="ORG_PASSWORD_MIN_STRENGTH">Passwort Sicherheit </string>
-  <string name="ORG_PASSWORD_MIN_STRENGTH_DESC">Hier können Sie festlegen wie sicher und komplex Passwörter mindestens sein müssen.\nDer Wert in Klammern gibt an, wieviele Versuche durchschnittlich nötig sind, bis das Passwort ermittelt wurde.\n\nKeine: riskantes Passwort. (&lt;10^3)\nNiedrig: Schutz gegen gedrosselte Online-Angriffe. (&lt;10^6)\nMittel: Schutz gegen ungedrosselte Online-Angriffe. (&lt;10^8)\nHoch: Mäßiger Schutz gegen Offline-Hashing-Angriffe. (&lt;10^10)\nExtrem: Starker Schutz gegen Offline-Hashing-Angriffe. (&gt;=10^10)</string>
+  <string name="ORG_PASSWORD_MIN_STRENGTH_DESC">Hier können Sie festlegen wie sicher und komplex Passwörter mindestens sein müssen.\nDer Wert in Klammern gibt an, wieviele Versuche durchschnittlich nötig sind, bis das Passwort ermittelt wurde.\n\nKeine: riskantes Passwort. (&lt;10^3)\nNiedrig: Schutz gegen gedrosselte Online-Angriffe. (&lt;10^6)\nMittel: Schutz gegen ungedrosselte Online-Angriffe. (&lt;10^8)\nHoch: Mäßiger Schutz gegen Offline-Hashing-Angriffe. (&lt;10^10)\nSehr hoch: Starker Schutz gegen Offline-Hashing-Angriffe. (&gt;=10^10)</string>
   <string name="ORG_PASSWORD_MIN_STRENGTH_NO">Keine</string>
   <string name="ORG_PASSWORD_MIN_STRENGTH_LOW">Niedrig</string>
   <string name="ORG_PASSWORD_MIN_STRENGTH_MID">Mittel</string>
@@ -926,7 +926,7 @@
   <string name="PRO_PHOTO_DELETED">Das Profilfoto wurde gelöscht.</string>
   <string name="PRO_PHOTO_FILE_TO_LARGE">Das hochgeladene Foto übersteigt die vom Server zugelassene Dateigröße von #VAR1# B.</string>
   <string name="PRO_PHOTO_FORMAT_INVALID">Es können nur Fotos im JPG und PNG-Format hochgeladen und angezeigt werden.</string>
-  <string name="PRO_PHOTO_NOT_CHOOSEN">Es wurde keine Bilddatei ausgewählt.</string>
+  <string name="PRO_PHOTO_NOT_CHOSEN">Es wurde keine Bilddatei ausgewählt.</string>
   <string name="PRO_PHOTO_RESOLUTION_TO_LARGE">Die Auflösung des hochgeladenen Bildes übersteigt die vom Server zugelassene Auflösung von #VAR1# Megapixeln.</string>
   <string name="PRO_PHOTO_SAVED">Das neue Profilfoto wurde erfolgreich gespeichert.</string>
   <string name="PRO_PROFILE">Profil</string>
@@ -980,7 +980,7 @@
   <string name="ROL_DEPENDENCIES">Abhängigkeiten</string>
   <string name="ROL_DEPENDENT">Abhängig</string>
   <string name="ROL_DISABLE_ROLE">Rolle deaktivieren</string>
-  <string name="ROL_DISABLE_ROLE_DESC">Wenn Sie #VAR1_BOLD# auswählen, wird die Rolle und alle Mitgliedszuordnungen endgültig aus der Datenbank entfernt und es ist später nicht mehr möglich Daten dieser Rolle einzusehen.</string>
+  <string name="ROL_DISABLE_ROLE_DESC">Wenn Sie die Rolle #VAR1_BOLD# deaktivieren, kann die Rolle nicht mehr genutzt und Objekten zugeordnet werden. Ebenso sind sämtliche Rechte dieser Rolle nicht mehr wirksam. Die Rolle mit ihren Einstellung und allen Mitgliedszuordnungen bleibt allerdings bestehen und kann zu einem späteren Zeitpunkt wieder aktiviert werden.</string>
   <string name="ROL_EDIT_ROLE">Rolle bearbeiten</string>
   <string name="ROL_ENABLE_ROLE">Rolle aktivieren</string>
   <string name="ROL_ENABLE_ROLE_DESC">Wenn Sie die Rolle #VAR1_BOLD# wieder aktivieren, bekommen die Rollenmitglieder wieder die Rechte zugeordnet und die Rolle erscheint in sämtlichen Listen.\n\nMöchten Sie die Rollen wieder aktivieren?</string>
@@ -1103,6 +1103,9 @@
   <string name="SYS_CONTENT">Inhalt</string>
   <string name="SYS_CONTRIBUTION">Beitrag</string>
   <string name="SYS_CONTRIBUTION_PERIOD">Beitragszeitraum</string>
+  <string name="SYS_COOKIE_NOTE">Hinweis auf Nutzung von Cookies anzeigen</string>
+  <string name="SYS_COOKIE_NOTE_DESC">Besucher und angemeldete Benutzer erhalten beim erstmaligen Aufruf der Webseite einen Hinweis, dass diese Seite Cookies nutzt. Dieser Hinweis muss vom Benutzer einmalig bestätigt werden, danach erhalt der Benutzer auf diesem Gerät und Browser keinen Hinweis mehr.</string>
+  <string name="SYS_COOKIE_DESC">Diese Website verwendet Cookies, um sicherzustellen, dass Sie die beste Erfahrung auf unserer Website erhalten. Mit der Nutzung dieser Webseite erklären Sie sich einverstanden, dass wir Cookies verwenden.</string>
   <string name="SYS_COOKIE_NOT_SET">Der Login kann nicht durchgeführt werden, da Ihr Browser das Setzen von Cookies verbietet!\n\nDamit Sie sich erfolgreich anmelden können, müssen Sie Ihren Browser so einstellen, dass dieser Cookies von #VAR1_BOLD# akzeptiert.</string>
   <string name="SYS_COPY">Kopieren</string>
   <string name="SYS_COPY_VAR">#VAR1# kopieren</string>
@@ -1122,6 +1125,7 @@
   <string name="SYS_DATABASE">Datenbank</string>
   <string name="SYS_DATABASE_ERROR">Datenbankfehler</string>
   <string name="SYS_DATABASE_NO_LOGIN">Es konnte keine Verbindung zur Datenbank erstellt werden!\n\nFolgender Fehler ist aufgetreten:\n#VAR1#.</string>
+  <string name="SYS_DATABASE_NO_LOGIN_CONFIG_FILE">Es konnte keine Verbindung zur Datenbank erstellt werden!\n\nBitte prüfen Sie die Zugangsdaten in der Datei config.php im Order adm_my_files. Sollte die Datei noch von einer anderen Installation stammen, so entfernen Sie die config.php bitte aus dem Ordner, da über den Installationsassistenten eine neue Datei erzeugt wird. Danach kann die Installation fortgesetzt werden.\n\nFolgender Fehler ist aufgetreten:\n#VAR1#.</string>
   <string name="SYS_DATABASE_VERSION">Datenbank-Version</string>
   <string name="SYS_DATABASE_VERSION_INVALID" description="Var3 and Var4 create link to update">Die Datenbankversion #VAR1# ist niedriger als die Version der Admidio-Scripte #VAR2#.\n\nFühren Sie bitte #VAR3#das Datenbankupdate#VAR4# auf die Version durch.</string>
   <string name="SYS_DATABASE_VERSION_REQUIRED">Admidio benötigt #VAR1# oder höher</string>
@@ -1145,6 +1149,7 @@
   <string name="SYS_DIRECTORY_PROTECTION">Verzeichnisschutz</string>
   <string name="SYS_CREATE_HTACCESS">.htaccess erstellen</string>
   <string name="SYS_DISK_SPACE">Speicherplatz</string>
+  <string name="SYS_DISK_SPACE_ERROR">Die Belegung des Speicherplatzes konnte nicht ermittelt werden.\n\nFehlermeldung:\n#VAR1#</string>
   <string name="SYS_DONATE">Spenden</string>
   <string name="SYS_DONT_SHOW">Nicht anzeigen</string>
   <string name="SYS_DROPDOWN_LISTBOX">Dropdown-Listenfeld</string>
@@ -1194,6 +1199,7 @@
   <string name="SYS_FORGOT_MY_PASSWORD">Ich habe mein Passwort vergessen!</string>
   <string name="SYS_FRIDAY">Freitag</string>
   <string name="SYS_FULL_SCREEN">Vollbild</string>
+  <string name="SYS_FURTHER_INFORMATIONS">Weitere Informationen</string>
   <string name="SYS_GENDER">Geschlecht</string>
   <string name="SYS_GEN_RANDOM_ERROR">Es ist ein unerwarteter Fehler bei der Generierung einer zufälligen Zahl aufgetreten.\nError Code: #VAR1#\nError Message: #VAR2#</string>
   <string name="SYS_GEN_RANDOM_EXCEPTION">Das Programm kann keine zufälligen Zahlen erzeugen.\nError Code: #VAR1#\nError Message: #VAR2#</string>

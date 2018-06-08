@@ -42,7 +42,6 @@ require_once(ADMIDIO_PATH . '/adm_program/installation/update_functions.php');
 
 define('THEME_URL', 'layout');
 $getMode = admFuncVariableIsValid($_GET, 'mode', 'int', array('defaultValue' => 1));
-$message = '';
 
 // connect to database
 try
@@ -332,7 +331,10 @@ elseif ($getMode === 2)
     {
         // TODO
     }
-    unset($_SESSION['gCurrentSession']);
+    
+    // delete session data
+    session_unset();
+    session_destroy();
 
     // show notice that update was successful
     $form = new HtmlFormInstallation('installation-form', ADMIDIO_HOMEPAGE . 'donate.php');

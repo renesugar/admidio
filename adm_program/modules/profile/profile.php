@@ -315,7 +315,7 @@ $page->addHtml('
     <div class="panel-body row">
         <div class="col-sm-8">');
             // create a static form
-            $form = new HtmlForm('profile_master_data_form', null);
+            $form = new HtmlForm('profile_master_data_form');
 
             // add lastname and firstname
             if(strlen($user->getValue('GENDER')) > 0 && $gCurrentUser->allowedViewProfileField($user, 'GENDER'))
@@ -433,13 +433,13 @@ $page->addHtml('
                                 && (strlen($postcode) > 0 || strlen($city) > 0))
                                 {
                                     $address .= '
-                                        <a class="btn" href="'. $mapUrl. '" target="_blank"><img src="'. THEME_URL. '/icons/map.png"
+                                        <a class="btn" href="'. $mapUrl. '" target="_blank" title="'.$gL10n->get('SYS_MAP_LINK_HOME_DESC').'"><img src="'. THEME_URL. '/icons/map.png"
                                         alt="'.$gL10n->get('SYS_MAP').'" />'.$gL10n->get('SYS_MAP').'</a>';
 
                                     // show route link if its not the profile of CurrentUser
                                     if($userId !== $currUsrId)
                                     {
-                                        $address .= ' - <a href="'.$routeUrl.'" target="_blank">'.$gL10n->get('SYS_SHOW_ROUTE').'</a>';
+                                        $address .= ' - <a href="'.$routeUrl.'" target="_blank" title="'.$gL10n->get('SYS_MAP_LINK_ROUTE_DESC').'">'.$gL10n->get('SYS_SHOW_ROUTE').'</a>';
                                     }
                                 }
 
@@ -452,13 +452,13 @@ $page->addHtml('
                             $field = getFieldCode($fieldNameIntern, $user);
                             if(is_array($field) && $field['value'] !== '')
                             {
-                                $form->addStaticControl(admStrToLower($fieldNameIntern), $field['label'], $field['value']);
+                                $form->addStaticControl(strtolower($fieldNameIntern), $field['label'], $field['value']);
                             }
                             break;
                     }
                 }
             }
-            $page->addHtml($form->show(false));
+            $page->addHtml($form->show());
         $page->addHtml('</div>
         <div class="col-sm-4" id="div_profile_photo">');
 
@@ -509,7 +509,7 @@ foreach($gProfileFields->getProfileFields() as $field)
             if($category !== '')
             {
                 // new category then show last form and close div container
-                $page->addHtml($form->show(false));
+                $page->addHtml($form->show());
                 $page->addHtml('</div></div>');
             }
             $category = $field->getValue('cat_name');
@@ -520,7 +520,7 @@ foreach($gProfileFields->getProfileFields() as $field)
                     <div class="panel-body">');
 
             // create a static form
-            $form = new HtmlForm('profile_'.$field->getValue('cat_name_intern').'_form', null);
+            $form = new HtmlForm('profile_'.$field->getValue('cat_name_intern').'_form');
         }
 
         // show html of field, if user has a value for that field or it's a checkbox field
@@ -529,7 +529,7 @@ foreach($gProfileFields->getProfileFields() as $field)
             $field = getFieldCode($fieldNameIntern, $user);
             if(is_array($field) && $field['value'] !== '')
             {
-                $form->addStaticControl(admStrToLower($fieldNameIntern), $field['label'], $field['value']);
+                $form->addStaticControl(strtolower($fieldNameIntern), $field['label'], $field['value']);
             }
         }
     }
@@ -538,7 +538,7 @@ foreach($gProfileFields->getProfileFields() as $field)
 if($category !== '')
 {
     // new category then show last form and close div container
-    $page->addHtml($form->show(false));
+    $page->addHtml($form->show());
     $page->addHtml('</div></div>');
 }
 

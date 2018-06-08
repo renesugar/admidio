@@ -3,13 +3,11 @@
  ***********************************************************************************************
  * Calendar
  *
- * Version 2.2.0
- *
  * Plugin shows the actual month with all the events and birthdays that are
  * coming. This plugin can be used to show the Admidio events and birthdays in a
  * sidebar within Admidio or in an external website.
  *
- * Compatible with Admidio version 3.2
+ * Compatible with Admidio version 3.3
  *
  * @copyright 2004-2018 The Admidio Team
  * @see https://www.admidio.org/
@@ -17,17 +15,11 @@
  ***********************************************************************************************
  */
 
-// create path to plugin
-$pluginFolderPos = strpos(__FILE__, 'adm_plugins') + 11;
-$pluginFilePos   = strpos(__FILE__, 'calendar.php');
-$pluginFolder    = substr(__FILE__, $pluginFolderPos + 1, $pluginFilePos - $pluginFolderPos - 2);
+$rootPath = dirname(dirname(__DIR__));
+$pluginFolder = basename(__DIR__);
 
-if(!defined('PLUGIN_PATH'))
-{
-    define('PLUGIN_PATH', substr(__FILE__, 0, $pluginFolderPos));
-}
-require_once(PLUGIN_PATH. '/../adm_program/system/common.php');
-require_once(PLUGIN_PATH. '/'.$pluginFolder.'/config.php');
+require_once($rootPath . '/adm_program/system/common.php');
+require_once(__DIR__ . '/config.php');
 
 // Initialize and check the parameters
 $getDateId = admFuncVariableIsValid($_GET, 'date_id', 'string');
@@ -117,9 +109,6 @@ else
     $sqlRoleIds = ' IN '.$plg_rolle_sql;
 }
 
-// Sprachdatei des Plugins einbinden
-$gL10n->addLanguageFolderPath(PLUGIN_PATH. '/'.$pluginFolder.'/languages');
-
 // Nun noch einige Variablen initialisieren
 
 $gebLink = '';
@@ -181,7 +170,7 @@ if($plg_ter_aktiv)
     else
     {
         // show only calendars of the parameter $plg_kal_cat
-        $sqlSyntax = ' AND cat_name IN (' . replaceValuesArrWithQM($plg_kal_cat) . ')';
+        $sqlSyntax = ' AND cat_name IN (' . Database::getQmForValues($plg_kal_cat) . ')';
         $queryParams = array_merge($queryParams, $plg_kal_cat);
     }
 
@@ -189,7 +178,7 @@ if($plg_ter_aktiv)
               FROM '.TBL_DATES.'
         INNER JOIN '.TBL_CATEGORIES.'
                 ON cat_id = dat_cat_id
-             WHERE cat_id IN ('.replaceValuesArrWithQM($catIdParams).')
+             WHERE cat_id IN ('.Database::getQmForValues($catIdParams).')
                AND dat_begin <= ? -- $dateMonthEnd
                AND dat_end   >= ? -- $dateMonthStart
                    '.$sqlSyntax.'
@@ -283,13 +272,28 @@ if($plg_geb_aktiv)
 {
     if(DB_ENGINE === Database::PDO_ENGINE_PGSQL)
     {
+        $sqlYearOfBirthday  = ' date_part(\'year\', timestamp birthday.usd_value) ';
         $sqlMonthOfBirthday = ' date_part(\'month\', timestamp birthday.usd_value) ';
         $sqlDayOfBirthday   = ' date_part(\'day\', timestamp birthday.usd_value) ';
     }
     else
     {
+        $sqlYearOfBirthday  = ' YEAR(birthday.usd_value) ';
         $sqlMonthOfBirthday = ' MONTH(birthday.usd_value) ';
         $sqlDayOfBirthday   = ' DayOfMonth(birthday.usd_value) ';
+    }
+
+    switch ($plg_geb_displayNames)
+    {
+        case 1:
+            $sqlOrderName = 'first_name';
+            break;
+        case 2:
+            $sqlOrderName = 'last_name';
+            break;
+        case 0:
+        default:
+            $sqlOrderName = 'last_name, first_name';
     }
 
     // database query for all birthdays of this month
@@ -317,7 +321,11 @@ if($plg_geb_aktiv)
                AND rol_id '.$sqlRoleIds.'
                AND mem_begin <= ? -- DATE_NOW
                AND mem_end    > ? -- DATE_NOW
-          ORDER BY '.$sqlMonthOfBirthday.' ASC, '.$sqlMonthOfBirthday.' ASC, last_name, first_name';
+          ORDER BY ' .
+        $sqlYearOfBirthday . ' DESC,' .
+        $sqlMonthOfBirthday . ' DESC, ' .
+        $sqlDayOfBirthday . ' DESC, ' .
+        $sqlOrderName;
 
     $queryParams = array(
         $gProfileFields->getProperty('BIRTHDAY', 'usf_id'),
@@ -334,10 +342,23 @@ if($plg_geb_aktiv)
     {
         $birthdayDate = new \DateTime($row['birthday']);
 
+        switch($plg_geb_displayNames)
+        {
+            case 1:
+                $name = $row['first_name'];
+                break;
+            case 2:
+                $name = $row['last_name'];
+                break;
+            case 0:
+            default:
+                $name = $row['last_name'] . ($row['last_name'] ? ', ' : '') . $row['first_name'];
+        }
+
         $birthdaysMonthDayArray[$birthdayDate->format('j')][] = array(
             'year' => $birthdayDate->format('Y'),
             'age'  => $currentYear - $birthdayDate->format('Y'),
-            'name' => $row['last_name']. ', '. $row['first_name']
+            'name' => $name
         );
     }
 }
@@ -353,22 +374,6 @@ if($firstWeekdayOfMonth === 0)
 
 echo '<div id="plgCalendarContent" class="admidio-plugin-content">
 <h3>'.$gL10n->get('DAT_CALENDAR').'</h3>
-
-<script type="text/javascript">
-    if (typeof gTranslations === "undefined") {
-        var gTranslations = [
-            "'.$gL10n->get('SYS_MON').'",
-            "'.$gL10n->get('SYS_TUE').'",
-            "'.$gL10n->get('SYS_WED').'",
-            "'.$gL10n->get('SYS_THU').'",
-            "'.$gL10n->get('SYS_FRI').'",
-            "'.$gL10n->get('SYS_SAT').'",
-            "'.$gL10n->get('SYS_SUN').'",
-            "'.$gL10n->get('SYS_TODAY').'",
-            "'.$gL10n->get('SYS_LOADING_CONTENT').'"
-        ];
-    }
-</script>
 
 <table border="0" id="plgCalendarTable">
     <tr>';
@@ -671,3 +676,8 @@ if($currentMonth.$currentYear !== date('mY'))
         }); return false;">'.$gL10n->get('PLG_CALENDAR_CURRENT_MONTH').'</a></div>';
 }
 echo '</div>';
+echo '<script type="text/javascript"><!--
+    $(document).ready(function() {
+        $(".admidio-calendar-link").popover();
+    });
+    --></script>';

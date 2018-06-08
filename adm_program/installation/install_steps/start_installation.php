@@ -14,7 +14,7 @@ if (basename($_SERVER['SCRIPT_FILENAME']) === 'start_installation.php')
 }
 
 // Check if configuration file exists. This file must be copied to the base folder of the Admidio installation.
-if (!is_file($pathConfigFile))
+if (!is_file($configPath))
 {
     showNotice(
         $gL10n->get('INS_CONFIGURATION_FILE_NOT_FOUND', array('config.php')),
@@ -27,14 +27,14 @@ if (!is_file($pathConfigFile))
 
 // first check if session is filled (if installation was aborted then this is not filled)
 // if previous dialogs were filled then check if the settings are equal to config file
-if (isset($_SESSION['prefix'])
-&&    ($_SESSION['prefix']         !== TABLE_PREFIX
-    || $_SESSION['db_type']        !== DB_ENGINE
+if (isset($_SESSION['table_prefix'])
+&&    ($_SESSION['db_engine']      !== DB_ENGINE
     || $_SESSION['db_host']        !== DB_HOST
     || $_SESSION['db_port']        !== DB_PORT
-    || $_SESSION['db_database']    !== DB_NAME
-    || $_SESSION['db_user']        !== DB_USERNAME
+    || $_SESSION['db_name']        !== DB_NAME
+    || $_SESSION['db_username']    !== DB_USERNAME
     || $_SESSION['db_password']    !== DB_PASSWORD
+    || $_SESSION['table_prefix']   !== TABLE_PREFIX
     || $_SESSION['orga_shortname'] !== $g_organization))
 {
     showNotice(
@@ -137,21 +137,21 @@ $db->queryPrepared($sql);
 
 // create profile fields of category master data
 $sql = 'INSERT INTO '.TBL_USER_FIELDS.'
-               (usf_cat_id, usf_type, usf_name_intern, usf_name, usf_description, usf_value_list, usf_system, usf_disabled, usf_mandatory, usf_sequence, usf_usr_id_create, usf_timestamp_create)
-        VALUES ('.$categoryIdMasterData.', \'TEXT\',         \'LAST_NAME\',  \'SYS_LASTNAME\',  NULL, NULL, 1, 1, 1, 1,  '.$currUsrId.', \''. DATETIME_NOW.'\')
-             , ('.$categoryIdMasterData.', \'TEXT\',         \'FIRST_NAME\', \'SYS_FIRSTNAME\', NULL, NULL, 1, 1, 1, 2,  '.$currUsrId.', \''. DATETIME_NOW.'\')
-             , ('.$categoryIdMasterData.', \'TEXT\',         \'STREET\',     \'SYS_STREET\',    NULL, NULL, 0, 0, 0, 3,  '.$currUsrId.', \''. DATETIME_NOW.'\')
-             , ('.$categoryIdMasterData.', \'TEXT\',         \'POSTCODE\',   \'SYS_POSTCODE\',  NULL, NULL, 0, 0, 0, 4,  '.$currUsrId.', \''. DATETIME_NOW.'\')
-             , ('.$categoryIdMasterData.', \'TEXT\',         \'CITY\',       \'SYS_CITY\',      NULL, NULL, 0, 0, 0, 5,  '.$currUsrId.', \''. DATETIME_NOW.'\')
-             , ('.$categoryIdMasterData.', \'TEXT\',         \'COUNTRY\',    \'SYS_COUNTRY\',   NULL, NULL, 0, 0, 0, 6,  '.$currUsrId.', \''. DATETIME_NOW.'\')
-             , ('.$categoryIdMasterData.', \'PHONE\',        \'PHONE\',      \'SYS_PHONE\',     NULL, NULL, 0, 0, 0, 7,  '.$currUsrId.', \''. DATETIME_NOW.'\')
-             , ('.$categoryIdMasterData.', \'PHONE\',        \'MOBILE\',     \'SYS_MOBILE\',    NULL, NULL, 0, 0, 0, 8,  '.$currUsrId.', \''. DATETIME_NOW.'\')
-             , ('.$categoryIdMasterData.', \'PHONE\',        \'FAX\',        \'SYS_FAX\',       NULL, NULL, 0, 0, 0, 9,  '.$currUsrId.', \''. DATETIME_NOW.'\')
-             , ('.$categoryIdMasterData.', \'DATE\',         \'BIRTHDAY\',   \'SYS_BIRTHDAY\',  NULL, NULL, 0, 0, 0, 10, '.$currUsrId.', \''. DATETIME_NOW.'\')
+               (usf_cat_id, usf_type, usf_name_intern, usf_name, usf_description, usf_value_list, usf_system, usf_disabled, usf_mandatory, usf_registration, usf_sequence, usf_usr_id_create, usf_timestamp_create)
+        VALUES ('.$categoryIdMasterData.', \'TEXT\',         \'LAST_NAME\',  \'SYS_LASTNAME\',  NULL, NULL, 1, 1, 1, 1, 1,  '.$currUsrId.', \''. DATETIME_NOW.'\')
+             , ('.$categoryIdMasterData.', \'TEXT\',         \'FIRST_NAME\', \'SYS_FIRSTNAME\', NULL, NULL, 1, 1, 1, 1, 2,  '.$currUsrId.', \''. DATETIME_NOW.'\')
+             , ('.$categoryIdMasterData.', \'TEXT\',         \'STREET\',     \'SYS_STREET\',    NULL, NULL, 0, 0, 0, 0, 3,  '.$currUsrId.', \''. DATETIME_NOW.'\')
+             , ('.$categoryIdMasterData.', \'TEXT\',         \'POSTCODE\',   \'SYS_POSTCODE\',  NULL, NULL, 0, 0, 0, 0, 4,  '.$currUsrId.', \''. DATETIME_NOW.'\')
+             , ('.$categoryIdMasterData.', \'TEXT\',         \'CITY\',       \'SYS_CITY\',      NULL, NULL, 0, 0, 0, 0, 5,  '.$currUsrId.', \''. DATETIME_NOW.'\')
+             , ('.$categoryIdMasterData.', \'TEXT\',         \'COUNTRY\',    \'SYS_COUNTRY\',   NULL, NULL, 0, 0, 0, 0, 6,  '.$currUsrId.', \''. DATETIME_NOW.'\')
+             , ('.$categoryIdMasterData.', \'PHONE\',        \'PHONE\',      \'SYS_PHONE\',     NULL, NULL, 0, 0, 0, 0, 7,  '.$currUsrId.', \''. DATETIME_NOW.'\')
+             , ('.$categoryIdMasterData.', \'PHONE\',        \'MOBILE\',     \'SYS_MOBILE\',    NULL, NULL, 0, 0, 0, 0, 8,  '.$currUsrId.', \''. DATETIME_NOW.'\')
+             , ('.$categoryIdMasterData.', \'PHONE\',        \'FAX\',        \'SYS_FAX\',       NULL, NULL, 0, 0, 0, 0, 9,  '.$currUsrId.', \''. DATETIME_NOW.'\')
+             , ('.$categoryIdMasterData.', \'DATE\',         \'BIRTHDAY\',   \'SYS_BIRTHDAY\',  NULL, NULL, 0, 0, 0, 0, 10, '.$currUsrId.', \''. DATETIME_NOW.'\')
              , ('.$categoryIdMasterData.', \'RADIO_BUTTON\', \'GENDER\',     \'SYS_GENDER\',    NULL, \'male.png|SYS_MALE
-female.png|SYS_FEMALE\', 0, 0, 0, 11, '.$currUsrId.', \''. DATETIME_NOW.'\')
-             , ('.$categoryIdMasterData.', \'EMAIL\',        \'EMAIL\',      \'SYS_EMAIL\',     NULL, NULL, 1, 0, 1, 12, '.$currUsrId.', \''. DATETIME_NOW.'\')
-             , ('.$categoryIdMasterData.', \'URL\',          \'WEBSITE\',    \'SYS_WEBSITE\',   NULL, NULL, 0, 0, 0, 13, '.$currUsrId.', \''. DATETIME_NOW.'\')';
+female.png|SYS_FEMALE\', 0, 0, 0, 0, 11, '.$currUsrId.', \''. DATETIME_NOW.'\')
+             , ('.$categoryIdMasterData.', \'EMAIL\',        \'EMAIL\',      \'SYS_EMAIL\',     NULL, NULL, 1, 0, 1, 1, 12, '.$currUsrId.', \''. DATETIME_NOW.'\')
+             , ('.$categoryIdMasterData.', \'URL\',          \'WEBSITE\',    \'SYS_WEBSITE\',   NULL, NULL, 0, 0, 0, 0, 13, '.$currUsrId.', \''. DATETIME_NOW.'\')';
 $db->query($sql); // TODO add more params
 
 // create profile fields of category social networks
@@ -206,6 +206,7 @@ $administrator->setPassword($_SESSION['user_password']);
 $administrator->setValue('usr_usr_id_create', $currUsrId);
 $administrator->setValue('usr_timestamp_create', DATETIME_NOW);
 $administrator->save(false); // no registered user -> UserIdCreate couldn't be filled
+$adminUsrId = (int) $administrator->getValue('usr_id');
 
 // write all preferences from preferences.php in table adm_preferences
 require_once(ADMIDIO_PATH . '/adm_program/installation/db_scripts/preferences.php');
@@ -215,13 +216,13 @@ $defaultOrgPreferences['email_administrator'] = $_SESSION['orga_email'];
 $defaultOrgPreferences['system_language']     = $language;
 
 // calculate the best cost value for your server performance
-$benchmarkResults = PasswordHashing::costBenchmark(0.35, 'password', $gPasswordHashAlgorithm);
+$benchmarkResults = PasswordUtils::costBenchmark(0.35, 'password', $gPasswordHashAlgorithm);
 $defaultOrgPreferences['system_hashing_cost'] = $benchmarkResults['cost'];
 
 // create all necessary data for this organization
 $gSettingsManager =& $gCurrentOrganization->getSettingsManager();
 $gSettingsManager->setMulti($defaultOrgPreferences, false);
-$gCurrentOrganization->createBasicData((int) $administrator->getValue('usr_id'));
+$gCurrentOrganization->createBasicData($adminUsrId);
 
 // create default room for room module in database
 $sql = 'INSERT INTO '.TBL_ROOMS.'
@@ -237,7 +238,7 @@ $db->queryPrepared($sql, $params);
 
 // first create a user object "current user" with administrator rights
 // because administrator is allowed to edit firstname and lastname
-$gCurrentUser = new User($db, $gProfileFields, $administrator->getValue('usr_id'));
+$gCurrentUser = new User($db, $gProfileFields, $adminUsrId);
 $gCurrentUser->setValue('LAST_NAME',  $_SESSION['user_last_name']);
 $gCurrentUser->setValue('FIRST_NAME', $_SESSION['user_first_name']);
 $gCurrentUser->setValue('EMAIL',      $_SESSION['user_email']);
@@ -277,6 +278,7 @@ $db->query($sql);
 
 // delete session data
 session_unset();
+session_destroy();
 
 // text for dialog
 $text = $gL10n->get('INS_INSTALLATION_SUCCESSFUL').'<br /><br />'.$gL10n->get('INS_SUPPORT_FURTHER_DEVELOPMENT');

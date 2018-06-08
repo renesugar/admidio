@@ -85,16 +85,15 @@ class TableWeblink extends TableAccess
         if($gCurrentUser->editDates()
         || in_array((int) $this->getValue('cat_id'), $gCurrentUser->getAllEditableCategories('LNK'), true))
         {
-            if ($gCurrentOrganization->countAllRecords() === 1)
+            // if category belongs to current organization than weblinks are editable
+            if($this->getValue('cat_org_id') > 0
+            && (int) $this->getValue('cat_org_id') === (int) $gCurrentOrganization->getValue('org_id'))
             {
                 return true;
             }
 
-            // parent organizations could edit global weblinks,
-            // child organizations could only edit their own weblinks
-            if ($gCurrentOrganization->isParentOrganization()
-            || ($gCurrentOrganization->isChildOrganization()
-            && (int) $gCurrentOrganization->getValue('org_id') === (int) $this->getValue('cat_org_id')))
+            // if category belongs to all organizations, child organization couldn't edit it
+            if((int) $this->getValue('cat_org_id') === 0 && !$gCurrentOrganization->isChildOrganization())
             {
                 return true;
             }
@@ -128,28 +127,30 @@ class TableWeblink extends TableAccess
     {
         global $gL10n;
 
-        if ($columnName === 'lnk_description')
+        if ($checkValue)
         {
-            return parent::setValue($columnName, $newValue, false);
-        }
-        elseif($columnName === 'lnk_cat_id')
-        {
-            $category = new TableCategory($this->db, $newValue);
-
-            if(!$category->isVisible() || $category->getValue('cat_type') !== 'LNK')
+            if ($columnName === 'lnk_description')
             {
-                throw new AdmException('Category of the weblink '. $this->getValue('lnk_name'). ' could not be set
-                    because the category is not visible to the current user and current organization.');
+                return parent::setValue($columnName, $newValue, false);
             }
-        }
-
-        if ($columnName === 'lnk_url' && $newValue !== '')
-        {
-            $newValue = admFuncCheckUrl($newValue);
-
-            if ($newValue === false)
+            elseif ($columnName === 'lnk_cat_id')
             {
-                throw new AdmException('SYS_URL_INVALID_CHAR', $gL10n->get('SYS_WEBSITE'));
+                $category = new TableCategory($this->db, $newValue);
+
+                if (!$category->isVisible() || $category->getValue('cat_type') !== 'LNK')
+                {
+                    throw new AdmException('Category of the weblink '. $this->getValue('lnk_name'). ' could not be set
+                        because the category is not visible to the current user and current organization.');
+                }
+            }
+            elseif ($columnName === 'lnk_url' && $newValue !== '')
+            {
+                $newValue = admFuncCheckUrl($newValue);
+
+                if ($newValue === false)
+                {
+                    throw new AdmException('SYS_URL_INVALID_CHAR', $gL10n->get('SYS_WEBSITE'));
+                }
             }
         }
 

@@ -13,7 +13,7 @@
  * This class creates a html page with head and body and integrates some Admidio
  * specific elements like css files, javascript files and javascript code. It
  * also provides some methods to easily add new html data to the page. The generated
- * page will automatically integrate the choosen theme. You can optional disable the
+ * page will automatically integrate the chosen theme. You can optional disable the
  * integration of the theme files.
  *
  * **Code example:**
@@ -88,6 +88,19 @@ class HtmlPage
      * @var string Contains the custom javascript of the current page that should be executed after pageload. This will be added to the header part of the page.
      */
     protected $javascriptContentExecute = '';
+    /**
+     * @var string Contains the custom html code of the header theme file. This will be added to the header part of the page.
+     */
+    protected $htmlMyHeader = '';
+    /**
+     * @var string Contains the custom html code of the top body theme file. This will be added to the top of the body part of the page.
+     */
+    protected $htmlMyBodyTop = '';
+    /**
+     * @var string Contains the custom html code of the bottom body theme file. This will be added to the end of thebody part of the page.
+     */
+    protected $htmlMyBodyBottom = '';
+
 
     /**
      * Constructor creates the page object and initialized all parameters
@@ -113,7 +126,7 @@ class HtmlPage
     {
         if (!in_array($cssFile, $this->cssFiles, true))
         {
-            if (admStrStartsWith($cssFile, 'http'))
+            if (StringUtils::strStartsWith($cssFile, 'http'))
             {
                 $this->cssFiles[] = $cssFile;
             }
@@ -149,7 +162,7 @@ class HtmlPage
     {
         if (!in_array($jsFile, $this->jsFiles, true))
         {
-            if (admStrStartsWith($jsFile, 'http'))
+            if (StringUtils::strStartsWith($jsFile, 'http'))
             {
                 $this->jsFiles[] = $jsFile;
             }
@@ -242,6 +255,14 @@ class HtmlPage
                 </div>'
             );
         }
+
+        // load content of theme files at this point so that files could add css and js files
+        if ($this->showThemeHtml)
+        {
+            $this->htmlMyHeader     = $this->getFileContent('my_header.php');
+            $this->htmlMyBodyTop    = $this->getFileContent('my_body_top.php');
+            $this->htmlMyBodyBottom = $this->getFileContent('my_body_bottom.php');
+        }
     }
 
     /**
@@ -304,7 +325,7 @@ class HtmlPage
                 $menuName = Language::translateIfTranslationStrId($mainMenu['men_name']);
 
                 $this->menu->addItem(
-                    'menu_item_'.$mainMenu['men_name_intern'], null, $menuName,
+                    'menu_item_'.$mainMenu['men_name_intern'], '', $menuName,
                     'application_view_list.png', 'right', 'navbar', 'admidio-default-menu-item'
                 );
 
@@ -422,8 +443,9 @@ class HtmlPage
      */
     private function getHtmlHeader()
     {
+        global $gL10n, $gSettingsManager, $gSetCookieForDomain;
+
         $headerContent = '';
-        $htmlMyHeader  = '';
 
         // add css files to page
         foreach ($this->cssFiles as $cssFile)
@@ -468,10 +490,50 @@ class HtmlPage
             </script>';
         }
 
-        // load content of theme files
-        if ($this->showThemeHtml)
+        if ($gSettingsManager->has('system_cookie_note') && $gSettingsManager->getBool('system_cookie_note'))
         {
-            $htmlMyHeader = $this->getFileContent('my_header.php');
+            if ($gSetCookieForDomain)
+            {
+                $path = '/';
+            }
+            else
+            {
+                $path = ADMIDIO_URL_PATH . '/';
+            }
+
+            // add cookie approval to the page
+            $headerContent .= '<link rel="stylesheet" type="text/css" href="' . ADMIDIO_URL . FOLDER_LIBS_CLIENT . '/cookieconsent/cookieconsent.min.css" />
+            <script src="' . ADMIDIO_URL . FOLDER_LIBS_CLIENT . '/cookieconsent/cookieconsent.min.js"></script>
+            <script>
+                window.addEventListener("load", function() {
+                    window.cookieconsent.initialise({
+                        "cookie": {
+                            "name": "' . COOKIE_PREFIX . '_cookieconsent_status",
+                            "domain": "' . DOMAIN .'",
+                            "path": "' . $path .'"
+                        },
+                        "content": {
+                            "message": "' . $gL10n->get('SYS_COOKIE_DESC') . '",
+                            "dismiss": "' . $gL10n->get('SYS_OK') . '",';
+                            if ($gSettingsManager->has('system_url_data_protection') && strlen($gSettingsManager->getString('system_url_data_protection')) > 0)
+                            {
+                                $headerContent .= ' "href": "'. $gSettingsManager->getString('system_url_data_protection') .'", ';
+                            }
+                            $headerContent .= '"link": "' . $gL10n->get('SYS_FURTHER_INFORMATIONS') . '"
+                        },
+                        "position": "bottom",
+                        "theme": "classic",
+                        "palette": {
+                            "popup": {
+                                "background": "#252e39"
+                            },
+                            "button": {
+                                "background": "#409099"
+                            }
+                        }
+                    });
+                });
+            </script>';
         }
 
         $htmlHeader = '<head>
@@ -490,7 +552,7 @@ class HtmlPage
 
         $htmlHeader .= $headerContent;
         $htmlHeader .= $this->header;
-        $htmlHeader .= $htmlMyHeader;
+        $htmlHeader .= $this->htmlMyHeader;
         $htmlHeader .= '</head>';
 
         return $htmlHeader;
@@ -502,8 +564,6 @@ class HtmlPage
      */
     private function getHtmlBody()
     {
-        $htmlMyBodyTop    = '';
-        $htmlMyBodyBottom = '';
         $htmlMenu         = '';
         $htmlHeadline     = '';
 
@@ -527,21 +587,14 @@ class HtmlPage
             }
         }
 
-        // load content of theme files
-        if ($this->showThemeHtml)
-        {
-            $htmlMyBodyTop    = $this->getFileContent('my_body_top.php');
-            $htmlMyBodyBottom = $this->getFileContent('my_body_bottom.php');
-        }
-
         $htmlBody = '<body>';
-        $htmlBody .= $htmlMyBodyTop;
+        $htmlBody .= $this->htmlMyBodyTop;
         $htmlBody .= '<div class="admidio-content">';
         $htmlBody .= $htmlHeadline;
         $htmlBody .= $htmlMenu;
         $htmlBody .= $this->pageContent;
         $htmlBody .= '</div>';
-        $htmlBody .= $htmlMyBodyBottom;
+        $htmlBody .= $this->htmlMyBodyBottom;
         $htmlBody .= '</body>';
 
         return $htmlBody;
@@ -582,7 +635,7 @@ class HtmlPage
 
     /**
      * Returns the menu object of this html page.
-     * @return \HtmlNavbar Returns the menu object of this html page.
+     * @return HtmlNavbar Returns the menu object of this html page.
      */
     public function getMenu()
     {
@@ -696,31 +749,20 @@ class HtmlPage
     }
 
     /**
-     * This method send the whole html code of the page to the browser. Call this method
-     * if you have finished your page layout.
-     * @param bool $directOutput If set to **true** (default) the html page will be directly send
-     *                           to the browser. If set to **false** the html will be returned.
-     * @return string|void If $directOutput is set to **false** this method will return the html code of the page.
+     * This method send the whole html code of the page to the browser.
+     * Call this method if you have finished your page layout.
      */
-    public function show($directOutput = true)
+    public function show()
     {
         $this->addMainFilesAndContent();
 
-        $html = '<!DOCTYPE html><html>';
-        $html .= $this->getHtmlHeader();
-        $html .= $this->getHtmlBody();
-        $html .= '</html>';
-
         // now show the complete html of the page
-        if ($directOutput)
-        {
-            header('Content-type: text/html; charset=utf-8');
-            echo $html;
-        }
-        else
-        {
-            return $html;
-        }
+        header('Content-type: text/html; charset=utf-8');
+
+        echo '<!DOCTYPE html><html>';
+        echo $this->getHtmlHeader();
+        echo $this->getHtmlBody();
+        echo '</html>';
     }
 
     /**
@@ -745,7 +787,7 @@ class HtmlPage
 
             if ($menuStatement->rowCount() > 0)
             {
-                $menu = new Menu($mainMenu['men_name_intern'], $gL10n->get($mainMenu['men_name']));
+                $menu = new Menu($mainMenu['men_name_intern'], Language::translateIfTranslationStrId($mainMenu['men_name']));
 
                 while ($row = $menuStatement->fetch())
                 {
